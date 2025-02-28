@@ -50,9 +50,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
         // auto data = std::make_shared<Branches12>(_chain, true);
         auto data = std::make_shared<Branches12>(_chain, _mc);
 
-        // if (!_qa->Golden(data->getRun(), data->getEvent()))
-        //         continue;
-
         // Total number of events "Processed"
         size_t total = 0;
         float no_of_events = 0, miss_prot = 0, miss_pim = 0, miss_pip = 0, other = 0, excl_events = 0,
@@ -115,9 +112,28 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                         continue;
                 // event->SetMomCorrElec();
 
-                // if (!_qa->Golden(data->getRun(), data->getEvent()))
-                //         continue;
+                if (!_qa->Golden(data->getRun(), data->getEvent()))
+                        continue;
 
+                // // QA cuts
+                // if (_qa->OkForAsymmetry(data->getRun(), data->getEvent()))
+                // {
+
+                // accumulate charge; note that although the call to
+                // QADB::accumulateCharge() charge happens for each
+                // event within a QA bin that passed the QA cuts, that
+                // bin's charge will only be accumulated once, so
+                // overcounting is not possible
+                // _qa->accumulateCharge();
+                // _qa->GetAccumulatedCharge();
+                // total_charge = total_charge + _qa->GetAccumulatedCharge();
+                // std::cout << "  FC Charge is " << total_charge << std::endl;
+
+                /* continue your analysis here */
+                // }
+                // _qa->AccumulateCharge();
+                // total_charge += _qa->GetAccumulatedCharge();
+                // std::cout << "  FC Charge is " << total_charge << std::endl;
                 // if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
                 // _hists->FillHists_electron_with_cuts(data, event);
 
@@ -498,8 +514,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 ////if (dv2_Prot < 0.01)
                                                                                 //////// if (event->MM2_mPim() > -0.1 && event->MM2_mPim() < 0.1)
 
-                                                                                //////////                                                                                 if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
-
+                                                                                if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
                                                                                 {
                                                                                         //////////////                if (dv2_Prot < 0.01)
                                                                                         {
@@ -633,9 +648,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                 }
                         }
                 }
-                _qa->AccumulateCharge();
-
-                total_charge += _qa->GetAccumulatedCharge();
         }
         //}
         // std::cout.precision(3);
