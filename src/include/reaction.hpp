@@ -314,9 +314,10 @@ public:
 
         // double dpp(float px, float py, float pz, int sec_mom_corr, int ivec);
         // double Corr_elec_mom();
-        double elec_mom();
+        inline double elec_mom() { return _P_elec; }
+        inline double elec_th() { return _theta_e; }
 
-        // float EffCorrFactor();
+        void EffCorrFactor(const TLorentzVector &prot, const TLorentzVector &pip);
 
         // void CalcMissMass();
         void CalcMissMassPim(const TLorentzVector &prot, const TLorentzVector &pip);
@@ -331,18 +332,18 @@ public:
         float MM2_mprot();
         float MM2_exclusive();
         float MM_exclusive();
-        // float weight();
-        inline float weight()
-        {
-                if (_mc)
-                        return _data->mc_weight();
+        float weight();
+/*         inline float weight()
+         {
+        //         if (_mc)
+        //                 return _data->mc_weight();
 
-                else
-                        return 1.0;
-        }
-
+        //         else
+                         return 1.0;
+         }
+*/
         /// smearing fx's function
-        void SmearingFunc(int part_id, int status_part, double p, double theta, double phi, double w_val, double &pNew, double &thetaNew,
+        void SmearingFunc(int part_id, int status_part, double p, double theta, double phi, double &pNew, double &thetaNew,
                           double &phiNew)
         {
                 // Constants
@@ -659,11 +660,11 @@ private:
 public:
         MCReaction(const std::shared_ptr<Branches12> &data, float beam_energy);
         void SetMCElec();
-        inline float weight()
+      /*  inline float weight()
         {
                 return _data->mc_weight();
-                // return 1.0;
-        }
+              // return 1.0;
+        }*/
         inline float W_mc()
         {
                 return _W_mc;

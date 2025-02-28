@@ -9,13 +9,13 @@ include(${ROOT_USE_FILE})
 
 include_directories(src/include)
 # # Use the QADB environment variable for absolute paths
-# include_directories($ENV{QADB}/srcC/include)
-# include_directories($ENV{QADB}/srcC/rapidjson/include)
+ include_directories($ENV{QADB}/srcC/include)
+ include_directories($ENV{QADB}/srcC/rapidjson/include)
 
 # # Print include directories for debugging
-# message(STATUS "Include directories: ${CMAKE_INCLUDE_PATH}")
-# message(STATUS "QADB include directory: $ENV{QADB}/srcC/include")
-# message(STATUS "RapidJSON include directory: $ENV{QADB}/srcC/rapidjson/include")
+ message(STATUS "Include directories: ${CMAKE_INCLUDE_PATH}")
+ message(STATUS "QADB include directory: $ENV{QADB}/srcC/include")
+ message(STATUS "RapidJSON include directory: $ENV{QADB}/srcC/rapidjson/include")
 
 file(GLOB clas12lib_SRC
     "src/lib/*.cpp"

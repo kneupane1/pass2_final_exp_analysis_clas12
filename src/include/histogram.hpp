@@ -39,10 +39,10 @@ protected:
     double p_max = 6.0;
     double Dt_max = 10.0;
     double Dt_min = -Dt_max;
-    double q2_min = 0.0;
+    double q2_min = 1.0;
     double q2_max = 10.0;
 
-    double w_max = 3.5;
+    double w_max = 2.5;
     double w_min = 1.0;
 
     double zero = 0.0;
@@ -129,24 +129,40 @@ protected:
     int w_lower_bin = 8;
     int w_higher_bin = 24;
 
-    // ////////////// backgraound multiplication factors obtained from AND logic in the background fitting using exclusive topology data /////////
-    // float background_fact[16][7] = {
-    //     {2.3, 2.5, 2.47, 2.5, 3.0, 2.09, 2.61},
-    //     {2.49, 2.5, 2.5, 2.26, 2.93, 2.37, 2.54},
-    //     {2.5, 2.46, 2.5, 2.5, 2.46, 3.17, 2.25},
-    //     {2.49, 2.5, 2.47, 2.41, 2.46, 2.72, 3.18},
-    //     {2.48, 2.49, 2.47, 2.46, 3.44, 3.41, 3.33},
-    //     {2.38, 2.48, 2.49, 2.5, 3.34, 3.36, 4.05},
-    //     {2.49, 2.5, 2.5, 2.5, 3.21, 3.09, 3.32},
-    //     {3.19, 2.5, 2.5, 2.48, 2.95, 3.18, 2.83},
-    //     {3.2, 3.13, 3.19, 3.19, 3.38, 3.04, 3.32},
-    //     {3.19, 3.18, 3.2, 3.2, 3.22, 3.2, 3.37},
-    //     {3.2, 3.2, 3.19, 3.2, 3.25, 2.95, 3.25},
-    //     {3.15, 3.2, 3.2, 3.18, 3.3, 3.12, 3.57},
-    //     {3.19, 3.2, 3.2, 3.02, 3.24, 3.24, 3.51},
-    //     {3.16, 3.2, 3.18, 3.2, 3.39, 3.47, 3.55},
-    //     {3.19, 3.2, 3.19, 3.2, 3.49, 3.42, 3.66}};
-    // // // //sim FD+CD
+    // // ////////////// backgraound multiplication factors obtained from AND logic in the background fitting using exclusive topology data /////////
+    float background_fact[2][16][9] = {{{3.50, 3.50, 3.50, 3.32, 2.58, 2.53, 2.60, 1.00, 2.00},
+                                        {3.50, 3.50, 3.22, 3.19, 2.78, 1.78, 1.33, 1.33, 2.00},
+                                        {3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 2.00},
+                                        {3.50, 3.50, 3.50, 3.50, 2.93, 3.50, 3.43, 2.00, 2.00},
+                                        {3.50, 3.50, 3.50, 3.50, 2.94, 2.62, 2.46, 3.00, 2.75},
+                                        {3.50, 3.50, 3.50, 3.50, 3.18, 3.37, 3.50, 1.56, 2.87},
+                                        {3.04, 3.50, 3.20, 2.86, 2.25, 2.34, 3.13, 2.00, 2.00},
+                                        {3.38, 3.50, 3.13, 3.10, 2.86, 3.50, 1.80, 3.50, 2.00},
+                                        {3.50, 3.50, 3.50, 3.02, 2.97, 3.01, 2.78, 2.89, 2.33},
+                                        {3.32, 3.30, 3.14, 3.06, 2.77, 2.76, 3.29, 2.74, 2.50},
+                                        {3.42, 3.20, 3.40, 3.07, 3.27, 3.14, 2.42, 2.17, 2.58},
+                                        {3.50, 3.21, 3.10, 3.20, 3.43, 2.97, 3.50, 3.06, 2.00},
+                                        {3.50, 3.36, 3.40, 3.07, 2.88, 2.77, 3.46, 3.50, 2.00},
+                                        {3.50, 3.50, 3.29, 3.09, 3.43, 3.21, 3.21, 2.78, 2.00},
+                                        {3.47, 3.32, 3.17, 3.25, 3.25, 3.50, 3.50, 3.45, 2.00}},
+                                       {{2.69, 3.14, 3.45, 3.42, 3.50, 3.50, 3.50, 2.50, 2.50},
+                                        {3.50, 3.50, 3.40, 3.50, 3.47, 3.50, 3.50, 3.50, 2.50},
+                                        {3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 2.50},
+                                        {3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 2.50},
+                                        {3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 3.50, 2.50},
+                                        {2.92, 2.62, 2.61, 2.44, 2.41, 2.61, 2.69, 2.50, 2.50},
+                                        {2.78, 2.69, 2.61, 2.55, 2.46, 2.62, 2.78, 2.91, 2.50},
+                                        {2.44, 2.26, 2.22, 2.18, 2.05, 2.22, 2.26, 2.50, 2.50},
+                                        {2.30, 2.53, 2.17, 2.26, 2.19, 2.22, 2.32, 2.50, 2.50},
+                                        {2.55, 2.24, 2.13, 2.25, 2.16, 2.27, 2.31, 2.51, 2.50},
+                                        {2.49, 2.45, 2.36, 2.26, 2.34, 2.40, 2.52, 2.65, 2.50},
+                                        {2.39, 2.53, 2.38, 2.46, 2.37, 2.49, 2.60, 2.80, 2.50},
+                                        {2.45, 2.62, 2.51, 2.49, 2.49, 2.59, 2.74, 2.83, 2.50},
+                                        {2.80, 2.57, 2.61, 2.55, 2.53, 2.63, 2.76, 2.98, 2.50},
+                                        {2.50, 2.70, 2.49, 2.53, 2.57, 2.74, 2.87, 3.08, 2.50}}};
+
+    ////////////  exp: low: {excl, mPip, mProt}, high:{excl, mPip, mProt},) ; sim: low: {excl, mPip, mProt}, high: {excl, mPip, mProt}
+    float mmsq_low_values_for_bkg[2][2][3] = {{{-0.004, -0.028, -0.763}, {0.002, 0.071, 0.1003}}, {{-0.004, -0.024, -0.79}, {0.002, 0.079, 0.1025}}};
 
     int bin_val = -1;
 
@@ -403,6 +419,7 @@ protected:
     TH2D_ptr theta_vs_mom_prot[num_sectors];
     TH2D_ptr theta_vs_mom_pip[num_sectors];
     TH2D_ptr theta_vs_mom_pim[num_sectors];
+
     TH2D_ptr pim_phi_vs_theta_rec_FD_sec[num_sectors];
     TH2D_ptr pim_phi_vs_theta_rec_FD_after_exclusive_sec[num_sectors];
     TH2D_ptr pim_phi_vs_theta_measured_FD_sec[num_sectors];
@@ -497,6 +514,8 @@ protected:
 
     TH1D_ptr vz_position[CUTS];
     TH2D_ptr pcal_sec[CUTS];
+    TH2D_ptr pcal_sec_ineff_cuts[CUTS];
+
     TH2D_ptr pcal_hx_hy_sec[CUTS];
     TH2D_ptr dcr1_sec[CUTS];
     TH2D_ptr dcr2_sec[CUTS];
@@ -549,6 +568,10 @@ protected:
     TH2D_ptr Theta_prot_lab_vs_mom_prot_cd[CUTS];
     TH2D_ptr Theta_pip_lab_vs_mom_pip_cd[CUTS];
     TH2D_ptr Theta_pim_lab_vs_mom_pim_cd[CUTS];
+
+    TH2D_ptr Theta_fd_prot_lab_vs_mom_prot[num_sectors];
+    TH2D_ptr Theta_fd_pip_lab_vs_mom_pip[num_sectors];
+    TH2D_ptr Theta_fd_elec_lab_vs_mom_elec[num_sectors];
 
     TH2D_ptr Theta_prot_cm_vs_mom_prot;
     TH2D_ptr Theta_pip_cm_vs_mom_pip;
@@ -712,8 +735,8 @@ public:
             }
         }
 
-        if ( //(mm2 < (mmsq_cuts[is_mc][q2_bin_val - 1][0][0] * pow(w, 2) + mmsq_cuts[is_mc][q2_bin_val - 1][0][1] * pow(w, 1) + mmsq_cuts[is_mc][q2_bin_val - 1][0][2])) &&
-            (mm2 < (mmsq_cuts[is_mc][q2_bin_val - 1][1][0] * pow(w, 2) + mmsq_cuts[is_mc][q2_bin_val - 1][1][1] * pow(w, 1) + mmsq_cuts[is_mc][q2_bin_val - 1][1][2])))
+        if ((mm2 < (mmsq_cuts[is_mc][q2_bin_val - 1][0][0] * pow(w, 2) + mmsq_cuts[is_mc][q2_bin_val - 1][0][1] * pow(w, 1) + mmsq_cuts[is_mc][q2_bin_val - 1][0][2])) &&
+            (mm2 > (mmsq_cuts[is_mc][q2_bin_val - 1][1][0] * pow(w, 2) + mmsq_cuts[is_mc][q2_bin_val - 1][1][1] * pow(w, 1) + mmsq_cuts[is_mc][q2_bin_val - 1][1][2])))
 
         {
             // std::cout << "   w  = " << w << "  q2 = " << q2 << "  mm2 = " << mm2 << "  up lim mm2 is =  "
