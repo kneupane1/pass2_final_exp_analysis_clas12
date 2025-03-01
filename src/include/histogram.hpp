@@ -228,25 +228,25 @@ protected:
 
     /// MMSQ 3 SIGMA mid cuts //////////////////////////////////////
     double mmsq_cuts[2][9][2][3] =
-        {{{{-0.0903, 0.3556, -0.2510}, {0.0215, -0.1181, 0.0851}},
-          {{-0.1180, 0.4504, -0.3293}, {0.0725, -0.2964, 0.2356}},
-          {{-0.1199, 0.4562, -0.3361}, {0.0739, -0.2990, 0.2352}},
-          {{-0.0731, 0.2988, -0.2076}, {0.0687, -0.2826, 0.2201}},
-          {{-0.0933, 0.3625, -0.2585}, {0.0653, -0.2654, 0.1988}},
-          {{-0.0864, 0.3493, -0.2606}, {0.1100, -0.4272, 0.3455}},
-          {{-0.0381, 0.1548, -0.0695}, {0.0579, -0.2195, 0.1448}},
-          {{-0.0421, 0.1885, -0.1136}, {0.0081, -0.0410, -0.0101}},
-          {{-0.0810, 0.2707, -0.1492}, {0.0576, -0.1716, 0.0789}}},
+        {{{{-0.1036, 0.4002, -0.2877}, {0.0207, -0.1156, 0.0831}},
+          {{-0.1261, 0.4775, -0.3517}, {0.0693, -0.2855, 0.2266}},
+          {{-0.1368, 0.5127, -0.3829}, {0.0784, -0.3141, 0.2477}},
+          {{-0.0655, 0.2737, -0.1872}, {0.0569, -0.2435, 0.1881}},
+          {{-0.0669, 0.2756, -0.1876}, {0.0286, -0.1445, 0.1002}},
+          {{-0.0785, 0.3229, -0.2386}, {0.1088, -0.4230, 0.3420}},
+          {{-0.0461, 0.1819, -0.0921}, {0.0514, -0.1975, 0.1264}},
+          {{-0.0584, 0.2435, -0.1596}, {0.0227, -0.0900, 0.0309}},
+          {{-0.0998, 0.3329, -0.2000}, {0.0623, -0.1873, 0.0918}}},
 
-         {{{-0.1325, 0.5138, -0.3930}, {0.0574, -0.2287, 0.1762}},
-          {{-0.1305, 0.5072, -0.3876}, {0.0714, -0.2737, 0.2091}},
-          {{-0.1265, 0.4922, -0.3735}, {0.0722, -0.2746, 0.2074}},
-          {{-0.1084, 0.4280, -0.3178}, {0.0648, -0.2466, 0.1815}},
-          {{-0.0965, 0.3865, -0.2830}, {0.0621, -0.2343, 0.1687}},
-          {{-0.0811, 0.3310, -0.2353}, {0.0497, -0.1864, 0.1233}},
-          {{-0.0723, 0.2997, -0.2084}, {0.0472, -0.1723, 0.1052}},
-          {{-0.0747, 0.3104, -0.2193}, {0.0430, -0.1531, 0.0836}},
-          {{-0.0798, 0.3310, -0.2396}, {-0.0763, 0.2437, -0.2466}}}};
+         {{{-0.1424, 0.5468, -0.4204}, {0.0517, -0.2097, 0.1605}},
+          {{-0.1435, 0.5510, -0.4240}, {0.0660, -0.2556, 0.1940}},
+          {{-0.1352, 0.5214, -0.3979}, {0.0577, -0.2257, 0.1666}},
+          {{-0.1148, 0.4494, -0.3357}, {0.0458, -0.1825, 0.1278}},
+          {{-0.0913, 0.3686, -0.2679}, {0.0264, -0.1129, 0.0667}},
+          {{-0.0799, 0.3270, -0.2319}, {0.0152, -0.0692, 0.0245}},
+          {{-0.0662, 0.2791, -0.1911}, {0.0043, -0.0263, -0.0179}},
+          {{-0.0652, 0.2780, -0.1918}, {-0.0011, -0.0024, -0.0438}},
+          {{-0.0800, 0.3320, -0.2403}, {-0.0762, 0.2432, -0.2462}}}};
 
     ///////// tight 2.5 sigma ////////////
     double mmsq_cuts_tight[2][9][2][3] =
@@ -387,22 +387,29 @@ protected:
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
-    static const short w_bin = 64;
+    static const short w_bin = 16;
     THnSparse *threeDHist[q2_bin][w_bin];
     THnSparse *sevenDHist_pim[q2_bin][w_bin];
-    THnSparse *sevenD_Hist_thrown_pim[q2_bin][w_bin];
     THnSparse *sevenDHist_pip[q2_bin][w_bin];
-    THnSparse *sevenD_Hist_thrown_pip[q2_bin][w_bin];
     THnSparse *sevenDHist_prot[q2_bin][w_bin];
-    THnSparse *sevenD_Hist_thrown_prot[q2_bin][w_bin];
 
     THnSparse *h_5dim_prot_evt[q2_bin][w_bin];
     THnSparse *h_5dim_pip_evt[q2_bin][w_bin];
     THnSparse *h_5dim_pim_evt[q2_bin][w_bin];
 
-    THnSparse *h_5dim_thrown_prot_evt[q2_bin][w_bin];
-    THnSparse *h_5dim_thrown_pip_evt[q2_bin][w_bin];
-    THnSparse *h_5dim_thrown_pim_evt[q2_bin][w_bin];
+    THnSparse *sevenDHist_pim_tight[q2_bin][w_bin];
+    THnSparse *sevenDHist_pip_tight[q2_bin][w_bin];
+    THnSparse *sevenDHist_prot_tight[q2_bin][w_bin];
+    THnSparse *h_5dim_prot_evt_tight[q2_bin][w_bin];
+    THnSparse *h_5dim_pip_evt_tight[q2_bin][w_bin];
+    THnSparse *h_5dim_pim_evt_tight[q2_bin][w_bin];
+
+    THnSparse *sevenDHist_pim_loose[q2_bin][w_bin];
+    THnSparse *sevenDHist_pip_loose[q2_bin][w_bin];
+    THnSparse *sevenDHist_prot_loose[q2_bin][w_bin];
+    THnSparse *h_5dim_prot_evt_loose[q2_bin][w_bin];
+    THnSparse *h_5dim_pip_evt_loose[q2_bin][w_bin];
+    THnSparse *h_5dim_pim_evt_loose[q2_bin][w_bin];
 
     TH1D_ptr w_gen_hist[q2_bin][w_bin];
     TH1D_ptr q2_gen_hist[q2_bin][w_bin];
@@ -805,9 +812,58 @@ public:
             (mm2 > (mmsq_cuts[is_mc][q2_bin_val - 1][1][0] * pow(w, 2) + mmsq_cuts[is_mc][q2_bin_val - 1][1][1] * pow(w, 1) + mmsq_cuts[is_mc][q2_bin_val - 1][1][2])))
 
         {
-            // std::cout << "   w  = " << w << "  q2 = " << q2 << "  mm2 = " << mm2 << "  up lim mm2 is =  "
-            //           << (mmsq_cuts[q2_bin_val - 1][0][0] * pow(w, 2) + mmsq_cuts[q2_bin_val - 1][0][2] * pow(w, 1) + mmsq_cuts[q2_bin_val - 1][0][2])
-            //           << "  q2_bin_val = " << q2_bin_val << "   params  " << mmsq_cuts[q2_bin_val - 1][0][0] << " , " << mmsq_cuts[q2_bin_val - 1][0][1] << std::endl;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool MM_cut_tight(float w, float q2, float mm2)
+    {
+        int is_mc = 0;
+        if (_mc)
+        {
+            is_mc = 1;
+        }
+        for (int i = 1; i < q2_bins.size(); ++i)
+        {
+            if (q2 < q2_bins[i])
+            {
+                q2_bin_val = i;
+                break;
+            }
+        }
+
+        if ((mm2 < (mmsq_cuts_tight[is_mc][q2_bin_val - 1][0][0] * pow(w, 2) + mmsq_cuts_tight[is_mc][q2_bin_val - 1][0][1] * pow(w, 1) + mmsq_cuts_tight[is_mc][q2_bin_val - 1][0][2])) &&
+            (mm2 > (mmsq_cuts_tight[is_mc][q2_bin_val - 1][1][0] * pow(w, 2) + mmsq_cuts_tight[is_mc][q2_bin_val - 1][1][1] * pow(w, 1) + mmsq_cuts_tight[is_mc][q2_bin_val - 1][1][2])))
+
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    bool MM_cut_loose(float w, float q2, float mm2)
+    {
+        int is_mc = 0;
+        if (_mc)
+        {
+            is_mc = 1;
+        }
+        for (int i = 1; i < q2_bins.size(); ++i)
+        {
+            if (q2 < q2_bins[i])
+            {
+                q2_bin_val = i;
+                break;
+            }
+        }
+
+        if ((mm2 < (mmsq_cuts_loose[is_mc][q2_bin_val - 1][0][0] * pow(w, 2) + mmsq_cuts_loose[is_mc][q2_bin_val - 1][0][1] * pow(w, 1) + mmsq_cuts_loose[is_mc][q2_bin_val - 1][0][2])) &&
+            (mm2 > (mmsq_cuts_loose[is_mc][q2_bin_val - 1][1][0] * pow(w, 2) + mmsq_cuts_loose[is_mc][q2_bin_val - 1][1][1] * pow(w, 1) + mmsq_cuts_loose[is_mc][q2_bin_val - 1][1][2])))
+
+        {
             return true;
         }
         else
@@ -829,19 +885,27 @@ public:
     void writehists4D_background();
 
     void Fill_histSevenD_prot(const std::shared_ptr<Reaction> &_e);
-    void Fill_histSevenD_thrown_prot(const std::shared_ptr<MCReaction> &_e);
 
     void Fill_histSevenD_pim(const std::shared_ptr<Reaction> &_e);
-    void Fill_histSevenD_thrown_pim(const std::shared_ptr<MCReaction> &_e);
     void Fill_histSevenD_pip(const std::shared_ptr<Reaction> &_e);
-    void Fill_histSevenD_thrown_pip(const std::shared_ptr<MCReaction> &_e);
 
     void Fill_histSevenD_prot_evt(const std::shared_ptr<Reaction> &_e);
-    void Fill_histSevenD_thrown_prot_evt(const std::shared_ptr<MCReaction> &_e);
     void Fill_histSevenD_pim_evt(const std::shared_ptr<Reaction> &_e);
-    void Fill_histSevenD_thrown_pim_evt(const std::shared_ptr<MCReaction> &_e);
     void Fill_histSevenD_pip_evt(const std::shared_ptr<Reaction> &_e);
-    void Fill_histSevenD_thrown_pip_evt(const std::shared_ptr<MCReaction> &_e);
+
+    void Fill_histSevenD_prot_tight(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_pim_tight(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_pip_tight(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_prot_evt_tight(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_pim_evt_tight(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_pip_evt_tight(const std::shared_ptr<Reaction> &_e);
+
+    void Fill_histSevenD_prot_loose(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_pim_loose(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_pip_loose(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_prot_evt_loose(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_pim_evt_loose(const std::shared_ptr<Reaction> &_e);
+    void Fill_histSevenD_pip_evt_loose(const std::shared_ptr<Reaction> &_e);
 
     void writeHists7D_prot();
     void writeHists7D_thrown_prot();
@@ -855,6 +919,20 @@ public:
     void writeHists7D_thrown_pip_evt();
     void writeHists7D_pim_evt();
     void writeHists7D_thrown_pim_evt();
+
+    void writeHists7D_prot_tight();
+    void writeHists7D_pim_tight();
+    void writeHists7D_pip_tight();
+    void writeHists7D_prot_evt_tight();
+    void writeHists7D_pip_evt_tight();
+    void writeHists7D_pim_evt_tight();
+
+    void writeHists7D_prot_loose();
+    void writeHists7D_pim_loose();
+    void writeHists7D_pip_loose();
+    void writeHists7D_prot_evt_loose();
+    void writeHists7D_pip_evt_loose();
+    void writeHists7D_pim_evt_loose();
 
     //// bin centering corrections
     void Fill_hist1D_thrown_w_q2(const std::shared_ptr<MCReaction> &_e);

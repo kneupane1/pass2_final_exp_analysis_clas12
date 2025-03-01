@@ -84,26 +84,15 @@ Histogram::Histogram(const std::string &output_file)
                                                                 ndims_5D, bins_5D, xmin_5D, xmax_5D);
                         sevenDHist_prot[q2][w]->Sumw2();
 
-                        sevenD_Hist_thrown_prot[q2][w] = new THnSparseD(name, name,
-                                                                        ndims_5D, bins_5D, xmin_5D, xmax_5D);
-
-                        sevenD_Hist_thrown_prot[q2][w]->Sumw2();
                         sevenDHist_pip[q2][w] = new THnSparseD(name, name,
                                                                ndims_5D, bins_5D, xmin_5D, xmax_5D);
 
                         sevenDHist_pip[q2][w]->Sumw2();
 
-                        sevenD_Hist_thrown_pip[q2][w] = new THnSparseD(name, name,
-                                                                       ndims_5D, bins_5D, xmin_5D, xmax_5D);
-
-                        sevenD_Hist_thrown_pip[q2][w]->Sumw2();
                         sevenDHist_pim[q2][w] = new THnSparseD(name, name,
                                                                ndims_5D, bins_5D, xmin_5D, xmax_5D);
 
                         sevenDHist_pim[q2][w]->Sumw2();
-                        sevenD_Hist_thrown_pim[q2][w] = new THnSparseD(name, name,
-                                                                       ndims_5D, bins_5D, xmin_5D, xmax_5D);
-                        sevenD_Hist_thrown_pim[q2][w]->Sumw2();
 
                         h_5dim_prot_evt[q2][w] = new THnSparseD(name_evt, name_evt,
                                                                 ndims_5D, bins_5D, xmin_5D, xmax_5D);
@@ -112,230 +101,47 @@ Histogram::Histogram(const std::string &output_file)
                         h_5dim_pim_evt[q2][w] = new THnSparseD(name_evt, name_evt,
                                                                ndims_5D, bins_5D, xmin_5D, xmax_5D);
 
-                        h_5dim_thrown_prot_evt[q2][w] = new THnSparseD(name_evt, name_evt,
-                                                                       ndims_5D, bins_5D, xmin_5D, xmax_5D);
-                        h_5dim_thrown_pip_evt[q2][w] = new THnSparseD(name_evt, name_evt,
+                        /////////////////////  tight cuts /////////////////////////
+
+                        sevenDHist_prot_tight[q2][w] = new THnSparseD(name, name,
                                                                       ndims_5D, bins_5D, xmin_5D, xmax_5D);
-                        h_5dim_thrown_pim_evt[q2][w] = new THnSparseD(name_evt, name_evt,
+                        sevenDHist_prot_tight[q2][w]->Sumw2();
+
+                        sevenDHist_pip_tight[q2][w] = new THnSparseD(name, name,
+                                                                     ndims_5D, bins_5D, xmin_5D, xmax_5D);
+                        sevenDHist_pip_tight[q2][w]->Sumw2();
+
+                        sevenDHist_pim_tight[q2][w] = new THnSparseD(name, name,
+                                                                     ndims_5D, bins_5D, xmin_5D, xmax_5D);
+                        sevenDHist_pim_tight[q2][w]->Sumw2();
+
+                        h_5dim_prot_evt_tight[q2][w] = new THnSparseD(name_evt, name_evt,
                                                                       ndims_5D, bins_5D, xmin_5D, xmax_5D);
-                }
-        }
-        // ///////////////////////////////////// BIN Centering part ///////////////////////////////
-        // ///////////////////////////////////// BIN Centering part ///////////////////////////////
-        // ///////////////////////////////////// BIN Centering part ///////////////////////////////
-        // ///////////////////////////////////// BIN Centering part ///////////////////////////////
-        // for (short q2 = 3; q2 < 4; q2++)
-        for (short q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                float q2_lower_lim = q2_low_values[q2];
-                float q2_upper_lim = q2_up_values[q2];
+                        h_5dim_pip_evt_tight[q2][w] = new THnSparseD(name_evt, name_evt,
+                                                                     ndims_5D, bins_5D, xmin_5D, xmax_5D);
+                        h_5dim_pim_evt_tight[q2][w] = new THnSparseD(name_evt, name_evt,
+                                                                     ndims_5D, bins_5D, xmin_5D, xmax_5D);
 
-                // for (short w = w_lower_bin; w < w_higher_bin; w++)
-                for (short w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        // Mupper(W) = W − mh3
-                        // //50 MeV w bin
+                        /////////////////////  loose cuts /////////////////////////
 
-                        // //adding extra bins in each end of invariant mass hist
-                        Double_t Bin_size_pPip = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 7.0;
-                        Double_t Bin_size_pipPim = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 7.0;
+                        sevenDHist_prot_loose[q2][w] = new THnSparseD(name, name,
+                                                                      ndims_5D, bins_5D, xmin_5D, xmax_5D);
+                        sevenDHist_prot_loose[q2][w]->Sumw2();
 
-                        Double_t xmin_5D_BC[5] = {(0.938272 + 0.13957), (0.13957 + 0.13957), 0., 0., 0.};
-                        Double_t xmax_5D_BC[5] = {(1.0 + 0.05 * w + 0.025 - MASS_PIM), (1.0 + 0.05 * w + 0.025 - MASS_P), 180, 360, 360};
+                        sevenDHist_pip_loose[q2][w] = new THnSparseD(name, name,
+                                                                     ndims_5D, bins_5D, xmin_5D, xmax_5D);
+                        sevenDHist_pip_loose[q2][w]->Sumw2();
 
-                        auto name_w = Form("h_w_gen_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                        auto name_q2 = Form("h_q2_gen_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
+                        sevenDHist_pim_loose[q2][w] = new THnSparseD(name, name,
+                                                                     ndims_5D, bins_5D, xmin_5D, xmax_5D);
+                        sevenDHist_pim_loose[q2][w]->Sumw2();
 
-                        w_gen_hist[q2][w] = std::make_shared<TH1D>(name_w, name_w, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                        w_gen_hist[q2][w]->Sumw2();
-
-                        q2_gen_hist[q2][w] = std::make_shared<TH1D>(name_q2, name_q2, 11, q2_lower_lim, q2_upper_lim);
-                        q2_gen_hist[q2][w]->Sumw2();
-
-                        for (size_t xi = 0; xi < 7; xi++)
-                        {
-                                float xmin_pPip = xmin_5D_BC[0] + Bin_size_pPip * xi;
-                                float xmax_pPip = xmin_5D_BC[0] + Bin_size_pPip * (xi + 1);
-
-                                float xmin_pipPim = xmin_5D_BC[1] + Bin_size_pipPim * xi;
-                                float xmax_pipPim = xmin_5D_BC[1] + Bin_size_pipPim * (xi + 1);
-
-                                auto name_pPip = Form("h_pPip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPip<=%.3f GeV",
-                                                      (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
-
-                                auto name_pPim = Form("h_pPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPim<=%.3f GeV",
-                                                      (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
-
-                                auto name_pipPim = Form("h_pipPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pipPim<=%.3f GeV",
-                                                        (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pipPim, xmax_pipPim);
-
-                                auto name_w_inv_pPip = Form("h_w_gen_inv_pPip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPip<=%.3f GeV",
-                                                            (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
-                                auto name_q2_inv_pPip = Form("h_q2_gen_inv_pPip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPip<=%.3f GeV",
-                                                             (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
-
-                                auto name_w_inv_pPim = Form("h_w_gen_inv_pPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPim<=%.3f GeV",
-                                                            (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
-                                auto name_q2_inv_pPim = Form("h_q2_gen_inv_pPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPim<=%.3f GeV",
-                                                             (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
-
-                                auto name_w_inv_pipPim = Form("h_w_gen_inv_pipPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pipPi<=%.3f GeV",
-                                                              (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pipPim, xmax_pipPim);
-                                auto name_q2_inv_pipPim = Form("h_q2_gen_inv_pipPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pipPi<=%.3f GeV",
-                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pipPim, xmax_pipPim);
-
-                                inv_pPip_hist[q2][w][xi] = std::make_shared<TH1D>(name_pPip, name_pPip, 11, xmin_pPip, xmax_pPip);
-                                inv_pPip_hist[q2][w][xi]->Sumw2();
-                                // std::cout << "  xmin_pPip  " << xmin_pPip << "  xmax_pPip  " << xmax_pPip << std::endl;
-                                inv_pPim_hist[q2][w][xi] = std::make_shared<TH1D>(name_pPim, name_pPim, 11, xmin_pPip, xmax_pPip);
-                                inv_pPim_hist[q2][w][xi]->Sumw2();
-
-                                inv_pipPim_hist[q2][w][xi] = std::make_shared<TH1D>(name_pipPim, name_pipPim, 11, xmin_pipPim, xmax_pipPim);
-                                inv_pipPim_hist[q2][w][xi]->Sumw2();
-
-                                w_gen_hist_inv_pPip[q2][w][xi] = std::make_shared<TH1D>(name_w_inv_pPip, name_w_inv_pPip, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_inv_pPip[q2][w][xi]->Sumw2();
-
-                                q2_gen_hist_inv_pPip[q2][w][xi] = std::make_shared<TH1D>(name_q2_inv_pPip, name_q2_inv_pPip, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_inv_pPip[q2][w][xi]->Sumw2();
-
-                                w_gen_hist_inv_pPim[q2][w][xi] = std::make_shared<TH1D>(name_w_inv_pPim, name_w_inv_pPim, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_inv_pPim[q2][w][xi]->Sumw2();
-
-                                q2_gen_hist_inv_pPim[q2][w][xi] = std::make_shared<TH1D>(name_q2_inv_pPim, name_q2_inv_pPim, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_inv_pPim[q2][w][xi]->Sumw2();
-
-                                w_gen_hist_inv_pipPim[q2][w][xi] = std::make_shared<TH1D>(name_w_inv_pipPim, name_w_inv_pipPim, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_inv_pipPim[q2][w][xi]->Sumw2();
-
-                                q2_gen_hist_inv_pipPim[q2][w][xi] = std::make_shared<TH1D>(name_q2_inv_pipPim, name_q2_inv_pipPim, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_inv_pipPim[q2][w][xi]->Sumw2();
-                                // std::cout << " 1..... w is : " << w << "  q2 is  :  " << q2 << "  bin size is : " << Bin_size_pPip
-                                //           << "  xi is : " << xi
-                                //           << "  name is : " << name_pPip << std::endl;
-                        }
-
-                        for (int ti = 0; ti < 10; ti++)
-                        {
-
-                                float xmin_th = 18.0 * ti;
-                                float xmax_th = 18.0 * (ti + 1);
-
-                                auto name_th_prot = Form("h_th_prot_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_prot<=%.1f deg",
-                                                         (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-
-                                auto name_th_pip = Form("h_th_pip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pip<=%.1f deg",
-                                                        (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-
-                                auto name_th_pim = Form("h_th_pim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pim<=%.1f deg",
-                                                        (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-
-                                auto name_w_th_prot = Form("h_w_gen_th_prot_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_prot<=%.1f deg",
-                                                           (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-                                auto name_q2_th_prot = Form("h_q2_gen_th_prot_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_prot<=%.1f deg",
-                                                            (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-
-                                auto name_w_th_pip = Form("h_w_gen_th_pip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pip<=%.1f deg",
-                                                          (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-
-                                auto name_q2_th_pip = Form("h_q2_gen_th_pip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pip<=%.1f deg",
-                                                           (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-
-                                auto name_w_th_pim = Form("h_w_gen_th_pim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pim<=%.1f deg",
-                                                          (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-                                auto name_q2_th_pim = Form("h_q2_gen_th_pim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pim<=%.1f deg",
-                                                           (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
-
-                                // std::cout << " [q2][w][ai] for theta is " << q2 << " " << w << " " << ti << std::endl;
-
-                                prot_theta_hist[q2][w][ti] = std::make_shared<TH1D>(name_th_prot, name_th_prot, 11, xmin_th, xmax_th);
-                                prot_theta_hist[q2][w][ti]->Sumw2();
-
-                                pip_theta_hist[q2][w][ti] = std::make_shared<TH1D>(name_th_pip, name_th_pip, 11, xmin_th, xmax_th);
-                                pip_theta_hist[q2][w][ti]->Sumw2();
-
-                                pim_theta_hist[q2][w][ti] = std::make_shared<TH1D>(name_th_pim, name_th_pim, 11, xmin_th, xmax_th);
-                                pim_theta_hist[q2][w][ti]->Sumw2();
-
-                                w_gen_hist_th_prot[q2][w][ti] = std::make_shared<TH1D>(name_w_th_prot, name_w_th_prot, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_th_prot[q2][w][ti]->Sumw2();
-
-                                q2_gen_hist_th_prot[q2][w][ti] = std::make_shared<TH1D>(name_q2_th_prot, name_q2_th_prot, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_th_prot[q2][w][ti]->Sumw2();
-
-                                w_gen_hist_th_pip[q2][w][ti] = std::make_shared<TH1D>(name_w_th_pip, name_w_th_pip, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_th_pip[q2][w][ti]->Sumw2();
-
-                                q2_gen_hist_th_pip[q2][w][ti] = std::make_shared<TH1D>(name_q2_th_pip, name_q2_th_pip, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_th_pip[q2][w][ti]->Sumw2();
-
-                                w_gen_hist_th_pim[q2][w][ti] = std::make_shared<TH1D>(name_w_th_pim, name_w_th_pim, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_th_pim[q2][w][ti]->Sumw2();
-
-                                q2_gen_hist_th_pim[q2][w][ti] = std::make_shared<TH1D>(name_q2_th_pim, name_q2_th_pim, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_th_pim[q2][w][ti]->Sumw2();
-                        }
-                        for (int ai = 0; ai < 10; ai++)
-                        {
-
-                                ///////////////// alpha angle
-
-                                float xmin_alpha;
-                                xmin_alpha = 36.0 * ai;
-                                float xmax_alpha;
-                                xmax_alpha = 36.0 * (ai + 1);
-
-                                auto name_al_prot = Form("h_al_prot_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_prot<=%.1f deg",
-                                                         (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-                                auto name_al_pip = Form("h_al_pip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pip<=%.1f deg",
-                                                        (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-                                auto name_al_pim = Form("h_al_pim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pim<=%.1f deg",
-                                                        (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-
-                                auto name_w_al_prot = Form("h_w_gen_al_prot_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_prot<=%.1f deg",
-                                                           (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-                                auto name_q2_al_prot = Form("h_q2_gen_al_prot_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_prot<=%.1f deg",
-                                                            (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-
-                                auto name_w_al_pip = Form("h_w_gen_al_pip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pip<=%.1f deg",
-                                                          (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-
-                                auto name_q2_al_pip = Form("h_q2_gen_al_pip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pip<=%.1f deg",
-                                                           (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-
-                                auto name_w_al_pim = Form("h_w_gen_al_pim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pim<=%.1f deg",
-                                                          (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-                                auto name_q2_al_pim = Form("h_q2_gen_al_pim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pim<=%.1f deg",
-                                                           (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
-
-                                // std::cout << " [q2][w][ai] for alpha is " << q2 << " " << w << " " << ai << std::endl;
-                                prot_alpha_hist[q2][w][ai] = std::make_shared<TH1D>(name_al_prot, name_al_prot, 11, xmin_alpha, xmax_alpha);
-                                prot_alpha_hist[q2][w][ai]->Sumw2();
-
-                                pip_alpha_hist[q2][w][ai] = std::make_shared<TH1D>(name_al_pip, name_al_pip, 11, xmin_alpha, xmax_alpha);
-                                pip_alpha_hist[q2][w][ai]->Sumw2();
-
-                                pim_alpha_hist[q2][w][ai] = std::make_shared<TH1D>(name_al_pim, name_al_pim, 11, xmin_alpha, xmax_alpha);
-                                pim_alpha_hist[q2][w][ai]->Sumw2();
-
-                                w_gen_hist_al_prot[q2][w][ai] = std::make_shared<TH1D>(name_w_al_prot, name_w_al_prot, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_al_prot[q2][w][ai]->Sumw2();
-
-                                q2_gen_hist_al_prot[q2][w][ai] = std::make_shared<TH1D>(name_q2_al_prot, name_q2_al_prot, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_al_prot[q2][w][ai]->Sumw2();
-
-                                w_gen_hist_al_pip[q2][w][ai] = std::make_shared<TH1D>(name_w_al_pip, name_w_al_pip, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_al_pip[q2][w][ai]->Sumw2();
-
-                                q2_gen_hist_al_pip[q2][w][ai] = std::make_shared<TH1D>(name_q2_al_pip, name_q2_al_pip, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_al_pip[q2][w][ai]->Sumw2();
-
-                                w_gen_hist_al_pim[q2][w][ai] = std::make_shared<TH1D>(name_w_al_pim, name_w_al_pim, 11, (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                                w_gen_hist_al_pim[q2][w][ai]->Sumw2();
-
-                                q2_gen_hist_al_pim[q2][w][ai] = std::make_shared<TH1D>(name_q2_al_pim, name_q2_al_pim, 11, q2_lower_lim, q2_upper_lim);
-                                q2_gen_hist_al_pim[q2][w][ai]->Sumw2();
-                        }
+                        h_5dim_prot_evt_loose[q2][w] = new THnSparseD(name_evt, name_evt,
+                                                                      ndims_5D, bins_5D, xmin_5D, xmax_5D);
+                        h_5dim_pip_evt_loose[q2][w] = new THnSparseD(name_evt, name_evt,
+                                                                     ndims_5D, bins_5D, xmin_5D, xmax_5D);
+                        h_5dim_pim_evt_loose[q2][w] = new THnSparseD(name_evt, name_evt,
+                                                                     ndims_5D, bins_5D, xmin_5D, xmax_5D);
                 }
         }
 
@@ -576,217 +382,96 @@ void Histogram::Write()
         THnSparse_7D_prot_folder->cd();
         writeHists7D_prot();
 
-        TDirectory *THnSparse_7D_thrown_prot_folder =
-            RootOutputFile->mkdir("THnSparse_7D_thrown_prot");
-        THnSparse_7D_thrown_prot_folder->cd();
-        writeHists7D_thrown_prot();
-
         TDirectory *THnSparse_7D_prot_evt_folder =
             RootOutputFile->mkdir("THnSparse_7D_prot_evt");
         THnSparse_7D_prot_evt_folder->cd();
         writeHists7D_prot_evt();
 
-        TDirectory *THnSparse_7D_thrown_prot_evt_folder =
-            RootOutputFile->mkdir("THnSparse_7D_thrown_prot_evt");
-        THnSparse_7D_thrown_prot_evt_folder->cd();
-        writeHists7D_thrown_prot_evt();
-
         TDirectory *THnSparse_7D_pim_folder =
             RootOutputFile->mkdir("THnSparse_7D_pim");
         THnSparse_7D_pim_folder->cd();
         writeHists7D_pim();
-        TDirectory *THnSparse_7D_thrown_pim_folder =
-            RootOutputFile->mkdir("THnSparse_7D_thrown_pim");
-        THnSparse_7D_thrown_pim_folder->cd();
-        writeHists7D_thrown_pim();
 
         TDirectory *THnSparse_7D_pim_evt_folder =
             RootOutputFile->mkdir("THnSparse_7D_pim_evt");
         THnSparse_7D_pim_evt_folder->cd();
         writeHists7D_pim_evt();
 
-        TDirectory *THnSparse_7D_thrown_pim_evt_folder =
-            RootOutputFile->mkdir("THnSparse_7D_thrown_pim_evt");
-        THnSparse_7D_thrown_pim_evt_folder->cd();
-        writeHists7D_thrown_pim_evt();
-
         TDirectory *THnSparse_7D_pip_folder =
             RootOutputFile->mkdir("THnSparse_7D_pip");
         THnSparse_7D_pip_folder->cd();
         writeHists7D_pip();
-        TDirectory *THnSparse_7D_thrown_pip_folder =
-            RootOutputFile->mkdir("THnSparse_7D_thrown_pip");
-        THnSparse_7D_thrown_pip_folder->cd();
-        writeHists7D_thrown_pip();
 
         TDirectory *THnSparse_7D_pip_evt_folder =
             RootOutputFile->mkdir("THnSparse_7D_pip_evt");
         THnSparse_7D_pip_evt_folder->cd();
         writeHists7D_pip_evt();
 
-        TDirectory *THnSparse_7D_thrown_pip_evt_folder =
-            RootOutputFile->mkdir("THnSparse_7D_thrown_pip_evt");
-        THnSparse_7D_thrown_pip_evt_folder->cd();
-        writeHists7D_thrown_pip_evt();
+        ///////////////////  tight cuts /////////////////
 
-        // // // ////////// bin centering corr
-        // // // ////////// bin centering corr
-        // // // ////////// bin centering corr
-        // // // ////////// bin centering corr
+        std::cerr << BOLDBLUE << " Hists_7D() tight " << DEF << std::endl;
+        TDirectory *THnSparse_7D_prot_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_prot_tight");
+        THnSparse_7D_prot_folder_tight->cd();
+        writeHists7D_prot_tight();
 
-        TDirectory *TH1D_thrown_w_gen_folder =
-            RootOutputFile->mkdir("TH1D_thrown_w_gen_folder");
-        TH1D_thrown_w_gen_folder->cd();
-        writeHists1D_thrown_w_gen();
+        TDirectory *THnSparse_7D_prot_evt_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_prot_evt_tight");
+        THnSparse_7D_prot_evt_folder_tight->cd();
+        writeHists7D_prot_evt_tight();
 
-        TDirectory *TH1D_thrown_q2_gen_folder =
-            RootOutputFile->mkdir("TH1D_thrown_q2_gen_folder");
-        TH1D_thrown_q2_gen_folder->cd();
-        writeHists1D_thrown_q2_gen();
+        TDirectory *THnSparse_7D_pim_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_pim_tight");
+        THnSparse_7D_pim_folder_tight->cd();
+        writeHists7D_pim_tight();
 
-        // TDirectory *TH1D_thrown_w_gen_inv_pPip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_inv_pPip_folder");
-        // TH1D_thrown_w_gen_inv_pPip_folder->cd();
-        // writeHists1D_thrown_w_gen_inv_pPip();
+        TDirectory *THnSparse_7D_pim_evt_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_pim_evt_tight");
+        THnSparse_7D_pim_evt_folder_tight->cd();
+        writeHists7D_pim_evt_tight();
 
-        // TDirectory *TH1D_thrown_q2_gen_inv_pPip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_inv_pPip_folder");
-        // TH1D_thrown_q2_gen_inv_pPip_folder->cd();
-        // writeHists1D_thrown_q2_gen_inv_pPip();
+        TDirectory *THnSparse_7D_pip_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_pip_tight");
+        THnSparse_7D_pip_folder_tight->cd();
+        writeHists7D_pip_tight();
 
-        // TDirectory *TH1D_thrown_w_gen_inv_pPim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_inv_pPim_folder");
-        // TH1D_thrown_w_gen_inv_pPim_folder->cd();
-        // writeHists1D_thrown_w_gen_inv_pPim();
+        TDirectory *THnSparse_7D_pip_evt_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_pip_evt_tight");
+        THnSparse_7D_pip_evt_folder_tight->cd();
+        writeHists7D_pip_evt_tight();
 
-        // TDirectory *TH1D_thrown_q2_gen_inv_pPim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_inv_pPim_folder");
-        // TH1D_thrown_q2_gen_inv_pPim_folder->cd();
-        // writeHists1D_thrown_q2_gen_inv_pPim();
+        ///////////////////  loose cuts /////////////////
 
-        // TDirectory *TH1D_thrown_w_gen_inv_pipPim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_inv_pipPim_folder");
-        // TH1D_thrown_w_gen_inv_pipPim_folder->cd();
-        // writeHists1D_thrown_w_gen_inv_pipPim();
+        std::cerr << BOLDBLUE << " Hists_7D() loose " << DEF << std::endl;
+        TDirectory *THnSparse_7D_prot_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_prot_loose");
+        THnSparse_7D_prot_folder_loose->cd();
+        writeHists7D_prot_loose();
 
-        // TDirectory *TH1D_thrown_q2_gen_inv_pipPim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_inv_pipPim_folder");
-        // TH1D_thrown_q2_gen_inv_pipPim_folder->cd();
-        // writeHists1D_thrown_q2_gen_inv_pipPim();
+        TDirectory *THnSparse_7D_prot_evt_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_prot_evt_loose");
+        THnSparse_7D_prot_evt_folder_loose->cd();
+        writeHists7D_prot_evt_loose();
 
-        // TDirectory *TH1D_thrown_protPip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_protPip_folder");
-        // TH1D_thrown_protPip_folder->cd();
-        // writeHists1D_thrown_protPip();
+        TDirectory *THnSparse_7D_pim_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_pim_loose");
+        THnSparse_7D_pim_folder_loose->cd();
+        writeHists7D_pim_loose();
 
-        // TDirectory *TH1D_thrown_protPim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_protPim_folder");
-        // TH1D_thrown_protPim_folder->cd();
-        // writeHists1D_thrown_protPim();
+        TDirectory *THnSparse_7D_pim_evt_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_pim_evt_loose");
+        THnSparse_7D_pim_evt_folder_loose->cd();
+        writeHists7D_pim_evt_loose();
 
-        // TDirectory *TH1D_thrown_pipPim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_pipPim_folder");
-        // TH1D_thrown_pipPim_folder->cd();
-        // writeHists1D_thrown_pipPim();
+        TDirectory *THnSparse_7D_pip_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_pip_loose");
+        THnSparse_7D_pip_folder_loose->cd();
+        writeHists7D_pip_loose();
 
-        // /// theta
-
-        // TDirectory *TH1D_thrown_w_gen_th_prot_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_th_prot_folder");
-        // TH1D_thrown_w_gen_th_prot_folder->cd();
-        // writeHists1D_thrown_w_gen_th_prot();
-
-        // TDirectory *TH1D_thrown_q2_gen_th_prot_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_th_prot_folder");
-        // TH1D_thrown_q2_gen_th_prot_folder->cd();
-        // writeHists1D_thrown_q2_gen_th_prot();
-
-        // TDirectory *TH1D_thrown_w_gen_th_pip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_th_pip_folder");
-        // TH1D_thrown_w_gen_th_pip_folder->cd();
-        // writeHists1D_thrown_w_gen_th_pip();
-
-        // TDirectory *TH1D_thrown_q2_gen_th_pip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_th_pip_folder");
-        // TH1D_thrown_q2_gen_th_pip_folder->cd();
-        // writeHists1D_thrown_q2_gen_th_pip();
-
-        // TDirectory *TH1D_thrown_w_gen_th_pim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_th_pim_folder");
-        // TH1D_thrown_w_gen_th_pim_folder->cd();
-        // writeHists1D_thrown_w_gen_th_pim();
-
-        // TDirectory *TH1D_thrown_q2_gen_th_pim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_th_pim_folder");
-        // TH1D_thrown_q2_gen_th_pim_folder->cd();
-        // writeHists1D_thrown_q2_gen_th_pim();
-
-        // TDirectory *TH1D_thrown_th_prot_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_th_prot_folder");
-        // TH1D_thrown_th_prot_folder->cd();
-        // writeHists1D_thrown_th_prot();
-
-        // TDirectory *TH1D_thrown_th_pip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_th_pip_folder");
-        // TH1D_thrown_th_pip_folder->cd();
-        // writeHists1D_thrown_th_pip();
-
-        // TDirectory *TH1D_thrown_th_pim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_th_pim_folder");
-        // TH1D_thrown_th_pim_folder->cd();
-        // writeHists1D_thrown_th_pim();
-
-        // // // ///// alpha
-
-        // TDirectory *TH1D_thrown_w_gen_al_prot_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_al_prot_folder");
-        // TH1D_thrown_w_gen_al_prot_folder->cd();
-        // writeHists1D_thrown_w_gen_al_prot();
-
-        // TDirectory *TH1D_thrown_q2_gen_al_prot_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_al_prot_folder");
-        // TH1D_thrown_q2_gen_al_prot_folder->cd();
-        // writeHists1D_thrown_q2_gen_al_prot();
-
-        // TDirectory *TH1D_thrown_w_gen_al_pip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_al_pip_folder");
-        // TH1D_thrown_w_gen_al_pip_folder->cd();
-        // writeHists1D_thrown_w_gen_al_pip();
-
-        // TDirectory *TH1D_thrown_q2_gen_al_pip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_al_pip_folder");
-        // TH1D_thrown_q2_gen_al_pip_folder->cd();
-        // writeHists1D_thrown_q2_gen_al_pip();
-
-        // TDirectory *TH1D_thrown_w_gen_al_pim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_w_gen_al_pim_folder");
-        // TH1D_thrown_w_gen_al_pim_folder->cd();
-        // writeHists1D_thrown_w_gen_al_pim();
-
-        // TDirectory *TH1D_thrown_q2_gen_al_pim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_q2_gen_al_pim_folder");
-        // TH1D_thrown_q2_gen_al_pim_folder->cd();
-        // writeHists1D_thrown_q2_gen_al_pim();
-
-        // TDirectory *TH1D_thrown_alpha_prot_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_alpha_prot_folder");
-        // TH1D_thrown_alpha_prot_folder->cd();
-        // writeHists1D_thrown_alpha_prot();
-
-        // TDirectory *TH1D_thrown_alpha_pip_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_alpha_pip_folder");
-        // TH1D_thrown_alpha_pip_folder->cd();
-        // writeHists1D_thrown_alpha_pip();
-
-        // TDirectory *TH1D_thrown_alpha_pim_folder =
-        //     RootOutputFile->mkdir("TH1D_thrown_alpha_pim_folder");
-        // TH1D_thrown_alpha_pim_folder->cd();
-        // writeHists1D_thrown_alpha_pim();
-
-        // // std::cerr << BOLDBLUE << "WBinCheck()" << DEF << std::endl;
-        // // TDirectory *WBinCheck_folder = RootOutputFile->mkdir("WBinCheck");
-        // // WBinCheck_folder->cd();
-        // // Write_WBinCheck();
+        TDirectory *THnSparse_7D_pip_evt_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_pip_evt_loose");
+        THnSparse_7D_pip_evt_folder_loose->cd();
+        writeHists7D_pip_evt_loose();
 
         /////////////////// PID CHECKS //////////////////////
         /////////////////// PID CHECKS //////////////////////
@@ -809,20 +494,20 @@ void Histogram::Write()
         // Write_MomVsBeta_folder->cd();
         // Write_MomVsBeta();
 
-        std::cerr << BOLDBLUE << "Write_Electron_cuts()" << DEF << std::endl;
-        TDirectory *Electron_Cuts = RootOutputFile->mkdir("Electron_Cuts");
-        Electron_Cuts->cd();
-        Write_Electron_cuts();
+        // std::cerr << BOLDBLUE << "Write_Electron_cuts()" << DEF << std::endl;
+        // TDirectory *Electron_Cuts = RootOutputFile->mkdir("Electron_Cuts");
+        // Electron_Cuts->cd();
+        // Write_Electron_cuts();
 
-        std::cerr << BOLDBLUE << "Write_Hadrons_cuts()" << DEF << std::endl;
-        TDirectory *Hadrons_Cuts = RootOutputFile->mkdir("Hadrons_Cuts");
-        Hadrons_Cuts->cd();
-        Write_Hadrons_cuts();
+        // std::cerr << BOLDBLUE << "Write_Hadrons_cuts()" << DEF << std::endl;
+        // TDirectory *Hadrons_Cuts = RootOutputFile->mkdir("Hadrons_Cuts");
+        // Hadrons_Cuts->cd();
+        // Write_Hadrons_cuts();
 
-        std::cerr << BOLDBLUE << "Write_deltat()" << DEF << std::endl;
-        TDirectory *Write_deltat_folder = RootOutputFile->mkdir("Delta_t");
-        Write_deltat_folder->cd();
-        Write_deltat();
+        // std::cerr << BOLDBLUE << "Write_deltat()" << DEF << std::endl;
+        // TDirectory *Write_deltat_folder = RootOutputFile->mkdir("Delta_t");
+        // Write_deltat_folder->cd();
+        // Write_deltat();
 
         // std::cerr << BOLDBLUE << "Write_MMSQ_mPim_3D()" << DEF << std::endl;
         // TDirectory *MMSQ_mPim_folder_3D = RootOutputFile->mkdir("MMSQ_mPim_3D");
@@ -834,15 +519,15 @@ void Histogram::Write()
         MMSQ_mPim_folder->cd();
         writeMMSQ_mPim();
 
-        // std::cerr << BOLDBLUE << "Write_MMSQ_mPim_1_combi()" << DEF << std::endl;
-        // TDirectory *MMSQ_mPim_folder_1_combi = RootOutputFile->mkdir("MMSQ_mPim_1_combi");
-        // MMSQ_mPim_folder_1_combi->cd();
-        // writeMMSQ_mPim_1_comb();
+        std::cerr << BOLDBLUE << "Write_MMSQ_mPim_1_combi()" << DEF << std::endl;
+        TDirectory *MMSQ_mPim_folder_1_combi = RootOutputFile->mkdir("MMSQ_mPim_1_combi");
+        MMSQ_mPim_folder_1_combi->cd();
+        writeMMSQ_mPim_1_comb();
 
-        // std::cerr << BOLDBLUE << "Write_MMSQ_mPim_2_combi()" << DEF << std::endl;
-        // TDirectory *MMSQ_mPim_folder_2_combi = RootOutputFile->mkdir("MMSQ_mPim_2_combi");
-        // MMSQ_mPim_folder_2_combi->cd();
-        // writeMMSQ_mPim_2_comb();
+        std::cerr << BOLDBLUE << "Write_MMSQ_mPim_2_combi()" << DEF << std::endl;
+        TDirectory *MMSQ_mPim_folder_2_combi = RootOutputFile->mkdir("MMSQ_mPim_2_combi");
+        MMSQ_mPim_folder_2_combi->cd();
+        writeMMSQ_mPim_2_comb();
 
         // std::cerr << BOLDBLUE << "Write_MMSQ_mPim_3_combi()" << DEF << std::endl;
         // TDirectory *MMSQ_mPim_folder_3_combi = RootOutputFile->mkdir("MMSQ_mPim_3_combi");
@@ -854,15 +539,15 @@ void Histogram::Write()
         // MMSQ_mPim_folder_4_or_more_combi->cd();
         // writeMMSQ_mPim_4_or_more_comb();
 
-        std::cerr << BOLDBLUE << "Inv_Mass_and_Alpha_cm()" << DEF << std::endl;
-        TDirectory *Inv_Mass_and_Alpha_cm = RootOutputFile->mkdir("Inv_Mass_and_Alpha_cm");
-        Inv_Mass_and_Alpha_cm->cd();
-        write_Inv_Mass_hist();
+        // std::cerr << BOLDBLUE << "Inv_Mass_and_Alpha_cm()" << DEF << std::endl;
+        // TDirectory *Inv_Mass_and_Alpha_cm = RootOutputFile->mkdir("Inv_Mass_and_Alpha_cm");
+        // Inv_Mass_and_Alpha_cm->cd();
+        // write_Inv_Mass_hist();
 
-        std::cerr << BOLDBLUE << "Write_deltaP()" << DEF << std::endl;
-        TDirectory *Write_deltaP_folder = RootOutputFile->mkdir("DelatP");
-        Write_deltaP_folder->cd();
-        Write_deltaP();
+        // std::cerr << BOLDBLUE << "Write_deltaP()" << DEF << std::endl;
+        // TDirectory *Write_deltaP_folder = RootOutputFile->mkdir("DelatP");
+        // Write_deltaP_folder->cd();
+        // Write_deltaP();
         // // // //
         // // // // std::cerr << BOLDBLUE << "write_hist_theta_pim_measured()" << DEF << std::endl;
         // // // // TDirectory* theta_pim_measured = RootOutputFile->mkdir("theta_pim_measured");
@@ -985,12 +670,12 @@ void Histogram::Fill_MMSQ_mPim(const std::shared_ptr<Reaction> &_e)
                 // if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 //         MMSQ_mPim_hist_with_cut[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim(), _e->weight());
 
-                Inv_mass_pPip[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->inv_Ppip(), _e->weight());
-                Inv_mass_pPim[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->inv_Ppim(), _e->weight());
-                Inv_mass_pipPim[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->inv_pip_pim(), _e->weight());
-                Alpha_Prot_cm[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->alpha_pippim_pipf(), _e->weight());
-                Alpha_Pip_cm[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->alpha_ppim_pipip(), _e->weight());
-                Alpha_Pim_cm[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->alpha_ppip_pipim(), _e->weight());
+                // Inv_mass_pPip[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->inv_Ppip(), _e->weight());
+                // Inv_mass_pPim[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->inv_Ppim(), _e->weight());
+                // Inv_mass_pipPim[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->inv_pip_pim(), _e->weight());
+                // Alpha_Prot_cm[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->alpha_pippim_pipf(), _e->weight());
+                // Alpha_Pip_cm[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->alpha_ppim_pipip(), _e->weight());
+                // Alpha_Pim_cm[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->alpha_ppip_pipim(), _e->weight());
         }
 }
 
@@ -1052,8 +737,8 @@ void Histogram::Fill_MMSQ_mPim_2_comb(const std::shared_ptr<Reaction> &_e)
 {
         if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                // MMSQ_mPim_hist_2_comb[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim(), _e->weight());
-                MMSQ_mPim_hist_2_comb[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim_swapped(), _e->weight());
+                MMSQ_mPim_hist_2_comb[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim(), _e->weight());
+                // MMSQ_mPim_hist_2_comb[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim_swapped(), _e->weight());
         }
 }
 
@@ -1222,81 +907,7 @@ void Histogram::writeHists7D_prot_evt()
                 }
         }
 }
-void Histogram::Fill_histSevenD_thrown_prot(const std::shared_ptr<MCReaction> &_e)
-{
-        // fill it
-        const Int_t ndims = 5;
-        Double_t x_thrown[ndims];
-        //         x_thrown[0] = _e->W_mc();
-        // x_thrown[1] = _e->Q2_mc();
-        x_thrown[0] = _e->MCinv_Ppip();
-        x_thrown[1] = _e->MCinv_pip_pim();
-        x_thrown[2] = _e->MCprot_theta_thrown();
-        x_thrown[3] = _e->MCprot_Phi_thrown();
-        x_thrown[4] = _e->MCalpha_pippim_pipf_thrown();
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
-        {
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
-                {
-                        TThread::Lock();
-                        sevenD_Hist_thrown_prot[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->Fill(x_thrown, _e->weight());
-                        // sevenD_Hist_thrown_prot[int(_e->Q2_mc() - 1.0)/q2_bin_size(_e->Q2_mc())][int((_e->W_mc()-1.0)/0.05)] -> Sumw2();
-                        TThread::UnLock();
-                        sevenD_Hist_thrown_prot[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->GetNbins();
 
-                        //// 1 dim inv_mass hist for bin centering corrections
-                        // inv_pPip_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_binning(_e->MCinv_Ppip())]->Fill(_e->MCinv_Ppip(), _e->weight());
-                }
-        }
-}
-// hN1->Sumw2();
-// gDirectory->Append(hN1);
-// ret->Add(hN1);
-void Histogram::writeHists7D_thrown_prot()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        sevenD_Hist_thrown_prot[q2][w]->Write();
-                }
-        }
-}
-
-void Histogram::Fill_histSevenD_thrown_prot_evt(const std::shared_ptr<MCReaction> &_e)
-{
-        // fill it
-        const Int_t ndims = 5;
-        Double_t x_thrown[ndims];
-        //         x_thrown[0] = _e->W_mc();
-        // x_thrown[1] = _e->Q2_mc();
-        x_thrown[0] = _e->MCinv_Ppip();
-        x_thrown[1] = _e->MCinv_pip_pim();
-        x_thrown[2] = _e->MCprot_theta_thrown();
-        x_thrown[3] = _e->MCprot_Phi_thrown();
-        x_thrown[4] = _e->MCalpha_pippim_pipf_thrown();
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
-        {
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
-                {
-                        TThread::Lock();
-                        h_5dim_thrown_prot_evt[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->Fill(x_thrown, _e->weight() * _e->weight());
-                        // sevenD_Hist_thrown_prot[int(_e->Q2_mc() - 1.0)/q2_bin_size(_e->Q2_mc())][int((_e->W_mc()-1.0)/0.05)] -> Sumw2();
-                        TThread::UnLock();
-                        h_5dim_thrown_prot_evt[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->GetNbins();
-                }
-        }
-}
-void Histogram::writeHists7D_thrown_prot_evt()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        h_5dim_thrown_prot_evt[q2][w]->Write();
-                }
-        }
-}
 void Histogram::Fill_histSevenD_pip(const std::shared_ptr<Reaction> &_e)
 {
         // fill it
@@ -1385,77 +996,7 @@ void Histogram::writeHists7D_pip_evt()
                 }
         }
 }
-void Histogram::Fill_histSevenD_thrown_pip(const std::shared_ptr<MCReaction> &_e)
-{
-        // fill it
-        const Int_t ndims = 5;
-        Double_t x_thrown[ndims];
-        //         x_thrown[0] = _e->W_mc();
-        // x_thrown[1] = _e->Q2_mc();
-        x_thrown[0] = _e->MCinv_Ppim();
-        x_thrown[1] = _e->MCinv_pip_pim();
-        x_thrown[2] = _e->MCpip_theta_thrown();
-        x_thrown[3] = _e->MCpip_Phi_thrown();
-        x_thrown[4] = _e->MCalpha_ppim_pipip_thrown();
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
-        {
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
-                {
-                        TThread::Lock();
-                        sevenD_Hist_thrown_pip[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->Fill(x_thrown, _e->weight());
-                        // sevenD_Hist_thrown_pip[int(_e->Q2_mc() - 1.0)/q2_bin_size(_e->Q2_mc())][int((_e->W_mc()-1.0)/0.05)] -> Sumw2();
 
-                        TThread::UnLock();
-                        sevenD_Hist_thrown_pip[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->GetNbins();
-                }
-        }
-}
-
-void Histogram::writeHists7D_thrown_pip()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        sevenD_Hist_thrown_pip[q2][w]->Write();
-                }
-        }
-}
-void Histogram::Fill_histSevenD_thrown_pip_evt(const std::shared_ptr<MCReaction> &_e)
-{
-        // fill it
-        const Int_t ndims = 5;
-        Double_t x_thrown[ndims];
-        //         x_thrown[0] = _e->W_mc();
-        // x_thrown[1] = _e->Q2_mc();
-        x_thrown[0] = _e->MCinv_Ppim();
-        x_thrown[1] = _e->MCinv_pip_pim();
-        x_thrown[2] = _e->MCpip_theta_thrown();
-        x_thrown[3] = _e->MCpip_Phi_thrown();
-        x_thrown[4] = _e->MCalpha_ppim_pipip_thrown();
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
-        {
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
-                {
-                        TThread::Lock();
-                        h_5dim_thrown_pip_evt[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->Fill(x_thrown, _e->weight() * _e->weight());
-                        // sevenD_Hist_thrown_pip[int(_e->Q2_mc() - 1.0)/q2_bin_size(_e->Q2_mc())][int((_e->W_mc()-1.0)/0.05)] -> Sumw2();
-
-                        TThread::UnLock();
-                        h_5dim_thrown_pip_evt[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->GetNbins();
-                }
-        }
-}
-void Histogram::writeHists7D_thrown_pip_evt()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        h_5dim_thrown_pip_evt[q2][w]->Write();
-                }
-        }
-}
 void Histogram::Fill_histSevenD_pim(const std::shared_ptr<Reaction> &_e)
 {
         // fill it
@@ -1547,599 +1088,557 @@ void Histogram::writeHists7D_pim_evt()
                 }
         }
 }
-void Histogram::Fill_histSevenD_thrown_pim(const std::shared_ptr<MCReaction> &_e)
+
+/////////////////////////////////////////////  tight cut  //////////////////////////////////////////////////
+/////////////////////////////////////////////  tight cut //////////////////////////////////////////////////
+/////////////////////////////////////////////  tight cut  //////////////////////////////////////////////////
+/////////////////////////////////////////////  tight cut //////////////////////////////////////////////////
+
+void Histogram::Fill_histSevenD_prot_tight(const std::shared_ptr<Reaction> &_e)
 {
         // fill it
         const Int_t ndims = 5;
-        Double_t x_thrown[ndims];
-        //         x_thrown[0] = _e->W_mc();
-        // x_thrown[1] = _e->Q2_mc();
-        x_thrown[0] = _e->MCinv_Ppip();
-        x_thrown[1] = _e->MCinv_pip_pim();
-        x_thrown[2] = _e->MCpim_theta_thrown();
-        x_thrown[3] = _e->MCpim_Phi_thrown();
-        x_thrown[4] = _e->MCalpha_ppip_pipim_thrown();
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppip();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->prot_theta();
+        x[3] = _e->prot_Phi();
+        x[4] = _e->alpha_pippim_pipf();
+        // std::cout << "q2 value = " << _e->Q2() << "  q2 bin = " << q2_bining(_e->Q2()) << " inv pPip is outside ...   = " << _e->inv_Ppip() << std::endl;
+
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
+                // if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        TThread::Lock();
-                        sevenD_Hist_thrown_pim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->Fill(x_thrown, _e->weight());
-                        // sevenD_Hist_thrown_pim[int(_e->Q2_mc() - 1.0)/q2_bin_size(_e->Q2_mc())][int((_e->W_mc()-1.0)/0.05)] -> Sumw2();
-                        TThread::UnLock();
-                        sevenD_Hist_thrown_pim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->GetNbins();
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
+                        {
+                                TThread::Lock();
+                                sevenDHist_prot_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
+                                // if (_mc)
+                                //         sevenDHist_prot_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         sevenDHist_prot_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // // std::cout << "   w  " << _e->W() << "   q2  " << _e->Q2() << "   bkg  fact " << background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1] << std::endl;
+                                // // sevenDHist_prot_tight[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                sevenDHist_prot_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
+                        }
                 }
         }
 }
 
-void Histogram::writeHists7D_thrown_pim()
+void Histogram::writeHists7D_prot_tight()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
+
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        sevenD_Hist_thrown_pim[q2][w]->Write();
+                        // std::cout << "q2 in write  " << q2 << " w is " << w << std::endl;
+
+                        sevenDHist_prot_tight[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::Fill_histSevenD_thrown_pim_evt(const std::shared_ptr<MCReaction> &_e)
+void Histogram::Fill_histSevenD_prot_evt_tight(const std::shared_ptr<Reaction> &_e)
 {
         // fill it
         const Int_t ndims = 5;
-        Double_t x_thrown[ndims];
-        //         x_thrown[0] = _e->W_mc();
-        // x_thrown[1] = _e->Q2_mc();
-        x_thrown[0] = _e->MCinv_Ppip();
-        x_thrown[1] = _e->MCinv_pip_pim();
-        x_thrown[2] = _e->MCpim_theta_thrown();
-        x_thrown[3] = _e->MCpim_Phi_thrown();
-        x_thrown[4] = _e->MCalpha_ppip_pipim_thrown();
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppip();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->prot_theta();
+        x[3] = _e->prot_Phi();
+        x[4] = _e->alpha_pippim_pipf();
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        TThread::Lock();
-                        h_5dim_thrown_pim_evt[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->Fill(x_thrown, _e->weight() * _e->weight());
-                        // sevenD_Hist_thrown_pim[int(_e->Q2_mc() - 1.0)/q2_bin_size(_e->Q2_mc())][int((_e->W_mc()-1.0)/0.05)] -> Sumw2();
-                        TThread::UnLock();
-                        h_5dim_thrown_pim_evt[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->GetNbins();
+
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
+                        {
+                                TThread::Lock();
+                                h_5dim_prot_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
+                                // if (_mc)
+                                //         h_5dim_prot_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         h_5dim_prot_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // sevenDHist_prot_tight[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                h_5dim_prot_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
+                        }
                 }
         }
 }
-void Histogram::writeHists7D_thrown_pim_evt()
+void Histogram::writeHists7D_prot_evt_tight()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        h_5dim_thrown_pim_evt[q2][w]->Write();
+                        h_5dim_prot_evt_tight[q2][w]->Write();
                 }
         }
 }
 
-/////////////////////////////////////////////  Bin Centering Corrction part //////////////////////////////////////////////////
-/////////////////////////////////////////////  Bin Centering Corrction part //////////////////////////////////////////////////
-/////////////////////////////////////////////  Bin Centering Corrction part //////////////////////////////////////////////////
-/////////////////////////////////////////////  Bin Centering Corrction part //////////////////////////////////////////////////
-
-void Histogram::Fill_hist1D_thrown_w_q2(const std::shared_ptr<MCReaction> &_e)
+void Histogram::Fill_histSevenD_pip_tight(const std::shared_ptr<Reaction> &_e)
 {
-
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppim();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->pip_theta();
+        x[3] = _e->pip_Phi();
+        x[4] = _e->alpha_ppim_pipip();
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        // w mc
-                        w_gen_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->Fill(_e->W_mc(), _e->weight());
-                        // q2 mc
-                        q2_gen_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)]->Fill(_e->Q2_mc(), _e->weight());
-                }
-        }
-}
-
-void Histogram::Fill_hist1D_thrown_inv_mass(const std::shared_ptr<MCReaction> &_e)
-{
-        // inv_mass_pPim->Fill(_e->inv_Ppim(), _e->weight());
-
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
-        {
-
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
-                {
-                        // inv_mass_pipPim->Fill(_e->inv_pip_pim(), _e->weight());
-
-                        int inv_pPip_bin_val = inv_binning(_e->W_mc(), _e->MCinv_Ppip(), 1);
-                        if (inv_pPip_bin_val != -1)
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
                         {
-                                // inv_mass_pPip->Fill(_e->MCinv_Ppip(), _e->weight());
-                                inv_pPip_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->MCinv_Ppip(), _e->weight());
-                                // w mc
-                                w_gen_hist_inv_pPip[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->W_mc(), _e->weight());
-                                // q2 mc
-                                q2_gen_hist_inv_pPip[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->Q2_mc(), _e->weight());
+                                TThread::Lock();
+                                sevenDHist_pip_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
+                                // if (_mc)
+                                //         sevenDHist_pip_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         sevenDHist_pip_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
 
-                                // std::cout << "  w  " << _e->W_mc() << "  Q2  " << _e->Q2_mc() << "  bin  " << inv_pPip_bin_val << "  MCinv_Ppip  " << _e->MCinv_Ppip() << std::endl;
-                        }
-
-                        int inv_pPim_bin_val = inv_binning(_e->W_mc(), _e->MCinv_Ppim(), 1);
-                        if (inv_pPim_bin_val != -1)
-                        {
-                                inv_pPim_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->MCinv_Ppim(), _e->weight());
-                                // w mc
-                                w_gen_hist_inv_pPim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->W_mc(), _e->weight());
-                                // q2 mc
-                                q2_gen_hist_inv_pPim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->Q2_mc(), _e->weight());
-                        }
-                        int inv_pipPim_bin_val = inv_binning(_e->W_mc(), _e->MCinv_pip_pim(), 0);
-                        if (inv_pipPim_bin_val != -1)
-                        {
-                                inv_pipPim_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->MCinv_pip_pim(), _e->weight());
-                                // w mc
-                                w_gen_hist_inv_pipPim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->W_mc(), _e->weight());
-                                // q2 mc
-                                q2_gen_hist_inv_pipPim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->Q2_mc(), _e->weight());
+                                // // sevenDHist_pi_tight[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                sevenDHist_pip_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
                         }
                 }
         }
 }
-
-void Histogram::Fill_hist1D_thrown_theta(const std::shared_ptr<MCReaction> &_e)
-{
-
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
-        {
-
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
-                {
-                        // std::cout << " prot th  " << _e->MCprot_theta_thrown() << "  dcos(theta) " << dCosTh(_e->MCprot_theta_thrown()) << std::endl;
-                        // theta proton
-                        prot_theta_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCprot_theta_thrown() / 18.0)]->Fill(_e->MCprot_theta_thrown(), _e->weight());
-                        // theta pip
-                        pip_theta_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCpip_theta_thrown() / 18.0)]->Fill(_e->MCpip_theta_thrown(), _e->weight());
-                        // theta pim
-                        pim_theta_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCpim_theta_thrown() / 18.0)]->Fill(_e->MCpim_theta_thrown(), _e->weight());
-
-                        // w mc theta prot
-                        w_gen_hist_th_prot[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCprot_theta_thrown() / 18.0)]->Fill(_e->W_mc(), _e->weight());
-                        // q2 mc theta prot
-                        q2_gen_hist_th_prot[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCprot_theta_thrown() / 18.0)]->Fill(_e->Q2_mc(), _e->weight());
-
-                        // w mc theta pip
-                        w_gen_hist_th_pip[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCpip_theta_thrown() / 18.0)]->Fill(_e->W_mc(), _e->weight());
-                        // q2 mc theta pip
-                        q2_gen_hist_th_pip[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCpip_theta_thrown() / 18.0)]->Fill(_e->Q2_mc(), _e->weight());
-
-                        // w mc theta pim
-                        w_gen_hist_th_pim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCpim_theta_thrown() / 18.0)]->Fill(_e->W_mc(), _e->weight());
-                        // q2 mc theta pim
-                        q2_gen_hist_th_pim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][int(_e->MCpim_theta_thrown() / 18.0)]->Fill(_e->Q2_mc(), _e->weight());
-                }
-        }
-}
-void Histogram::Fill_hist1D_thrown_alpha(const std::shared_ptr<MCReaction> &_e)
-{
-
-        if (_e->W_mc() <= 2.2 && _e->W_mc() >= 1.4)
-        {
-
-                if (_e->Q2_mc() >= 2.0 && _e->Q2_mc() <= 9.0)
-                {
-                        // TThread::Lock();
-
-                        // // alpha proton
-                        prot_alpha_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_pippim_pipf_thrown())]->Fill(_e->MCalpha_pippim_pipf_thrown(), _e->weight());
-                        // // // alpha pip
-                        pip_alpha_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_ppim_pipip_thrown())]->Fill(_e->MCalpha_ppim_pipip_thrown(), _e->weight());
-                        // // // alpha pim
-                        pim_alpha_hist[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_ppip_pipim_thrown())]->Fill(_e->MCalpha_ppip_pipim_thrown(), _e->weight());
-
-                        // TThread::UnLock();
-
-                        // w mc alpha prot
-                        w_gen_hist_al_prot[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_pippim_pipf_thrown())]->Fill(_e->W_mc(), _e->weight());
-                        // q2 mc alpha prot
-                        q2_gen_hist_al_prot[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_pippim_pipf_thrown())]->Fill(_e->Q2_mc(), _e->weight());
-
-                        // w mc alpha pip
-                        w_gen_hist_al_pip[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_ppim_pipip_thrown())]->Fill(_e->W_mc(), _e->weight());
-                        // q2 mc alpha pip
-                        q2_gen_hist_al_pip[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_ppim_pipip_thrown())]->Fill(_e->Q2_mc(), _e->weight());
-
-                        // w mc alpha pim
-                        w_gen_hist_al_pim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_ppip_pipim_thrown())]->Fill(_e->W_mc(), _e->weight());
-                        // q2 mc alpha pim
-                        q2_gen_hist_al_pim[q2_bining(_e->Q2_mc())][int((_e->W_mc() - 1.0) / 0.05)][alpha_bining(_e->MCalpha_ppip_pipim_thrown())]->Fill(_e->Q2_mc(), _e->weight());
-                }
-        }
-}
-
-void Histogram::writeHists1D_thrown_w_gen()
+void Histogram::writeHists7D_pip_tight()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        w_gen_hist[q2][w]->Write();
+                        sevenDHist_pip_tight[q2][w]->Write();
                 }
         }
 }
-void Histogram::writeHists1D_thrown_q2_gen()
+void Histogram::Fill_histSevenD_pip_evt_tight(const std::shared_ptr<Reaction> &_e)
+{
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppim();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->pip_theta();
+        x[3] = _e->pip_Phi();
+        x[4] = _e->alpha_ppim_pipip();
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+        {
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                {
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
+                        {
+                                TThread::Lock();
+                                h_5dim_pip_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
+                                // // h_5dim_pip_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * pow(background_fact[int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1], 2));
+                                // if (_mc)
+                                //         h_5dim_pip_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         h_5dim_pip_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // // sevenDHist_pip_tight[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                h_5dim_pip_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
+                        }
+                }
+        }
+}
+void Histogram::writeHists7D_pip_evt_tight()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        q2_gen_hist[q2][w]->Write();
+                        h_5dim_pip_evt[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_w_gen_inv_pPip()
+void Histogram::Fill_histSevenD_pim_tight(const std::shared_ptr<Reaction> &_e)
 {
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppip();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->pim_theta();
+        x[3] = _e->pim_Phi();
+        x[4] = _e->alpha_ppip_pipim();
+
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        for (size_t xi = 0; xi < 7; xi++)
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
                         {
-                                w_gen_hist_inv_pPip[q2][w][xi]->Write();
+                                TThread::Lock();
+                                sevenDHist_pim_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
+                                // sevenDHist_pim_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // if (_mc)
+                                //         sevenDHist_pim_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         sevenDHist_pim_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // // sevenDHist_pim_tight[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                sevenDHist_pim_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
                         }
                 }
         }
 }
-void Histogram::writeHists1D_thrown_q2_gen_inv_pPip()
+void Histogram::writeHists7D_pim_tight()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        for (size_t xi = 0; xi < 7; xi++)
-                        {
-                                q2_gen_hist_inv_pPip[q2][w][xi]->Write();
-                        }
+                        sevenDHist_pim_tight[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_protPip()
+void Histogram::Fill_histSevenD_pim_evt_tight(const std::shared_ptr<Reaction> &_e)
+{
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppip();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->pim_theta();
+        x[3] = _e->pim_Phi();
+        x[4] = _e->alpha_ppip_pipim();
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+        {
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                {
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
+                        {
+                                TThread::Lock();
+                                h_5dim_pim_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
+                                // // h_5dim_pim_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // if (_mc)
+                                //         h_5dim_pim_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         h_5dim_pim_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // // sevenDHist_pim_tight[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                h_5dim_pim_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
+                        }
+                }
+        }
+}
+void Histogram::writeHists7D_pim_evt_tight()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        for (size_t xi = 0; xi < 7; xi++)
-                        {
-                                inv_pPip_hist[q2][w][xi]->Write();
-                        }
+                        h_5dim_pim_evt_tight[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_w_gen_inv_pPim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 7; xi++)
-                        {
-                                w_gen_hist_inv_pPim[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_q2_gen_inv_pPim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 7; xi++)
-                        {
-                                q2_gen_hist_inv_pPim[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_protPim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 7; xi++)
-                        {
-                                inv_pPim_hist[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
+/////////////////////////////////////////////  loose cut  //////////////////////////////////////////////////
+/////////////////////////////////////////////  loose cut //////////////////////////////////////////////////
+/////////////////////////////////////////////  loose cut  //////////////////////////////////////////////////
+/////////////////////////////////////////////  loose cut //////////////////////////////////////////////////
 
-void Histogram::writeHists1D_thrown_w_gen_inv_pipPim()
+void Histogram::Fill_histSevenD_prot_loose(const std::shared_ptr<Reaction> &_e)
 {
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 7; xi++)
-                        {
-                                w_gen_hist_inv_pipPim[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_q2_gen_inv_pipPim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 7; xi++)
-                        {
-                                q2_gen_hist_inv_pipPim[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppip();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->prot_theta();
+        x[3] = _e->prot_Phi();
+        x[4] = _e->alpha_pippim_pipf();
+        // std::cout << "q2 value = " << _e->Q2() << "  q2 bin = " << q2_bining(_e->Q2()) << " inv pPip is outside ...   = " << _e->inv_Ppip() << std::endl;
 
-void Histogram::writeHists1D_thrown_pipPim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                // if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        for (size_t xi = 0; xi < 7; xi++)
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
                         {
-                                inv_pipPim_hist[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
+                                TThread::Lock();
+                                sevenDHist_prot_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
+                                // if (_mc)
+                                //         sevenDHist_prot_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         sevenDHist_prot_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
 
-void Histogram::writeHists1D_thrown_w_gen_th_prot()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                w_gen_hist_th_prot[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_q2_gen_th_prot()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                q2_gen_hist_th_prot[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-
-void Histogram::writeHists1D_thrown_th_prot()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                prot_theta_hist[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-
-void Histogram::writeHists1D_thrown_w_gen_th_pip()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                w_gen_hist_th_pip[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_q2_gen_th_pip()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                q2_gen_hist_th_pip[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_th_pip()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                pip_theta_hist[q2][w][xi]->Write();
+                                // // std::cout << "   w  " << _e->W() << "   q2  " << _e->Q2() << "   bkg  fact " << background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1] << std::endl;
+                                // // sevenDHist_prot_loose[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                sevenDHist_prot_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
                         }
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_w_gen_th_pim()
+void Histogram::writeHists7D_prot_loose()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
+
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                w_gen_hist_th_pim[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_q2_gen_th_pim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                q2_gen_hist_th_pim[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_th_pim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                pim_theta_hist[q2][w][xi]->Write();
-                        }
+                        // std::cout << "q2 in write  " << q2 << " w is " << w << std::endl;
+
+                        sevenDHist_prot_loose[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_w_gen_al_prot()
+void Histogram::Fill_histSevenD_prot_evt_loose(const std::shared_ptr<Reaction> &_e)
 {
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppip();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->prot_theta();
+        x[3] = _e->prot_Phi();
+        x[4] = _e->alpha_pippim_pipf();
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        for (size_t xi = 0; xi < 10; xi++)
+
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
                         {
-                                w_gen_hist_al_prot[q2][w][xi]->Write();
+                                TThread::Lock();
+                                h_5dim_prot_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
+                                // if (_mc)
+                                //         h_5dim_prot_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         h_5dim_prot_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // sevenDHist_prot_loose[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                h_5dim_prot_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
                         }
                 }
         }
 }
-void Histogram::writeHists1D_thrown_q2_gen_al_prot()
+void Histogram::writeHists7D_prot_evt_loose()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                q2_gen_hist_al_prot[q2][w][xi]->Write();
-                        }
+                        h_5dim_prot_evt_loose[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_alpha_prot()
+void Histogram::Fill_histSevenD_pip_loose(const std::shared_ptr<Reaction> &_e)
+{
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppim();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->pip_theta();
+        x[3] = _e->pip_Phi();
+        x[4] = _e->alpha_ppim_pipip();
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+        {
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                {
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
+                        {
+                                TThread::Lock();
+                                sevenDHist_pip_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
+                                // if (_mc)
+                                //         sevenDHist_pip_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         sevenDHist_pip_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // // sevenDHist_pi_loose[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                sevenDHist_pip_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
+                        }
+                }
+        }
+}
+void Histogram::writeHists7D_pip_loose()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        for (size_t xi = 0; xi < 10; xi++)
+                        sevenDHist_pip_loose[q2][w]->Write();
+                }
+        }
+}
+void Histogram::Fill_histSevenD_pip_evt_loose(const std::shared_ptr<Reaction> &_e)
+{
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppim();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->pip_theta();
+        x[3] = _e->pip_Phi();
+        x[4] = _e->alpha_ppim_pipip();
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+        {
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                {
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
                         {
-                                prot_alpha_hist[q2][w][xi]->Write();
+                                TThread::Lock();
+                                h_5dim_pip_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
+                                // // h_5dim_pip_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * pow(background_fact[int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1], 2));
+                                // if (_mc)
+                                //         h_5dim_pip_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         h_5dim_pip_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // // sevenDHist_pip_loose[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                h_5dim_pip_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
                         }
+                }
+        }
+}
+void Histogram::writeHists7D_pip_evt_loose()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        h_5dim_pip_evt[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_w_gen_al_pip()
+void Histogram::Fill_histSevenD_pim_loose(const std::shared_ptr<Reaction> &_e)
 {
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppip();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->pim_theta();
+        x[3] = _e->pim_Phi();
+        x[4] = _e->alpha_ppip_pipim();
+
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        for (size_t xi = 0; xi < 10; xi++)
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
                         {
-                                w_gen_hist_al_pip[q2][w][xi]->Write();
+                                TThread::Lock();
+                                sevenDHist_pim_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
+                                // sevenDHist_pim_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // if (_mc)
+                                //         sevenDHist_pim_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         sevenDHist_pim_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // // sevenDHist_pim_loose[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                sevenDHist_pim_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
                         }
                 }
         }
 }
-void Histogram::writeHists1D_thrown_q2_gen_al_pip()
+void Histogram::writeHists7D_pim_loose()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                q2_gen_hist_al_pip[q2][w][xi]->Write();
-                        }
+                        sevenDHist_pim_loose[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_alpha_pip()
+void Histogram::Fill_histSevenD_pim_evt_loose(const std::shared_ptr<Reaction> &_e)
+{
+        // fill it
+        const Int_t ndims = 5;
+        Double_t x[ndims];
+        // x[0] = _e->W();
+        //  x[1] = _e->Q2();
+        x[0] = _e->inv_Ppip();
+        x[1] = _e->inv_pip_pim();
+        x[2] = _e->pim_theta();
+        x[3] = _e->pim_Phi();
+        x[4] = _e->alpha_ppip_pipim();
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+        {
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                {
+                        // if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.032) || (_e->MM2_mpip() > 0.062)) && ((_e->MM2_mprot() < 0.757) || (_e->MM2_mprot() > 0.983)))
+                        {
+                                TThread::Lock();
+                                h_5dim_pim_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
+                                // // h_5dim_pim_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * background_fact[int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // if (_mc)
+                                //         h_5dim_pim_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[1][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+                                // else
+                                //         h_5dim_pim_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, pow(_e->weight(), 2) * background_fact[0][int((_e->W() - 1.0) / 0.05) - 8][q2_bining(_e->Q2()) - 1]);
+
+                                // // sevenDHist_pim_loose[int((_e->Q2() - 1.0)/1.0)][int((_e->W()-1.0)/0.05)] -> Sumw2();
+                                TThread::UnLock();
+                                h_5dim_pim_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->GetNbins();
+                        }
+                }
+        }
+}
+void Histogram::writeHists7D_pim_evt_loose()
 {
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
                 for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                pip_alpha_hist[q2][w][xi]->Write();
-                        }
+                        h_5dim_pim_evt_loose[q2][w]->Write();
                 }
         }
 }
 
-void Histogram::writeHists1D_thrown_w_gen_al_pim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                w_gen_hist_al_pim[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_q2_gen_al_pim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                q2_gen_hist_al_pim[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
-void Histogram::writeHists1D_thrown_alpha_pim()
-{
-        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
-        {
-                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
-                {
-                        for (size_t xi = 0; xi < 10; xi++)
-                        {
-                                pim_alpha_hist[q2][w][xi]->Write();
-                        }
-                }
-        }
-}
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
