@@ -82,6 +82,28 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
         int four_or_more_entries = 0;
         int events_with_non_zero_wt = 0, events_with_zero_wt = 0, events_passes_w_q2_cuts = 0;
 
+        // std::map<int, std::string> defectBitMap = {
+        //     {0, "TotalOutlier"},
+        //     {1, "TerminalOutlier"},
+        //     {2, "MarginalOutlier"},
+        //     {3, "SectorLoss"},
+        //     {4, "LowLiveTime"},
+        //     {5, "Misc"},
+        //     {6, "TotalOutlierFT"},
+        //     {7, "TerminalOutlierFT"},
+        //     {8, "MarginalOutlierFT"},
+        //     {9, "LossFT"},
+        //     {10, "BSAWrong"},
+        //     {11, "BSAUnknown"},
+        //     {12, "TSAWrong"},
+        //     {13, "TSAUnknown"},
+        //     {14, "DSAWrong"},
+        //     {15, "DSAUnknown"},
+        //     {16, "ChargeHigh"},
+        //     {17, "ChargeNegative"},
+        //     {18, "ChargeUnknown"},
+        //     {19, "PossiblyNoBeam"}};
+
         for (size_t current_event = 0; current_event < num_of_events; current_event++)
         {
                 prot = 0;
@@ -114,25 +136,26 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                 if (!_qa->Golden(data->getRun(), data->getEvent()))
                         continue;
+                // std::string defectName = "TerminalOutlier"; // Example defect bit 1
+                // _qa->CheckForDefect(defectName.c_str(), false);
+
+                if (_qa->OkForAsymmetry(data->getRun(), data->getEvent()))
+                        _qa->AccumulateCharge();
+                // _qa->CheckForDefect(1, 0);
+                // int bitNumber = 5; // Example: checking for "TerminalOutlier"
+                // if (defectBitMap.find(bitNumber) != defectBitMap.end())
+                // {
+                //         _qa->CheckForDefect(defectBitMap[bitNumber].c_str(), false);
+                //         std::cerr << "Valid defect bit number: " << bitNumber << std::endl;
+                // }
+                // else
+                // {
+                //         std::cerr << "Invalid defect bit number: " << bitNumber << std::endl;
+                // }
 
                 // // QA cuts
                 // if (_qa->OkForAsymmetry(data->getRun(), data->getEvent()))
-                // {
 
-                // accumulate charge; note that although the call to
-                // QADB::accumulateCharge() charge happens for each
-                // event within a QA bin that passed the QA cuts, that
-                // bin's charge will only be accumulated once, so
-                // overcounting is not possible
-                // _qa->accumulateCharge();
-                // _qa->GetAccumulatedCharge();
-                // total_charge = total_charge + _qa->GetAccumulatedCharge();
-                // std::cout << "  FC Charge is " << total_charge << std::endl;
-
-                /* continue your analysis here */
-                // }
-                // _qa->AccumulateCharge();
-                // total_charge += _qa->GetAccumulatedCharge();
                 // std::cout << "  FC Charge is " << total_charge << std::endl;
                 // if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
                 // _hists->FillHists_electron_with_cuts(data, event);
@@ -216,8 +239,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                         statusProt = abs(data->status(part));
                                                         sectorProt = data->dc_sec(part);
 
-                                                        // _hists->Fill_deltat_prot_after_cut(data, dt, part, event);
-                                                        // _hists->FillHists_prot_pid_with_cuts(data, event, part, *event->GetProtons()[prot_idx]);
+                                                        _hists->Fill_deltat_prot_after_cut(data, dt, part, event);
+                                                        _hists->FillHists_prot_pid_with_cuts(data, event, part, *event->GetProtons()[prot_idx]);
                                                 }
 
                                                 if (cuts->IsPip(part))
@@ -385,10 +408,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                         dp_Prot = (trackFD.P() - trackCD.P());
                                                                                         dtheta_Prot = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
                                                                                         dphi_Prot = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
+                                                                                        _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
 
-                                                                                        // h_dp_prot->Fill(dp_Prot, event->weight());
-                                                                                        // h_dtheta_prot->Fill(dtheta_Prot, event->weight());
-                                                                                        // h_dphi_prot->Fill(dphi_Prot, event->weight());
                                                                                         // Apply proton cuts
                                                                                         // if (dp_Prot > -0.6 && dp_Prot < 0.2 && dtheta_Prot > -7 && dphi_Prot > -20 && dphi_Prot < 5)
                                                                                         if (dp_Prot > -0.3 && dp_Prot < 0.0 && dtheta_Prot > -3 && dtheta_Prot < 3 && dphi_Prot > -5 && dphi_Prot < 2)
@@ -435,6 +456,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                         dp_Pip = (trackFD.P() - trackCD.P());
                                                                                         dtheta_Pip = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
                                                                                         dphi_Pip = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
+                                                                                        _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
 
                                                                                         // h_dp_pip->Fill(dp_Pip, event->weight());
                                                                                         // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
@@ -677,7 +699,11 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
         }
         //}
         // std::cout.precision(3);
+        // print charge
+        cout << "\ntotal accumulated charge analyzed: " << endl;
+        // if (!_qa->Golden(data->getRun(), data->getEvent()))
 
+        cout << "run = " << data->getRun() << "  charge = " << _qa->GetAccumulatedCharge() << " nC" << endl;
         std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
         std::cout << "  FC Charge is " << total_charge << "   no of total events  " << num_of_events << std::endl;
         // std::cout << " elec " << elec << "  electron as pid(0)  " << pid_zero_elec << " prot " << prot << " pip " << pip << " pim " << pim << '\n';
