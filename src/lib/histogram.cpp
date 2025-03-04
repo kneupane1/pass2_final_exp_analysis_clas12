@@ -152,6 +152,15 @@ Histogram::Histogram(const std::string &output_file)
         pid_at_zero = std::make_shared<TH1D>("pid_at_zero", "pid at zero", 1000, -2500, 2500);
         weight_hist = std::make_shared<TH1D>("weight", "weight", bins, 0.9, 2.2);
 
+        dp_prot_cdfd_hist = std::make_shared<TH1D>("P_fd-P_cd_Prot", "P_fd-P_cd_Prot", 200, -1, 1);
+        dp_pip_cdfd_hist = std::make_shared<TH1D>("P_fd-P_cd_Pip", "P_fd-P_cd_Pip", 200, -1, 1);
+
+        dth_prot_cdfd_hist = std::make_shared<TH1D>("th_fd-th_cd_Prot", "th_fd-th_cd_Prot", 200, -100, 25);
+        dth_pip_cdfd_hist = std::make_shared<TH1D>("th_fd-th_cd_Pip", "th_fd-Pthcd_Pip", 200, -100, 25);
+
+        dphi_prot_cdfd_hist = std::make_shared<TH1D>("phi_fd-P_cd_Prot", "phi_fd-phi_cd_Prot", 200, -100, 100);
+        dphi_pip_cdfd_hist = std::make_shared<TH1D>("phi_fd-P_cd_Pip", "phi_fd-phi_cd_Pip", 200, -100, 100);
+
         inv_mass_pPip = std::make_shared<TH1D>("pPip_mass", "Prot-Pip mass", bins, 1.0, 2.25);
         inv_mass_pPim = std::make_shared<TH1D>("pPim_mass", "Prot-Pim mass", bins, 0.75, 2.25);
         inv_mass_pipPim = std::make_shared<TH1D>("pipPim_mass", "Pip-Pim mass", bins, 0.0, 1.5);
@@ -1643,7 +1652,19 @@ void Histogram::writeHists7D_pim_evt_loose()
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
+void Histogram::Fill_cdfd_prot(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
+{
+        dp_prot_cdfd_hist->Fill(dp, _e->weight());
+        dth_prot_cdfd_hist->Fill(dth, _e->weight());
+        dphi_prot_cdfd_hist->Fill(dphi, _e->weight());
+}
 
+void Histogram::Fill_cdfd_pip(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
+{
+        dp_pip_cdfd_hist->Fill(dp, _e->weight());
+        dth_pip_cdfd_hist->Fill(dth, _e->weight());
+        dphi_pip_cdfd_hist->Fill(dphi, _e->weight());
+}
 void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
 {
         short sec = _e->sec();

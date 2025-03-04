@@ -526,6 +526,13 @@ protected:
     TH1D_ptr alpha_Pip_cm;
     TH1D_ptr alpha_Pim_cm;
 
+    TH1D_ptr dp_prot_cdfd_hist;
+    TH1D_ptr dp_pip_cdfd_hist;
+    TH1D_ptr dth_prot_cdfd_hist;
+    TH1D_ptr dth_pip_cdfd_hist;
+    TH1D_ptr dphi_prot_cdfd_hist;
+    TH1D_ptr dphi_pip_cdfd_hist;
+
     TH1D_ptr inv_mass_pPip_swapped;
     TH1D_ptr inv_mass_pPim_swapped;
     TH1D_ptr inv_mass_pipPim_swapped;
@@ -1017,6 +1024,8 @@ public:
     void writeMMSQ_mPim_4_or_more_comb();
 
     void write_Inv_Mass_hist();
+    void Fill_cdfd_prot(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e);
+    void Fill_cdfd_pip(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e);
 
     // P and E
     // ecectron cuts
