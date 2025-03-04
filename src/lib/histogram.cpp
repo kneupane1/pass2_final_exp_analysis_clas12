@@ -1828,6 +1828,21 @@ void Histogram::Write_WvsQ2()
         // pid_at_zero->SetXTitle("pid at zero");
         // pid_at_zero->Write();
 
+        dp_prot_cdfd_hist->SetXTitle("dp");
+        dp_prot_cdfd_hist->Write();
+        dp_pip_cdfd_hist->SetXTitle("dp");
+        dp_pip_cdfd_hist->Write();
+
+        dth_prot_cdfd_hist->SetXTitle("dp");
+        dth_prot_cdfd_hist->Write();
+        dth_pip_cdfd_hist->SetXTitle("dp");
+        dth_pip_cdfd_hist->Write();
+
+        dphi_prot_cdfd_hist->SetXTitle("dp");
+        dphi_prot_cdfd_hist->Write();
+        dphi_pip_cdfd_hist->SetXTitle("dp");
+        dphi_pip_cdfd_hist->Write();
+
         inv_mass_pPip->SetXTitle("Mass (GeV)");
         inv_mass_pPip->Write();
         inv_mass_pPim->SetXTitle("Mass (GeV)");
