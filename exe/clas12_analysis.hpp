@@ -668,8 +668,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                                         // _hists->Fill_deltaP_sum_twoPi(event, proton_dps[i].second + pip_dps[j].second);
 
                                                                                                         // }
-
-                                                                                                        // }
                                                                                                 }
                                                                                         }
                                                                                 }
@@ -677,51 +675,52 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                 }
                                                         }
                                                 }
-
-                                                // if (num_combinations == 1)
-                                                // {
-                                                //         first_entries++;
-                                                // }
-                                                // if (num_combinations == 2)
-                                                // {
-                                                //         second_entries++;
-                                                // }
-                                                // if (num_combinations == 3)
-                                                // {
-                                                //         third_entries++;
-                                                // }
-                                                // if (num_combinations > 3)
-                                                // {
-                                                //         four_or_more_entries++;
-                                                // }
-                                                //                                    _hists->Fill_Entries_prot(num_protons);
-                                                //                                      _hists->Fill_Entries_pip(num_pips);
-                                                //                                  _hists->Fill_Entries(num_combinations);
                                         }
+
+                                        // if (num_combinations == 1)
+                                        // {
+                                        //         first_entries++;
+                                        // }
+                                        // if (num_combinations == 2)
+                                        // {
+                                        //         second_entries++;
+                                        // }
+                                        // if (num_combinations == 3)
+                                        // {
+                                        //         third_entries++;
+                                        // }
+                                        // if (num_combinations > 3)
+                                        // {
+                                        //         four_or_more_entries++;
+                                        // }
+                                        //                                    _hists->Fill_Entries_prot(num_protons);
+                                        //                                      _hists->Fill_Entries_pip(num_pips);
+                                        //                                  _hists->Fill_Entries(num_combinations);
                                 }
                         }
                 }
-                //}
-                // std::cout.precision(3);
-                // print charge
-                cout << "\ntotal accumulated charge analyzed: " << endl;
-                // if (!_qa->Golden(data->getRun(), data->getEvent()))
-
-                cout << "run = " << data->getRun() << "  charge = " << _qa->GetAccumulatedCharge() << " nC" << endl;
-                std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
-                std::cout << "  FC Charge is " << total_charge << "   no of total events  " << num_of_events << std::endl;
-                // std::cout << " elec " << elec << "  electron as pid(0)  " << pid_zero_elec << " prot " << prot << " pip " << pip << " pim " << pim << '\n';
-                // std::cout << "   nonzero wt events   " << events_with_non_zero_wt << " , " << events_with_non_zero_wt / (float)num_of_events * 100 << std::endl;
-                // std::cout << "   zero wt events " << events_with_zero_wt << "  ,  " << events_with_zero_wt / (float)num_of_events * 100 << std::endl;
-                // std::cout << "   events passing electron cuts  " << elec << ",  " << elec / (float)(no_of_events) * 100 << std::endl;
-                // std::cout << "   events passing w-q2 cuts " << events_passes_w_q2_cuts << "  ,  " << events_passes_w_q2_cuts / (float)(no_of_events) * 100 << std::endl;
-                // std::cout << "   no of twoPion events (mPim topo ) = " << two_pion_mPim_events << "  ; " << float(two_pion_mPim_events) / float(num_of_events) * 100 << std::endl;
-                // // std::cout << "  first entry only " << first_entries << "  % is : " << (first_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-                // // std::cout << "  second entry only " << second_entries << "  % is : " << (second_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-                // // std::cout << "  third entry only " << third_entries << "  % is : " << (third_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-                // // std::cout << "  four or more entries only " << four_or_more_entries << "  % is : " << (four_or_more_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-
-                // // Return the total number of events
-                return num_of_events;
         }
+        //}
+        // std::cout.precision(3);
+        // print charge
+        cout << "\ntotal accumulated charge analyzed: " << endl;
+        // if (!_qa->Golden(data->getRun(), data->getEvent()))
+
+        cout << "run = " << data->getRun() << "  charge = " << _qa->GetAccumulatedCharge() << " nC" << endl;
+        std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
+        std::cout << "  FC Charge is " << total_charge << "   no of total events  " << num_of_events << std::endl;
+        // std::cout << " elec " << elec << "  electron as pid(0)  " << pid_zero_elec << " prot " << prot << " pip " << pip << " pim " << pim << '\n';
+        // std::cout << "   nonzero wt events   " << events_with_non_zero_wt << " , " << events_with_non_zero_wt / (float)num_of_events * 100 << std::endl;
+        // std::cout << "   zero wt events " << events_with_zero_wt << "  ,  " << events_with_zero_wt / (float)num_of_events * 100 << std::endl;
+        // std::cout << "   events passing electron cuts  " << elec << ",  " << elec / (float)(no_of_events) * 100 << std::endl;
+        // std::cout << "   events passing w-q2 cuts " << events_passes_w_q2_cuts << "  ,  " << events_passes_w_q2_cuts / (float)(no_of_events) * 100 << std::endl;
+        // std::cout << "   no of twoPion events (mPim topo ) = " << two_pion_mPim_events << "  ; " << float(two_pion_mPim_events) / float(num_of_events) * 100 << std::endl;
+        // // std::cout << "  first entry only " << first_entries << "  % is : " << (first_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+        // // std::cout << "  second entry only " << second_entries << "  % is : " << (second_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+        // // std::cout << "  third entry only " << third_entries << "  % is : " << (third_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+        // // std::cout << "  four or more entries only " << four_or_more_entries << "  % is : " << (four_or_more_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+
+        // // Return the total number of events
+        return num_of_events;
+}
 #endif
