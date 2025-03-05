@@ -288,436 +288,440 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                         events_passes_w_q2_cuts++;
                         {
 
-                                /*                               if (event->TwoPion_exclusive())
-                                                               {
-                                                                       for (size_t i = 0; i < event->GetProtons().size(); ++i)
-                                                                       {
-                                                                               for (size_t j = 0; j < event->GetPips().size(); ++j)
-                                                                              {
-                                                               for (size_t k = 0; k < event->GetPims().size(); ++k)
-                                                               {
-                                                                                              event->CalcMissMassExcl(*event->GetProtons()[i], *event->GetPips()[j], *event->GetPims()[k]);
-
-                                                              //         //                                 two_pion_Excl_events++;
-                                                              //         //                                 _hists->Fill_WvsQ2(event);
-
-                                                              //         // // You should have a similar method for π⁻ if applicable
-                                                              //         dt->dt_calc(event->GetPimIndices()[k]);
-                                                              //         _hists->Fill_deltat_pim_after_cut(data, dt, event->GetPimIndices()[k], event);
-                                                              //         _hists->FillHists_pim_pid_with_cuts(data, event, event->GetPimIndices()[k]);
-                                                              // }
-                                                              // //                 }
-                                                              // //         }
-                                                              // // }
-                              */
-                                if (event->TwoPion_missingPim())
-                                { // // Retrieve the number of protons and pions in the event
-
-                                        int num_protons = event->GetProtons().size();
-                                        int num_pips = event->GetPips().size();
-                                        int num_combinations = 0;
-                                        // std::cout << "  .......................   Insside .................... " << std::endl;
-                                        // std::cout << "  event number  " << current_event << "   Number of particles: " << data->gpart() << std::endl;
-                                        // std::cout << std::endl;
-                                        // // Calculate the total number of combinations
-                                        // size_t num_combinations = num_protons * num_pips;
-
-                                        // // Get the vector of protons
-                                        // const auto &protons = event->GetProtons();
-                                        // const auto &pip = event->GetPips();
-
-                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
-                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
-                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
-                                        // _hists->Fill_WvsQ2(event);
-
-                                        // First loop: count valid combinations
-                                        for (size_t i = 0; i < num_protons; ++i)
+                                if (event->TwoPion_exclusive())
+                                {
+                                        for (size_t i = 0; i < event->GetProtons().size(); ++i)
                                         {
-                                                // std::cout << " prot dp inside loop : " << proton_dps[i].second << std::endl;
-
-                                                for (size_t j = 0; j < num_pips; ++j)
+                                                for (size_t j = 0; j < event->GetPips().size(); ++j)
                                                 {
-                                                        // std::cout << " pip dp inside loop   : " << pip_dps[j].second << std::endl;
-
-                                                        // if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
+                                                        for (size_t k = 0; k < event->GetPims().size(); ++k)
                                                         {
-                                                                num_combinations++;
-                                                        }
-                                                }
-                                        }
+                                                                event->CalcMissMassExcl(*event->GetProtons()[i], *event->GetPips()[j], *event->GetPims()[k]);
 
-                                        ///////////////////////////////////////////////////
+                                                                //         //                                 two_pion_Excl_events++;
+                                                                //         //                                 _hists->Fill_WvsQ2(event);
 
-                                        bool proton_cdfd_cut = false;
-                                        bool pip_cdfd_cut = false;
-                                        double dp_Prot = NAN;
-                                        double dtheta_Prot = NAN;
-                                        double dphi_Prot = NAN;
-                                        double dp_Pip = NAN;
-                                        double dtheta_Pip = NAN;
-                                        double dphi_Pip = NAN;
+                                                                //         // // You should have a similar method for π⁻ if applicable
+                                                                //         dt->dt_calc(event->GetPimIndices()[k]);
+                                                                //         _hists->Fill_deltat_pim_after_cut(data, dt, event->GetPimIndices()[k], event);
+                                                                //         _hists->FillHists_pim_pid_with_cuts(data, event, event->GetPimIndices()[k]);
+                                                                // }
+                                                                // //                 }
+                                                                // //         }
+                                                                // // }
 
-                                        // Loop over particles to check proton and pip
-                                        for (int part1 = 0; part1 < data->gpart(); part1++)
-                                        {
-                                                // std::cout << "  current event  " << current_event << "  no of parts = " << data->gpart()
-                                                //           << " part at " << part1 << " is  " << data->pid(part1) << std::endl;
-                                                dt->dt_calc(part1);
+                                                                // if (event->TwoPion_missingPim())
+                                                                // { // // Retrieve the number of protons and pions in the event
 
-                                                // Proton Block
-                                                if (cuts->IsProton(part1))
-                                                {
-                                                        bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
-                                                        bool isCD1 = (data->status(part1) > 4000);
-                                                        // if (isFD1)
-                                                        //   std::cout << "   part1 " << part1 << "  is in FD with status " << data->status(part1) << "   with id "
-                                                        //             << data->pid(part1) << std::endl;
-                                                        // if (isCD1)
-                                                        //   std::cout << "   part1 " << part1 << "  is in CD with status " << data->status(part1) << "   with id "
-                                                        //             << data->pid(part1) << std::endl;
+                                                                int num_protons = event->GetProtons().size();
+                                                                int num_pips = event->GetPips().size();
+                                                                int num_combinations = 0;
+                                                                // std::cout << "  .......................   Insside .................... " << std::endl;
+                                                                // std::cout << "  event number  " << current_event << "   Number of particles: " << data->gpart() << std::endl;
+                                                                // std::cout << std::endl;
+                                                                // // Calculate the total number of combinations
+                                                                // size_t num_combinations = num_protons * num_pips;
 
-                                                        if (isFD1 || isCD1)
-                                                        { // Ensure part1 is in FD or CD
-                                                                TLorentzVector track1;
+                                                                // // Get the vector of protons
+                                                                // const auto &protons = event->GetProtons();
+                                                                // const auto &pip = event->GetPips();
 
-                                                                track1.SetXYZM(data->px(part1), data->py(part1), data->pz(part1), MASS_P);
+                                                                ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
+                                                                ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
+                                                                ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
+                                                                // _hists->Fill_WvsQ2(event);
 
-                                                                for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
+                                                                // First loop: count valid combinations
+                                                                for (size_t i = 0; i < num_protons; ++i)
                                                                 {
-                                                                        if (cuts->IsProton(part2))
+                                                                        // std::cout << " prot dp inside loop : " << proton_dps[i].second << std::endl;
+
+                                                                        for (size_t j = 0; j < num_pips; ++j)
                                                                         {
-                                                                                bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
-                                                                                bool isCD2 = (data->status(part2) > 4000);
+                                                                                // std::cout << " pip dp inside loop   : " << pip_dps[j].second << std::endl;
 
-                                                                                // if (isFD2)
-                                                                                //   std::cout << "   part2  " << part2 << "  is in FD with status " << data->status(part2)
-                                                                                //             << "   with id " << data->pid(part2) << std::endl;
-                                                                                // if (isCD2)
-                                                                                //   std::cout << "   part2 " << part2 << "  is in CD with status " << data->status(part2)
-                                                                                //             << "   with id " << data->pid(part2) << std::endl;
-
-                                                                                if ((isFD1 && isCD2) || (isCD1 && isFD2))
+                                                                                // if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
                                                                                 {
-                                                                                        TLorentzVector track2;
-                                                                                        track2.SetXYZM(data->px(part2), data->py(part2), data->pz(part2), MASS_P);
-
-                                                                                        TLorentzVector trackFD = isFD1 ? track1 : track2;
-                                                                                        TLorentzVector trackCD = isCD1 ? track1 : track2;
-
-                                                                                        dp_Prot = (trackFD.P() - trackCD.P());
-                                                                                        dtheta_Prot = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
-                                                                                        dphi_Prot = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
-                                                                                        _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
-
-                                                                                        // Apply proton cuts
-                                                                                        // if (dp_Prot > -0.6 && dp_Prot < 0.2 && dtheta_Prot > -7 && dphi_Prot > -20 && dphi_Prot < 5)
-                                                                                        if (dp_Prot > -0.3 && dp_Prot < 0.0 && dtheta_Prot > -3 && dtheta_Prot < 3 && dphi_Prot > -5 && dphi_Prot < 2)
-                                                                                        {
-                                                                                                proton_cdfd_cut = true;
-                                                                                                //  // } else {  // Fill histograms
-                                                                                                // h_dp_prot->Fill(dp_Prot, event->weight());
-                                                                                                // h_dtheta_prot->Fill(dtheta_Prot, event->weight());
-                                                                                                // h_dphi_prot->Fill(dphi_Prot, event->weight());
-                                                                                        }
+                                                                                        num_combinations++;
                                                                                 }
                                                                         }
                                                                 }
-                                                        }
-                                                }
 
-                                                ///////////////////////////
-                                                // Pip Block
-                                                if (cuts->IsPip(part1))
-                                                {
-                                                        bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
-                                                        bool isCD1 = (data->status(part1) > 4000);
+                                                                ///////////////////////////////////////////////////
 
-                                                        if (isFD1 || isCD1)
-                                                        { // Ensure part1 is in FD or CD
-                                                                TLorentzVector track1;
-                                                                track1.SetXYZM(data->px(part1), data->py(part1), data->pz(part1), MASS_PIP);
+                                                                bool proton_cdfd_cut = false;
+                                                                bool pip_cdfd_cut = false;
+                                                                double dp_Prot = NAN;
+                                                                double dtheta_Prot = NAN;
+                                                                double dphi_Prot = NAN;
+                                                                double dp_Pip = NAN;
+                                                                double dtheta_Pip = NAN;
+                                                                double dphi_Pip = NAN;
 
-                                                                for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
+                                                                // Loop over particles to check proton and pip
+                                                                for (int part1 = 0; part1 < data->gpart(); part1++)
                                                                 {
-                                                                        if (cuts->IsPip(part2))
+                                                                        // std::cout << "  current event  " << current_event << "  no of parts = " << data->gpart()
+                                                                        //           << " part at " << part1 << " is  " << data->pid(part1) << std::endl;
+                                                                        dt->dt_calc(part1);
+
+                                                                        // Proton Block
+                                                                        if (cuts->IsProton(part1))
                                                                         {
-                                                                                bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
-                                                                                bool isCD2 = (data->status(part2) > 4000);
+                                                                                bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
+                                                                                bool isCD1 = (data->status(part1) > 4000);
+                                                                                // if (isFD1)
+                                                                                //   std::cout << "   part1 " << part1 << "  is in FD with status " << data->status(part1) << "   with id "
+                                                                                //             << data->pid(part1) << std::endl;
+                                                                                // if (isCD1)
+                                                                                //   std::cout << "   part1 " << part1 << "  is in CD with status " << data->status(part1) << "   with id "
+                                                                                //             << data->pid(part1) << std::endl;
 
-                                                                                if ((isFD1 && isCD2) || (isCD1 && isFD2))
-                                                                                {
-                                                                                        TLorentzVector track2;
-                                                                                        track2.SetXYZM(data->px(part2), data->py(part2), data->pz(part2), MASS_PIP);
+                                                                                if (isFD1 || isCD1)
+                                                                                { // Ensure part1 is in FD or CD
+                                                                                        TLorentzVector track1;
 
-                                                                                        TLorentzVector trackFD = isFD1 ? track1 : track2;
-                                                                                        TLorentzVector trackCD = isCD1 ? track1 : track2;
+                                                                                        track1.SetXYZM(data->px(part1), data->py(part1), data->pz(part1), MASS_P);
 
-                                                                                        dp_Pip = (trackFD.P() - trackCD.P());
-                                                                                        dtheta_Pip = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
-                                                                                        dphi_Pip = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
-                                                                                        _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
-
-                                                                                        // h_dp_pip->Fill(dp_Pip, event->weight());
-                                                                                        // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
-                                                                                        // h_dphi_pip->Fill(dphi_Pip, event->weight());
-                                                                                        // Apply pip cuts
-                                                                                        // if (dp_Pip > -0.4 && dp_Pip < 0.2 && dtheta_Pip > -10 && dtheta_Pip < 10 && dphi_Pip > -20 &&
-                                                                                        //     dphi_Pip < 5)
-                                                                                        if (dp_Pip > -0.25 && dp_Pip < 0.0 && dtheta_Pip > -3 && dtheta_Pip < 3 && dphi_Pip > -5 && dphi_Pip < 2)
+                                                                                        for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
                                                                                         {
-                                                                                                pip_cdfd_cut = true;
-                                                                                                // // } else {  // Fill histograms
-                                                                                                // h_dp_pip->Fill(dp_Pip, event->weight());
-                                                                                                // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
-                                                                                                // h_dphi_pip->Fill(dphi_Pip, event->weight());
-                                                                                        }
-                                                                                }
-                                                                        }
-                                                                }
-                                                        }
-                                                }
-                                        }
-
-                                        for (size_t i = 0; i < num_protons; ++i)
-                                        {
-                                                for (size_t j = 0; j < num_pips; ++j)
-                                                {
-                                                        if (!(proton_cdfd_cut == true || pip_cdfd_cut == true))
-                                                        //////                                                        if ((proton_cdfd_cut == true || pip_cdfd_cut == true))
-                                                        {
-                                                                // Exclude the case where the same particle is assigned as both proton and pip
-                                                                if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
-                                                                {
-                                                                        int proton_part_idx = event->GetProtonIndices()[i];
-                                                                        int pip_part_idx = event->GetPipIndices()[j];
-
-                                                                        // if ((best_proton_index != event->GetProtonIndices()[i]) || (best_pip_index != event->GetPipIndices()[j]))
-                                                                        {
-
-                                                                                two_pion_mPim_events++;
-                                                                                entries_in_this_event++;
-                                                                                event->SetSwappedProton(pip_part_idx);
-                                                                                event->SetSwappedPip(proton_part_idx);
-                                                                                // Extract velocity components with energy normalization
-                                                                                double v_original_x_Prot = event->GetProtons()[i]->Px() / event->GetProtons()[i]->E();
-                                                                                double v_original_y_Prot = event->GetProtons()[i]->Py() / event->GetProtons()[i]->E();
-                                                                                double v_original_z_Prot = event->GetProtons()[i]->Pz() / event->GetProtons()[i]->E();
-                                                                                double v_swapped_x_Prot = event->GetProtonsSwapped()->Px() / event->GetProtonsSwapped()->E();
-                                                                                double v_swapped_y_Prot = event->GetProtonsSwapped()->Py() / event->GetProtonsSwapped()->E();
-                                                                                double v_swapped_z_Prot = event->GetProtonsSwapped()->Pz() / event->GetProtonsSwapped()->E();
-
-                                                                                // Calculate delta_V^2
-                                                                                double dv2_Prot = pow(v_swapped_x_Prot - v_original_x_Prot, 2) +
-                                                                                                  pow(v_swapped_y_Prot - v_original_y_Prot, 2) +
-                                                                                                  pow(v_swapped_z_Prot - v_original_z_Prot, 2);
-                                                                                // std::cout << "Delta V^2: " << dv2 << std::endl;
-
-                                                                                // // Extract velocity components with energy normalization
-                                                                                // double v_original_x_Pip = event->GetPips()[j]->Px() / event->GetPips()[j]->E();
-                                                                                // double v_original_y_Pip = event->GetPips()[j]->Py() / event->GetPips()[j]->E();
-                                                                                // double v_original_z_Pip = event->GetPips()[j]->Pz() / event->GetPips()[j]->E();
-                                                                                // double v_swapped_x_Pip = event->GetPipsSwapped()->Px() / event->GetPipsSwapped()->E();
-                                                                                // double v_swapped_y_Pip = event->GetPipsSwapped()->Py() / event->GetPipsSwapped()->E();
-                                                                                // double v_swapped_z_Pip = event->GetPipsSwapped()->Pz() / event->GetPipsSwapped()->E();
-
-                                                                                // // Calculate delta_V^2
-                                                                                // double dv2_Pip = pow(v_swapped_x_Pip - v_original_x_Pip, 2) +
-                                                                                //                  pow(v_swapped_y_Pip - v_original_y_Pip, 2) +
-                                                                                //                  pow(v_swapped_z_Pip - v_original_z_Pip, 2);
-
-                                                                                // std::cout << "  event->GetProtonIndices()[i]  : " << event->GetProtonIndices()[i] << "  Pip index  : " << event->GetPipIndices()[j] << std::endl;
-                                                                                event->CalcMissMassPim(*event->GetProtons()[i], *event->GetPips()[j]);
-                                                                                event->boost(*event->GetProtons()[i], *event->GetPips()[j]);
-                                                                                event->CalcMissMassPimSwapped();
-                                                                                ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
-                                                                                ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
-                                                                                ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
-                                                                                ///// if (num_combinations == 2)
-                                                                                ///// if (event->MM2_mPim() < -0.1)
-                                                                                ////if (dv2_Prot < 0.01)
-                                                                                //////// if (event->MM2_mPim() > -0.1 && event->MM2_mPim() < 0.1)
-
-                                                                                // if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                {
-                                                                                        //////////////                if (dv2_Prot < 0.01)
-                                                                                        {
-
-                                                                                                _hists->FillHists_electron_with_cuts(data, event);
-
-                                                                                                event->EffCorrFactor(*event->GetProtons()[i], *event->GetPips()[j]);
-                                                                                                event->weight();
-
-                                                                                                // if (num_combinations == 1)
-                                                                                                // {
-                                                                                                _hists->Fill_all_Combi(event);
-
-                                                                                                // // Fill the appropriate histogram based on num_combinations
-                                                                                                // if (num_combinations == 1)
-                                                                                                // {
-                                                                                                //         _hists->Fill_1_Combi(event);
-                                                                                                //         _hists->Fill_MMSQ_mPim_1_comb(event);
-                                                                                                // }
-                                                                                                // if (num_combinations == 2)
-                                                                                                // {
-                                                                                                //         _hists->Fill_2_Combi(event);
-                                                                                                //         _hists->Fill_MMSQ_mPim_2_comb(event);
-                                                                                                // }
-                                                                                                // if (num_combinations == 3)
-                                                                                                // {
-                                                                                                //         _hists->Fill_3_Combi(event);
-                                                                                                //         _hists->Fill_MMSQ_mPim_3_comb(event);
-                                                                                                // }
-                                                                                                // if (num_combinations >= 4)
-                                                                                                // {
-                                                                                                //         _hists->Fill_4_or_more_Combi(event);
-                                                                                                //         _hists->Fill_MMSQ_mPim_4_or_more_comb(event);
-                                                                                                // }
-
-                                                                                                //         // if (event->Fixed_MM_cut())
-                                                                                                //         // if (MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                                //         // if ((data->p(event->GetProtonIndices()[i]) > 3.0) || (data->p(event->GetPipIndices()[j]) > 3.0))
-
-                                                                                                //         {
-                                                                                                // _hists->Fill_WvsQ2(event);
-
-                                                                                                // _hists->FillHists_electron_with_cuts(data, event);
-
-                                                                                                // two_pion_mPim_events++;
-                                                                                                // {
-                                                                                                // _hists->Fill_MMSQ_mPim(event);
-                                                                                                // if (entries_in_this_event == 1)
-                                                                                                // _hists->Fill_WvsQ2(event);
-
-                                                                                                if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                                if (cuts->IsProton(part2))
                                                                                                 {
+                                                                                                        bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
+                                                                                                        bool isCD2 = (data->status(part2) > 4000);
+
+                                                                                                        // if (isFD2)
+                                                                                                        //   std::cout << "   part2  " << part2 << "  is in FD with status " << data->status(part2)
+                                                                                                        //             << "   with id " << data->pid(part2) << std::endl;
+                                                                                                        // if (isCD2)
+                                                                                                        //   std::cout << "   part2 " << part2 << "  is in CD with status " << data->status(part2)
+                                                                                                        //             << "   with id " << data->pid(part2) << std::endl;
+
+                                                                                                        if ((isFD1 && isCD2) || (isCD1 && isFD2))
+                                                                                                        {
+                                                                                                                TLorentzVector track2;
+                                                                                                                track2.SetXYZM(data->px(part2), data->py(part2), data->pz(part2), MASS_P);
+
+                                                                                                                TLorentzVector trackFD = isFD1 ? track1 : track2;
+                                                                                                                TLorentzVector trackCD = isCD1 ? track1 : track2;
+
+                                                                                                                dp_Prot = (trackFD.P() - trackCD.P());
+                                                                                                                dtheta_Prot = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
+                                                                                                                dphi_Prot = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
+                                                                                                                _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
+
+                                                                                                                // Apply proton cuts
+                                                                                                                // if (dp_Prot > -0.6 && dp_Prot < 0.2 && dtheta_Prot > -7 && dphi_Prot > -20 && dphi_Prot < 5)
+                                                                                                                if (dp_Prot > -0.3 && dp_Prot < 0.0 && dtheta_Prot > -3 && dtheta_Prot < 3 && dphi_Prot > -5 && dphi_Prot < 2)
+                                                                                                                {
+                                                                                                                        proton_cdfd_cut = true;
+                                                                                                                        //  // } else {  // Fill histograms
+                                                                                                                        // h_dp_prot->Fill(dp_Prot, event->weight());
+                                                                                                                        // h_dtheta_prot->Fill(dtheta_Prot, event->weight());
+                                                                                                                        // h_dphi_prot->Fill(dphi_Prot, event->weight());
+                                                                                                                }
+                                                                                                        }
+                                                                                                }
+                                                                                        }
+                                                                                }
+                                                                        }
+
+                                                                        ///////////////////////////
+                                                                        // Pip Block
+                                                                        if (cuts->IsPip(part1))
+                                                                        {
+                                                                                bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
+                                                                                bool isCD1 = (data->status(part1) > 4000);
+
+                                                                                if (isFD1 || isCD1)
+                                                                                { // Ensure part1 is in FD or CD
+                                                                                        TLorentzVector track1;
+                                                                                        track1.SetXYZM(data->px(part1), data->py(part1), data->pz(part1), MASS_PIP);
+
+                                                                                        for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
+                                                                                        {
+                                                                                                if (cuts->IsPip(part2))
+                                                                                                {
+                                                                                                        bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
+                                                                                                        bool isCD2 = (data->status(part2) > 4000);
+
+                                                                                                        if ((isFD1 && isCD2) || (isCD1 && isFD2))
+                                                                                                        {
+                                                                                                                TLorentzVector track2;
+                                                                                                                track2.SetXYZM(data->px(part2), data->py(part2), data->pz(part2), MASS_PIP);
+
+                                                                                                                TLorentzVector trackFD = isFD1 ? track1 : track2;
+                                                                                                                TLorentzVector trackCD = isCD1 ? track1 : track2;
+
+                                                                                                                dp_Pip = (trackFD.P() - trackCD.P());
+                                                                                                                dtheta_Pip = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
+                                                                                                                dphi_Pip = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
+                                                                                                                _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
+
+                                                                                                                // h_dp_pip->Fill(dp_Pip, event->weight());
+                                                                                                                // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
+                                                                                                                // h_dphi_pip->Fill(dphi_Pip, event->weight());
+                                                                                                                // Apply pip cuts
+                                                                                                                // if (dp_Pip > -0.4 && dp_Pip < 0.2 && dtheta_Pip > -10 && dtheta_Pip < 10 && dphi_Pip > -20 &&
+                                                                                                                //     dphi_Pip < 5)
+                                                                                                                if (dp_Pip > -0.25 && dp_Pip < 0.0 && dtheta_Pip > -3 && dtheta_Pip < 3 && dphi_Pip > -5 && dphi_Pip < 2)
+                                                                                                                {
+                                                                                                                        pip_cdfd_cut = true;
+                                                                                                                        // // } else {  // Fill histograms
+                                                                                                                        // h_dp_pip->Fill(dp_Pip, event->weight());
+                                                                                                                        // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
+                                                                                                                        // h_dphi_pip->Fill(dphi_Pip, event->weight());
+                                                                                                                }
+                                                                                                        }
+                                                                                                }
+                                                                                        }
+                                                                                }
+                                                                        }
+                                                                }
+
+                                                                // for (size_t i = 0; i < num_protons; ++i)
+                                                                // {
+                                                                //         for (size_t j = 0; j < num_pips; ++j)
+                                                                //         {
+                                                                if (!(proton_cdfd_cut == true || pip_cdfd_cut == true))
+                                                                //////                                                        if ((proton_cdfd_cut == true || pip_cdfd_cut == true))
+                                                                {
+                                                                        // Exclude the case where the same particle is assigned as both proton and pip
+                                                                        if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
+                                                                        {
+                                                                                int proton_part_idx = event->GetProtonIndices()[i];
+                                                                                int pip_part_idx = event->GetPipIndices()[j];
+
+                                                                                // if ((best_proton_index != event->GetProtonIndices()[i]) || (best_pip_index != event->GetPipIndices()[j]))
+                                                                                {
+
+                                                                                        two_pion_mPim_events++;
+                                                                                        entries_in_this_event++;
+                                                                                        event->SetSwappedProton(pip_part_idx);
+                                                                                        event->SetSwappedPip(proton_part_idx);
+                                                                                        // Extract velocity components with energy normalization
+                                                                                        double v_original_x_Prot = event->GetProtons()[i]->Px() / event->GetProtons()[i]->E();
+                                                                                        double v_original_y_Prot = event->GetProtons()[i]->Py() / event->GetProtons()[i]->E();
+                                                                                        double v_original_z_Prot = event->GetProtons()[i]->Pz() / event->GetProtons()[i]->E();
+                                                                                        double v_swapped_x_Prot = event->GetProtonsSwapped()->Px() / event->GetProtonsSwapped()->E();
+                                                                                        double v_swapped_y_Prot = event->GetProtonsSwapped()->Py() / event->GetProtonsSwapped()->E();
+                                                                                        double v_swapped_z_Prot = event->GetProtonsSwapped()->Pz() / event->GetProtonsSwapped()->E();
+
+                                                                                        // Calculate delta_V^2
+                                                                                        double dv2_Prot = pow(v_swapped_x_Prot - v_original_x_Prot, 2) +
+                                                                                                          pow(v_swapped_y_Prot - v_original_y_Prot, 2) +
+                                                                                                          pow(v_swapped_z_Prot - v_original_z_Prot, 2);
+                                                                                        // std::cout << "Delta V^2: " << dv2 << std::endl;
+
+                                                                                        // // Extract velocity components with energy normalization
+                                                                                        // double v_original_x_Pip = event->GetPips()[j]->Px() / event->GetPips()[j]->E();
+                                                                                        // double v_original_y_Pip = event->GetPips()[j]->Py() / event->GetPips()[j]->E();
+                                                                                        // double v_original_z_Pip = event->GetPips()[j]->Pz() / event->GetPips()[j]->E();
+                                                                                        // double v_swapped_x_Pip = event->GetPipsSwapped()->Px() / event->GetPipsSwapped()->E();
+                                                                                        // double v_swapped_y_Pip = event->GetPipsSwapped()->Py() / event->GetPipsSwapped()->E();
+                                                                                        // double v_swapped_z_Pip = event->GetPipsSwapped()->Pz() / event->GetPipsSwapped()->E();
+
+                                                                                        // // Calculate delta_V^2
+                                                                                        // double dv2_Pip = pow(v_swapped_x_Pip - v_original_x_Pip, 2) +
+                                                                                        //                  pow(v_swapped_y_Pip - v_original_y_Pip, 2) +
+                                                                                        //                  pow(v_swapped_z_Pip - v_original_z_Pip, 2);
+
+                                                                                        // // std::cout << "  event->GetProtonIndices()[i]  : " << event->GetProtonIndices()[i] << "  Pip index  : " << event->GetPipIndices()[j] << std::endl;
+                                                                                        // event->CalcMissMassPim(*event->GetProtons()[i], *event->GetPips()[j]);
+                                                                                        // event->boost(*event->GetProtons()[i], *event->GetPips()[j]);
+                                                                                        // event->CalcMissMassPimSwapped();
+                                                                                        // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
+                                                                                        // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
+                                                                                        // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
+                                                                                        // ///// if (num_combinations == 2)
+                                                                                        // ///// if (event->MM2_mPim() < -0.1)
+                                                                                        // ////if (dv2_Prot < 0.01)
+                                                                                        // // //////// if (event->MM2_mPim() > -0.1 && event->MM2_mPim() < 0.1)
+                                                                                        if ((event->MM2_exclusive() < -0.004 || event->MM2_exclusive() > 0.002) &&
+                                                                                            (event->MM2_mpip() < -0.028 || event->MM2_mpip() > 0.071) &&
+                                                                                            (event->MM2_mprot() < 0.763 || event->MM2_mprot() > 0.1003))
+                                                                                        //     float mmsq_low_values_for_bkg[2][2][3] = {{{-0.004, -0.028, 0.763}, {0.002, 0.071, 0.1003}}, {{-0.004, -0.024, -0.79}, {0.002, 0.079, 0.1025}}};
+
+                                                                                        // if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                        {
+                                                                                                //////////////                if (dv2_Prot < 0.01)
+                                                                                                {
+
+                                                                                                        // _hists->FillHists_electron_with_cuts(data, event);
+
+                                                                                                        // event->EffCorrFactor(*event->GetProtons()[i], *event->GetPips()[j]);
+                                                                                                        // event->weight();
+
+                                                                                                        // if (num_combinations == 1)
+                                                                                                        // {
+                                                                                                        _hists->Fill_all_Combi(event);
+
+                                                                                                        // // Fill the appropriate histogram based on num_combinations
+                                                                                                        // if (num_combinations == 1)
+                                                                                                        // {
+                                                                                                        //         _hists->Fill_1_Combi(event);
+                                                                                                        //         _hists->Fill_MMSQ_mPim_1_comb(event);
+                                                                                                        // }
+                                                                                                        // if (num_combinations == 2)
+                                                                                                        // {
+                                                                                                        //         _hists->Fill_2_Combi(event);
+                                                                                                        //         _hists->Fill_MMSQ_mPim_2_comb(event);
+                                                                                                        // }
+                                                                                                        // if (num_combinations == 3)
+                                                                                                        // {
+                                                                                                        //         _hists->Fill_3_Combi(event);
+                                                                                                        //         _hists->Fill_MMSQ_mPim_3_comb(event);
+                                                                                                        // }
+                                                                                                        // if (num_combinations >= 4)
+                                                                                                        // {
+                                                                                                        //         _hists->Fill_4_or_more_Combi(event);
+                                                                                                        //         _hists->Fill_MMSQ_mPim_4_or_more_comb(event);
+                                                                                                        // }
+
+                                                                                                        //         // if (event->Fixed_MM_cut())
+                                                                                                        //         // if (MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                                        //         // if ((data->p(event->GetProtonIndices()[i]) > 3.0) || (data->p(event->GetPipIndices()[j]) > 3.0))
+
+                                                                                                        //         {
+                                                                                                        // _hists->Fill_WvsQ2(event);
+
+                                                                                                        // _hists->FillHists_electron_with_cuts(data, event);
+
+                                                                                                        // two_pion_mPim_events++;
+                                                                                                        // {
+                                                                                                        // _hists->Fill_MMSQ_mPim(event);
+                                                                                                        // if (entries_in_this_event == 1)
+                                                                                                        // _hists->Fill_WvsQ2(event);
+
+                                                                                                        // if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                                        // {
                                                                                                         _hists->Fill_MMSQ_mPim(event);
 
-                                                                                                        _hists->Fill_histSevenD_prot(event);
-                                                                                                        _hists->Fill_histSevenD_pip(event);
-                                                                                                        _hists->Fill_histSevenD_pim(event);
-                                                                                                        _hists->Fill_histSevenD_prot_evt(event);
-                                                                                                        _hists->Fill_histSevenD_pip_evt(event);
-                                                                                                        _hists->Fill_histSevenD_pim_evt(event);
+                                                                                                        //         _hists->Fill_histSevenD_prot(event);
+                                                                                                        //         _hists->Fill_histSevenD_pip(event);
+                                                                                                        //         _hists->Fill_histSevenD_pim(event);
+                                                                                                        //         _hists->Fill_histSevenD_prot_evt(event);
+                                                                                                        //         _hists->Fill_histSevenD_pip_evt(event);
+                                                                                                        //         _hists->Fill_histSevenD_pim_evt(event);
+                                                                                                        // }
+                                                                                                        // if (_hists->MM_cut_tight(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                                        // {
+                                                                                                        //         _hists->Fill_MMSQ_mPim_1_comb(event);
+
+                                                                                                        //         _hists->Fill_histSevenD_prot_tight(event);
+                                                                                                        //         _hists->Fill_histSevenD_pip_tight(event);
+                                                                                                        //         _hists->Fill_histSevenD_pim_tight(event);
+                                                                                                        //         _hists->Fill_histSevenD_prot_evt_tight(event);
+                                                                                                        //         _hists->Fill_histSevenD_pip_evt_tight(event);
+                                                                                                        //         _hists->Fill_histSevenD_pim_evt_tight(event);
+                                                                                                        // }
+                                                                                                        // if (_hists->MM_cut_loose(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                                        // {
+                                                                                                        //         _hists->Fill_MMSQ_mPim_2_comb(event);
+
+                                                                                                        //         _hists->Fill_histSevenD_prot_loose(event);
+                                                                                                        //         _hists->Fill_histSevenD_pip_loose(event);
+                                                                                                        //         _hists->Fill_histSevenD_pim_loose(event);
+                                                                                                        //         _hists->Fill_histSevenD_prot_evt_loose(event);
+                                                                                                        //         _hists->Fill_histSevenD_pip_evt_loose(event);
+                                                                                                        //         _hists->Fill_histSevenD_pim_evt_loose(event);
+                                                                                                        // }
+                                                                                                        // //         }
+                                                                                                        // // }
+                                                                                                        // //         else if (event->TwoPion_missingPip())
+                                                                                                        // //                 miss_pip++;
+                                                                                                        // //         else if (event->TwoPion_missingProt())
+                                                                                                        // //                 miss_prot++;
+
+                                                                                                        // // //         //{
+                                                                                                        // // // //         twopi++;
+                                                                                                        // // // First, check if the index is for proton or pip, then use it as needed
+
+                                                                                                        // dt_proton->dt_calc(proton_part_idx);
+
+                                                                                                        // // _hists->Fill_MomVsBeta(data, proton_part_idx, event);
+                                                                                                        // _hists->Fill_deltat_prot_after_cut(data, dt_proton, proton_part_idx, event);
+                                                                                                        // _hists->FillHists_prot_pid_with_cuts(data, event, proton_part_idx, *event->GetProtons()[i]);
+                                                                                                        // // }
+
+                                                                                                        // // std::cout << "   pip_part_idx  " << pip_part_idx << std::endl;
+                                                                                                        // dt_pip->dt_calc(pip_part_idx);
+                                                                                                        // // _hists->Fill_MomVsBeta(data, pip_part_idx, event);
+                                                                                                        // _hists->Fill_deltat_pip_after_cut(data, dt_pip, pip_part_idx, event);
+                                                                                                        // _hists->FillHists_pip_pid_with_cuts(data, event, pip_part_idx, *event->GetPips()[j]);
+
+                                                                                                        // _hists->Fill_2_Combi(event);
+                                                                                                        // _hists->Fill_MMSQ_mPim_2_comb(event);
+
+                                                                                                        // _hists->Fill_3_Combi(dv2_Pip, event);
+                                                                                                        // _hists->Fill_MMSQ_mPim_3_comb(dv2_Pip, event);
+
+                                                                                                        ///////////
+                                                                                                        _hists->Fill_WvsQ2(event);
+                                                                                                        // // std::cout << " proton velocity : " << event->GetProtons()[i]->Px() << std::endl;
+
+                                                                                                        // _hists->Fill_4_or_more_Combi(dv2_Prot, event);
+                                                                                                        // _hists->Fill_MMSQ_mPim_4_or_more_comb(dv2_Prot, event);
+
+                                                                                                        // _hists->Fill_deltaP_prot(event, proton_dps[i].second);
+                                                                                                        // _hists->Fill_deltaP_pip(event, pip_dps[j].second);
+                                                                                                        // _hists->Fill_deltaP_sum_twoPi(event, proton_dps[i].second + pip_dps[j].second);
+
+                                                                                                        // }
+
+                                                                                                        // }
                                                                                                 }
-                                                                                                if (_hists->MM_cut_tight(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                                {
-                                                                                                        _hists->Fill_MMSQ_mPim_1_comb(event);
-
-                                                                                                        _hists->Fill_histSevenD_prot_tight(event);
-                                                                                                        _hists->Fill_histSevenD_pip_tight(event);
-                                                                                                        _hists->Fill_histSevenD_pim_tight(event);
-                                                                                                        _hists->Fill_histSevenD_prot_evt_tight(event);
-                                                                                                        _hists->Fill_histSevenD_pip_evt_tight(event);
-                                                                                                        _hists->Fill_histSevenD_pim_evt_tight(event);
-                                                                                                }
-                                                                                                if (_hists->MM_cut_loose(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                                {
-                                                                                                        _hists->Fill_MMSQ_mPim_2_comb(event);
-
-                                                                                                        _hists->Fill_histSevenD_prot_loose(event);
-                                                                                                        _hists->Fill_histSevenD_pip_loose(event);
-                                                                                                        _hists->Fill_histSevenD_pim_loose(event);
-                                                                                                        _hists->Fill_histSevenD_prot_evt_loose(event);
-                                                                                                        _hists->Fill_histSevenD_pip_evt_loose(event);
-                                                                                                        _hists->Fill_histSevenD_pim_evt_loose(event);
-                                                                                                }
-                                                                                                // //         }
-                                                                                                // // }
-                                                                                                // //         else if (event->TwoPion_missingPip())
-                                                                                                // //                 miss_pip++;
-                                                                                                // //         else if (event->TwoPion_missingProt())
-                                                                                                // //                 miss_prot++;
-
-                                                                                                // //         //{
-                                                                                                // // //         twopi++;
-                                                                                                // // First, check if the index is for proton or pip, then use it as needed
-
-                                                                                                dt_proton->dt_calc(proton_part_idx);
-
-                                                                                                // _hists->Fill_MomVsBeta(data, proton_part_idx, event);
-                                                                                                _hists->Fill_deltat_prot_after_cut(data, dt_proton, proton_part_idx, event);
-                                                                                                _hists->FillHists_prot_pid_with_cuts(data, event, proton_part_idx, *event->GetProtons()[i]);
-                                                                                                // }
-
-                                                                                                // std::cout << "   pip_part_idx  " << pip_part_idx << std::endl;
-                                                                                                dt_pip->dt_calc(pip_part_idx);
-                                                                                                // _hists->Fill_MomVsBeta(data, pip_part_idx, event);
-                                                                                                _hists->Fill_deltat_pip_after_cut(data, dt_pip, pip_part_idx, event);
-                                                                                                _hists->FillHists_pip_pid_with_cuts(data, event, pip_part_idx, *event->GetPips()[j]);
-
-                                                                                                // _hists->Fill_2_Combi(event);
-                                                                                                // _hists->Fill_MMSQ_mPim_2_comb(event);
-
-                                                                                                // _hists->Fill_3_Combi(dv2_Pip, event);
-                                                                                                // _hists->Fill_MMSQ_mPim_3_comb(dv2_Pip, event);
-
-                                                                                                ///////////
-                                                                                                _hists->Fill_WvsQ2(event);
-                                                                                                // // std::cout << " proton velocity : " << event->GetProtons()[i]->Px() << std::endl;
-
-                                                                                                // _hists->Fill_4_or_more_Combi(dv2_Prot, event);
-                                                                                                // _hists->Fill_MMSQ_mPim_4_or_more_comb(dv2_Prot, event);
-
-                                                                                                // _hists->Fill_deltaP_prot(event, proton_dps[i].second);
-                                                                                                // _hists->Fill_deltaP_pip(event, pip_dps[j].second);
-                                                                                                // _hists->Fill_deltaP_sum_twoPi(event, proton_dps[i].second + pip_dps[j].second);
-
-                                                                                                // }
-
-                                                                                                // }
                                                                                         }
                                                                                 }
                                                                         }
                                                                 }
                                                         }
                                                 }
-                                        }
 
-                                        // if (num_combinations == 1)
-                                        // {
-                                        //         first_entries++;
-                                        // }
-                                        // if (num_combinations == 2)
-                                        // {
-                                        //         second_entries++;
-                                        // }
-                                        // if (num_combinations == 3)
-                                        // {
-                                        //         third_entries++;
-                                        // }
-                                        // if (num_combinations > 3)
-                                        // {
-                                        //         four_or_more_entries++;
-                                        // }
-                                        //                                    _hists->Fill_Entries_prot(num_protons);
-                                        //                                      _hists->Fill_Entries_pip(num_pips);
-                                        //                                  _hists->Fill_Entries(num_combinations);
+                                                // if (num_combinations == 1)
+                                                // {
+                                                //         first_entries++;
+                                                // }
+                                                // if (num_combinations == 2)
+                                                // {
+                                                //         second_entries++;
+                                                // }
+                                                // if (num_combinations == 3)
+                                                // {
+                                                //         third_entries++;
+                                                // }
+                                                // if (num_combinations > 3)
+                                                // {
+                                                //         four_or_more_entries++;
+                                                // }
+                                                //                                    _hists->Fill_Entries_prot(num_protons);
+                                                //                                      _hists->Fill_Entries_pip(num_pips);
+                                                //                                  _hists->Fill_Entries(num_combinations);
+                                        }
                                 }
                         }
                 }
+                //}
+                // std::cout.precision(3);
+                // print charge
+                cout << "\ntotal accumulated charge analyzed: " << endl;
+                // if (!_qa->Golden(data->getRun(), data->getEvent()))
+
+                cout << "run = " << data->getRun() << "  charge = " << _qa->GetAccumulatedCharge() << " nC" << endl;
+                std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
+                std::cout << "  FC Charge is " << total_charge << "   no of total events  " << num_of_events << std::endl;
+                // std::cout << " elec " << elec << "  electron as pid(0)  " << pid_zero_elec << " prot " << prot << " pip " << pip << " pim " << pim << '\n';
+                // std::cout << "   nonzero wt events   " << events_with_non_zero_wt << " , " << events_with_non_zero_wt / (float)num_of_events * 100 << std::endl;
+                // std::cout << "   zero wt events " << events_with_zero_wt << "  ,  " << events_with_zero_wt / (float)num_of_events * 100 << std::endl;
+                // std::cout << "   events passing electron cuts  " << elec << ",  " << elec / (float)(no_of_events) * 100 << std::endl;
+                // std::cout << "   events passing w-q2 cuts " << events_passes_w_q2_cuts << "  ,  " << events_passes_w_q2_cuts / (float)(no_of_events) * 100 << std::endl;
+                // std::cout << "   no of twoPion events (mPim topo ) = " << two_pion_mPim_events << "  ; " << float(two_pion_mPim_events) / float(num_of_events) * 100 << std::endl;
+                // // std::cout << "  first entry only " << first_entries << "  % is : " << (first_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+                // // std::cout << "  second entry only " << second_entries << "  % is : " << (second_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+                // // std::cout << "  third entry only " << third_entries << "  % is : " << (third_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+                // // std::cout << "  four or more entries only " << four_or_more_entries << "  % is : " << (four_or_more_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+
+                // // Return the total number of events
+                return num_of_events;
         }
-        //}
-        // std::cout.precision(3);
-        // print charge
-        cout << "\ntotal accumulated charge analyzed: " << endl;
-        // if (!_qa->Golden(data->getRun(), data->getEvent()))
-
-        cout << "run = " << data->getRun() << "  charge = " << _qa->GetAccumulatedCharge() << " nC" << endl;
-        std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
-        std::cout << "  FC Charge is " << total_charge << "   no of total events  " << num_of_events << std::endl;
-        // std::cout << " elec " << elec << "  electron as pid(0)  " << pid_zero_elec << " prot " << prot << " pip " << pip << " pim " << pim << '\n';
-        // std::cout << "   nonzero wt events   " << events_with_non_zero_wt << " , " << events_with_non_zero_wt / (float)num_of_events * 100 << std::endl;
-        // std::cout << "   zero wt events " << events_with_zero_wt << "  ,  " << events_with_zero_wt / (float)num_of_events * 100 << std::endl;
-        // std::cout << "   events passing electron cuts  " << elec << ",  " << elec / (float)(no_of_events) * 100 << std::endl;
-        // std::cout << "   events passing w-q2 cuts " << events_passes_w_q2_cuts << "  ,  " << events_passes_w_q2_cuts / (float)(no_of_events) * 100 << std::endl;
-        // std::cout << "   no of twoPion events (mPim topo ) = " << two_pion_mPim_events << "  ; " << float(two_pion_mPim_events) / float(num_of_events) * 100 << std::endl;
-        // // std::cout << "  first entry only " << first_entries << "  % is : " << (first_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-        // // std::cout << "  second entry only " << second_entries << "  % is : " << (second_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-        // // std::cout << "  third entry only " << third_entries << "  % is : " << (third_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-        // // std::cout << "  four or more entries only " << four_or_more_entries << "  % is : " << (four_or_more_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-
-        // // Return the total number of events
-        return num_of_events;
-}
 #endif
