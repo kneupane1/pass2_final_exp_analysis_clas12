@@ -333,15 +333,15 @@ public:
         float MM2_exclusive();
         float MM_exclusive();
         float weight();
-/*         inline float weight()
-         {
-        //         if (_mc)
-        //                 return _data->mc_weight();
+        /*         inline float weight()
+                 {
+                //         if (_mc)
+                //                 return _data->mc_weight();
 
-        //         else
-                         return 1.0;
-         }
-*/
+                //         else
+                                 return 1.0;
+                 }
+        */
         /// smearing fx's function
         void SmearingFunc(int part_id, int status_part, double p, double theta, double phi, double &pNew, double &thetaNew,
                           double &phiNew)
@@ -660,11 +660,11 @@ private:
 public:
         MCReaction(const std::shared_ptr<Branches12> &data, float beam_energy);
         void SetMCElec();
-      /*  inline float weight()
-        {
-                return _data->mc_weight();
-              // return 1.0;
-        }*/
+        /*  inline float weight()
+          {
+                  return _data->mc_weight();
+                // return 1.0;
+          }*/
         inline float W_mc()
         {
                 return _W_mc;

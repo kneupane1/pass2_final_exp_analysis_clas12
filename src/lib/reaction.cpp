@@ -172,9 +172,8 @@ void Reaction::SetProton(int i)
 
         _prot_status = abs(_data->status(i));
         _Energy_loss_uncorr_prot->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_P);
-       
-      //  proton->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_P);
 
+        //  proton->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_P);
 
         _sectorProt = _data->dc_sec(i);
         _prot_mom_uncorr = _Energy_loss_uncorr_prot->P();
@@ -284,8 +283,7 @@ void Reaction::SetProton(int i)
                 }
 
                 mom_corr_proton->SetXYZM(_px_prime_prot_E * fpro, _py_prime_prot_E * fpro, _pz_prime_prot_E * fpro, MASS_P);
-           /////////     proton->SetXYZM(_px_prime_prot_E * fpro, _py_prime_prot_E * fpro, _pz_prime_prot_E * fpro, MASS_P);
-
+                /////////     proton->SetXYZM(_px_prime_prot_E * fpro, _py_prime_prot_E * fpro, _pz_prime_prot_E * fpro, MASS_P);
 
                 _prot_mom = mom_corr_proton->P();
 
@@ -310,7 +308,6 @@ void Reaction::SetProton(int i)
                 // proton->SetXYZM(_px_prime_prot_mom, _py_prime_prot_mom, _pz_prime_prot_mom, MASS_P);
                 proton->SetXYZM(_px_prime_prot_E * fpro, _py_prime_prot_E * fpro, _pz_prime_prot_E * fpro, MASS_P);
 
-
                 _prot.push_back(std::move(proton)); // Add proton to the vector
                 // _mom_corr_prot.push_back(std::move(mom_corr_proton)); // Add proton to the vector
                 _prot_indices.push_back(i);
@@ -325,7 +322,7 @@ void Reaction::SetPip(int i)
         _hasPip = true;
         auto pip = std::make_unique<TLorentzVector>();
         auto mom_corr_pip = std::make_unique<TLorentzVector>();
-/////        pip->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_PIP);
+        /////        pip->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_PIP);
 
         _pip_status = abs(_data->status(i));
         _sectorPip = _data->dc_sec(i);
@@ -413,7 +410,7 @@ void Reaction::SetPip(int i)
                 if (_is_FD_Pip)
                 {
                         // fpip = 1.0;
-                        fpip = objMomCorr->dppC(_px_prime_pip_E, _py_prime_pip_E, _pz_prime_pip_E, _data->dc_sec(i), 1)+ 1;
+                        fpip = objMomCorr->dppC(_px_prime_pip_E, _py_prime_pip_E, _pz_prime_pip_E, _data->dc_sec(i), 1) + 1;
                 }
                 else
                 {
@@ -424,8 +421,7 @@ void Reaction::SetPip(int i)
                 // _pip->SetXYZM(_px_prime_pip_E * fpip, _py_prime_pip_E * fpip, _pz_prime_pip_E * fpip, MASS_PIP);
                 mom_corr_pip->SetXYZM(_px_prime_pip_E * fpip, _py_prime_pip_E * fpip, _pz_prime_pip_E * fpip, MASS_PIP);
                 /////// vector method for many pip
-           /////////            pip->SetXYZM(_px_prime_pip_E * fpip, _py_prime_pip_E * fpip, _pz_prime_pip_E * fpip, MASS_PIP);
-
+                /////////            pip->SetXYZM(_px_prime_pip_E * fpip, _py_prime_pip_E * fpip, _pz_prime_pip_E * fpip, MASS_PIP);
 
                 _pip_mom = mom_corr_pip->P();
                 if (mom_corr_pip->Phi() > 0)
@@ -452,7 +448,7 @@ void Reaction::SetPip(int i)
                 _pip.push_back(std::move(pip)); // Add pip to the vector
                 // _mom_corr_pip.push_back(std::move(mom_corr_pip)); // Add pip to the vector
                 _pip_indices.push_back(i); // Store the index}
-       }
+        }
 }
 
 void Reaction::SetSwappedProton(int i)
@@ -634,7 +630,7 @@ void Reaction::SetPim(int i)
         _pim_status = abs(_data->status(i));
         _sectorPim = _data->dc_sec(i);
 
-       pim->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_PIM);
+        pim->SetXYZM(_data->px(i), _data->py(i), _data->pz(i), MASS_PIM);
         //// // _pim->SetPxPyPzE(_data->px(i), _data->py(i), _data->pz(i), sqrt(_data->px(i) * _data->px(i) + _data->py(i) * _data->py(i) + _data->pz(i) * _data->pz(i) + MASS_PIM * MASS_PIM));
         // _thetaDC_r1_Pim = RAD2DEG * (atan2(sqrt(pow(_data->dc_r1_x(i), 2) + pow(_data->dc_r1_y(i), 2)),
         // _data->dc_r1_z(i)));
@@ -725,9 +721,9 @@ void Reaction::SetPim(int i)
                 }
 
                 /////// vector method for many pim
-                
-///////////                 pim->SetXYZM(_px_prime_pim_E, _py_prime_pim_E, _pz_prime_pim_E , MASS_PIM);
-                
+
+                ///////////                 pim->SetXYZM(_px_prime_pim_E, _py_prime_pim_E, _pz_prime_pim_E , MASS_PIM);
+
                 mom_corr_pim->SetXYZM(_px_prime_pim_E * fpim, _py_prime_pim_E * fpim, _pz_prime_pim_E * fpim, MASS_PIM);
 
                 _pim_mom = mom_corr_pim->P();
@@ -1143,6 +1139,7 @@ void Reaction::EffCorrFactor(const TLorentzVector &prot, const TLorentzVector &p
 
         // _eff_corr_fact_Excl = objEffCorr->EFF_CORR_FACT(_pr_p, _pr_th, _pr_ph_eff, _pip_p, _pip_th, _pip_ph_eff, _pim_p, _pim_th, _pim_ph_eff);
         _eff_corr_fact_mPim = objEffCorr->EFF_CORR_FACT1(_pr_p, _pr_th, _pr_ph_eff, _pip_p, _pip_th, _pip_ph_eff);
+
         // if (_eff_corr_fact_mPim == 1.0 )
         // {
         //         std::cout << "  pr_p :  " << _pr_p << "  pr_th :  " << _pr_th << "  pr_phi :  " << _pr_ph_eff << std::endl;

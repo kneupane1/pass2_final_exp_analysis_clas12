@@ -528,7 +528,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                                         // // std::cout << "  event->GetProtonIndices()[i]  : " << event->GetProtonIndices()[i] << "  Pip index  : " << event->GetPipIndices()[j] << std::endl;
                                                                                         // event->CalcMissMassPim(*event->GetProtons()[i], *event->GetPips()[j]);
-                                                                                        // event->boost(*event->GetProtons()[i], *event->GetPips()[j]);
+                                                                                        event->boost(*event->GetProtons()[i], *event->GetPips()[j]);
                                                                                         // event->CalcMissMassPimSwapped();
                                                                                         // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
                                                                                         // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
@@ -542,15 +542,16 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                             (event->MM2_mprot() < 0.763 || event->MM2_mprot() > 1.003))
                                                                                         //     float mmsq_low_values_for_bkg[2][2][3] = {{{-0.004, -0.028, 0.763}, {0.002, 0.071, 0.1003}}, {{-0.004, -0.024, -0.79}, {0.002, 0.079, 0.1025}}};
 
-                                                                                        // if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
                                                                                         {
+                                                                                                if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
+
                                                                                                 //////////////                if (dv2_Prot < 0.01)
                                                                                                 {
 
                                                                                                         // _hists->FillHists_electron_with_cuts(data, event);
 
-                                                                                                        // event->EffCorrFactor(*event->GetProtons()[i], *event->GetPips()[j]);
-                                                                                                        // event->weight();
+                                                                                                        event->EffCorrFactor(*event->GetProtons()[i], *event->GetPips()[j]);
+                                                                                                        event->weight();
 
                                                                                                         // if (num_combinations == 1)
                                                                                                         // {
