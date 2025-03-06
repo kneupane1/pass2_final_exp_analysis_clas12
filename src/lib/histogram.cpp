@@ -416,76 +416,76 @@ void Histogram::Write()
         THnSparse_7D_pip_evt_folder->cd();
         writeHists7D_pip_evt();
 
-        ///////////////////  tight cuts /////////////////
+        // ///////////////////  tight cuts /////////////////
 
-        std::cerr << BOLDBLUE << " Hists_7D() tight " << DEF << std::endl;
-        TDirectory *THnSparse_7D_prot_folder_tight =
-            RootOutputFile->mkdir("THnSparse_7D_prot_tight");
-        THnSparse_7D_prot_folder_tight->cd();
-        writeHists7D_prot_tight();
+        // std::cerr << BOLDBLUE << " Hists_7D() tight " << DEF << std::endl;
+        // TDirectory *THnSparse_7D_prot_folder_tight =
+        //     RootOutputFile->mkdir("THnSparse_7D_prot_tight");
+        // THnSparse_7D_prot_folder_tight->cd();
+        // writeHists7D_prot_tight();
 
-        TDirectory *THnSparse_7D_prot_evt_folder_tight =
-            RootOutputFile->mkdir("THnSparse_7D_prot_evt_tight");
-        THnSparse_7D_prot_evt_folder_tight->cd();
-        writeHists7D_prot_evt_tight();
+        // TDirectory *THnSparse_7D_prot_evt_folder_tight =
+        //     RootOutputFile->mkdir("THnSparse_7D_prot_evt_tight");
+        // THnSparse_7D_prot_evt_folder_tight->cd();
+        // writeHists7D_prot_evt_tight();
 
-        TDirectory *THnSparse_7D_pim_folder_tight =
-            RootOutputFile->mkdir("THnSparse_7D_pim_tight");
-        THnSparse_7D_pim_folder_tight->cd();
-        writeHists7D_pim_tight();
+        // TDirectory *THnSparse_7D_pim_folder_tight =
+        //     RootOutputFile->mkdir("THnSparse_7D_pim_tight");
+        // THnSparse_7D_pim_folder_tight->cd();
+        // writeHists7D_pim_tight();
 
-        TDirectory *THnSparse_7D_pim_evt_folder_tight =
-            RootOutputFile->mkdir("THnSparse_7D_pim_evt_tight");
-        THnSparse_7D_pim_evt_folder_tight->cd();
-        writeHists7D_pim_evt_tight();
+        // TDirectory *THnSparse_7D_pim_evt_folder_tight =
+        //     RootOutputFile->mkdir("THnSparse_7D_pim_evt_tight");
+        // THnSparse_7D_pim_evt_folder_tight->cd();
+        // writeHists7D_pim_evt_tight();
 
-        TDirectory *THnSparse_7D_pip_folder_tight =
-            RootOutputFile->mkdir("THnSparse_7D_pip_tight");
-        THnSparse_7D_pip_folder_tight->cd();
-        writeHists7D_pip_tight();
+        // TDirectory *THnSparse_7D_pip_folder_tight =
+        //     RootOutputFile->mkdir("THnSparse_7D_pip_tight");
+        // THnSparse_7D_pip_folder_tight->cd();
+        // writeHists7D_pip_tight();
 
-        TDirectory *THnSparse_7D_pip_evt_folder_tight =
-            RootOutputFile->mkdir("THnSparse_7D_pip_evt_tight");
-        THnSparse_7D_pip_evt_folder_tight->cd();
-        writeHists7D_pip_evt_tight();
+        // TDirectory *THnSparse_7D_pip_evt_folder_tight =
+        //     RootOutputFile->mkdir("THnSparse_7D_pip_evt_tight");
+        // THnSparse_7D_pip_evt_folder_tight->cd();
+        // writeHists7D_pip_evt_tight();
 
-        ///////////////////  loose cuts /////////////////
+        // ///////////////////  loose cuts /////////////////
 
-        std::cerr << BOLDBLUE << " Hists_7D() loose " << DEF << std::endl;
-        TDirectory *THnSparse_7D_prot_folder_loose =
-            RootOutputFile->mkdir("THnSparse_7D_prot_loose");
-        THnSparse_7D_prot_folder_loose->cd();
-        writeHists7D_prot_loose();
+        // std::cerr << BOLDBLUE << " Hists_7D() loose " << DEF << std::endl;
+        // TDirectory *THnSparse_7D_prot_folder_loose =
+        //     RootOutputFile->mkdir("THnSparse_7D_prot_loose");
+        // THnSparse_7D_prot_folder_loose->cd();
+        // writeHists7D_prot_loose();
 
-        TDirectory *THnSparse_7D_prot_evt_folder_loose =
-            RootOutputFile->mkdir("THnSparse_7D_prot_evt_loose");
-        THnSparse_7D_prot_evt_folder_loose->cd();
-        writeHists7D_prot_evt_loose();
+        // TDirectory *THnSparse_7D_prot_evt_folder_loose =
+        //     RootOutputFile->mkdir("THnSparse_7D_prot_evt_loose");
+        // THnSparse_7D_prot_evt_folder_loose->cd();
+        // writeHists7D_prot_evt_loose();
 
-        TDirectory *THnSparse_7D_pim_folder_loose =
-            RootOutputFile->mkdir("THnSparse_7D_pim_loose");
-        THnSparse_7D_pim_folder_loose->cd();
-        writeHists7D_pim_loose();
+        // TDirectory *THnSparse_7D_pim_folder_loose =
+        //     RootOutputFile->mkdir("THnSparse_7D_pim_loose");
+        // THnSparse_7D_pim_folder_loose->cd();
+        // writeHists7D_pim_loose();
 
-        TDirectory *THnSparse_7D_pim_evt_folder_loose =
-            RootOutputFile->mkdir("THnSparse_7D_pim_evt_loose");
-        THnSparse_7D_pim_evt_folder_loose->cd();
-        writeHists7D_pim_evt_loose();
+        // TDirectory *THnSparse_7D_pim_evt_folder_loose =
+        //     RootOutputFile->mkdir("THnSparse_7D_pim_evt_loose");
+        // THnSparse_7D_pim_evt_folder_loose->cd();
+        // writeHists7D_pim_evt_loose();
 
-        TDirectory *THnSparse_7D_pip_folder_loose =
-            RootOutputFile->mkdir("THnSparse_7D_pip_loose");
-        THnSparse_7D_pip_folder_loose->cd();
-        writeHists7D_pip_loose();
+        // TDirectory *THnSparse_7D_pip_folder_loose =
+        //     RootOutputFile->mkdir("THnSparse_7D_pip_loose");
+        // THnSparse_7D_pip_folder_loose->cd();
+        // writeHists7D_pip_loose();
 
-        TDirectory *THnSparse_7D_pip_evt_folder_loose =
-            RootOutputFile->mkdir("THnSparse_7D_pip_evt_loose");
-        THnSparse_7D_pip_evt_folder_loose->cd();
-        writeHists7D_pip_evt_loose();
+        // TDirectory *THnSparse_7D_pip_evt_folder_loose =
+        //     RootOutputFile->mkdir("THnSparse_7D_pip_evt_loose");
+        // THnSparse_7D_pip_evt_folder_loose->cd();
+        // writeHists7D_pip_evt_loose();
 
-        /////////////////// PID CHECKS //////////////////////
-        /////////////////// PID CHECKS //////////////////////
-        /////////////////// PID CHECKS //////////////////////
-        /////////////////// PID CHECKS //////////////////////
+        // /////////////////// PID CHECKS //////////////////////
+        // /////////////////// PID CHECKS //////////////////////
+        // /////////////////// PID CHECKS //////////////////////
+        // /////////////////// PID CHECKS //////////////////////
 
         std::cerr
             << BOLDBLUE << "WvsQ2()" << DEF << std::endl;
@@ -830,9 +830,9 @@ void Histogram::Fill_histSevenD_prot(const std::shared_ptr<Reaction> &_e)
 
         if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // sevenDHist_prot[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -875,10 +875,10 @@ void Histogram::Fill_histSevenD_prot_evt(const std::shared_ptr<Reaction> &_e)
         x[4] = _e->alpha_pippim_pipf();
         if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
 
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_prot_evt[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
@@ -917,11 +917,11 @@ void Histogram::Fill_histSevenD_pip(const std::shared_ptr<Reaction> &_e)
         x[4] = _e->alpha_ppim_pipip();
         if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
                         // float mmsq_low_values_for_bkg[2][2][3] = {{{-0.004, -0.028, 0.763}, {0.002, 0.071, 1.003}}};
 
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // sevenDHist_pip[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -959,9 +959,9 @@ void Histogram::Fill_histSevenD_pip_evt(const std::shared_ptr<Reaction> &_e)
         x[4] = _e->alpha_ppim_pipip();
         if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_pip_evt[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
@@ -1001,9 +1001,9 @@ void Histogram::Fill_histSevenD_pim(const std::shared_ptr<Reaction> &_e)
 
         if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // sevenDHist_pim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -1042,9 +1042,9 @@ void Histogram::Fill_histSevenD_pim_evt(const std::shared_ptr<Reaction> &_e)
         x[4] = _e->alpha_ppip_pipim();
         if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
+                if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_pim_evt[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
@@ -1092,7 +1092,7 @@ void Histogram::Fill_histSevenD_prot_tight(const std::shared_ptr<Reaction> &_e)
         {
                 // //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // sevenDHist_prot_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -1138,7 +1138,7 @@ void Histogram::Fill_histSevenD_prot_evt_tight(const std::shared_ptr<Reaction> &
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
 
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_prot_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
@@ -1179,7 +1179,7 @@ void Histogram::Fill_histSevenD_pip_tight(const std::shared_ptr<Reaction> &_e)
         {
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // sevenDHist_pip_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -1219,7 +1219,7 @@ void Histogram::Fill_histSevenD_pip_evt_tight(const std::shared_ptr<Reaction> &_
         {
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_pip_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
@@ -1261,7 +1261,7 @@ void Histogram::Fill_histSevenD_pim_tight(const std::shared_ptr<Reaction> &_e)
         {
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // sevenDHist_pim_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -1302,7 +1302,7 @@ void Histogram::Fill_histSevenD_pim_evt_tight(const std::shared_ptr<Reaction> &_
         {
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_pim_evt_tight[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
@@ -1350,7 +1350,7 @@ void Histogram::Fill_histSevenD_prot_loose(const std::shared_ptr<Reaction> &_e)
         {
                 // //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // sevenDHist_prot_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -1396,7 +1396,7 @@ void Histogram::Fill_histSevenD_prot_evt_loose(const std::shared_ptr<Reaction> &
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
 
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_prot_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
@@ -1437,7 +1437,7 @@ void Histogram::Fill_histSevenD_pip_loose(const std::shared_ptr<Reaction> &_e)
         {
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // sevenDHist_pip_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -1477,7 +1477,7 @@ void Histogram::Fill_histSevenD_pip_evt_loose(const std::shared_ptr<Reaction> &_
         {
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_pip_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
@@ -1519,7 +1519,7 @@ void Histogram::Fill_histSevenD_pim_loose(const std::shared_ptr<Reaction> &_e)
         {
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 sevenDHist_pim_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight());
@@ -1560,7 +1560,7 @@ void Histogram::Fill_histSevenD_pim_evt_loose(const std::shared_ptr<Reaction> &_
         {
                 //////////////////// if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 {
-                        if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
+                        //////////////////////// if (((_e->MM2_exclusive() < -0.004) || (_e->MM2_exclusive() > 0.002)) && ((_e->MM2_mpip() < -0.028) || (_e->MM2_mpip() > 0.071)) && ((_e->MM2_mprot() < 0.763) || (_e->MM2_mprot() > 1.003)))
                         {
                                 TThread::Lock();
                                 // h_5dim_pim_evt_loose[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(x, _e->weight() * _e->weight());
