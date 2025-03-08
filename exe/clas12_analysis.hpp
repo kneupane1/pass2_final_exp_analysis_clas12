@@ -134,8 +134,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                         continue;
                 // event->SetMomCorrElec();
 
-                // if (!_qa->Golden(data->getRun(), data->getEvent()))
-                //         continue;
+                if (!_qa->Golden(data->getRun(), data->getEvent()))
+                        continue;
                 // std::string defectName = "TerminalOutlier"; // Example defect bit 1
                 // _qa->CheckForDefect(defectName.c_str(), false);
 
@@ -286,203 +286,203 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                 if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
                 {
                         events_passes_w_q2_cuts++;
-                        // {
-
-                        if (event->TwoPion_exclusive())
                         {
-                                for (size_t i = 0; i < event->GetProtons().size(); ++i)
-                                {
-                                        for (size_t j = 0; j < event->GetPips().size(); ++j)
+
+                                // if (event->TwoPion_exclusive())
+                                // {
+                                //         for (size_t i = 0; i < event->GetProtons().size(); ++i)
+                                //         {
+                                //                 for (size_t j = 0; j < event->GetPips().size(); ++j)
+                                //                 {
+                                //                         for (size_t k = 0; k < event->GetPims().size(); ++k)
+                                //                         {
+                                //                                 event->CalcMissMassExcl(*event->GetProtons()[i], *event->GetPips()[j], *event->GetPims()[k]);
+
+                                //                                 //                                 //         //                                 two_pion_Excl_events++;
+                                //                                 //                                 //         //                                 _hists->Fill_WvsQ2(event);
+
+                                //                                 //                                 //         // // You should have a similar method for π⁻ if applicable
+                                //                                 //                                 //         dt->dt_calc(event->GetPimIndices()[k]);
+                                //                                 //                                 //         _hists->Fill_deltat_pim_after_cut(data, dt, event->GetPimIndices()[k], event);
+                                //                                 //                                 //         _hists->FillHists_pim_pid_with_cuts(data, event, event->GetPimIndices()[k]);
+                                //                                 //                                 // }
+                                //                                 //                                 // //                 }
+                                //                                 //                                 // //         }
+                                //                                 //                                 // // }
+
+                                if (event->TwoPion_missingPim())
+                                { // // Retrieve the number of protons and pions in the event
+
+                                        int num_protons = event->GetProtons().size();
+                                        int num_pips = event->GetPips().size();
+                                        int num_combinations = 0;
+                                        // std::cout << "  .......................   Insside .................... " << std::endl;
+                                        // std::cout << "  event number  " << current_event << "   Number of particles: " << data->gpart() << std::endl;
+                                        // std::cout << std::endl;
+                                        // // Calculate the total number of combinations
+                                        // size_t num_combinations = num_protons * num_pips;
+
+                                        // // Get the vector of protons
+                                        // const auto &protons = event->GetProtons();
+                                        // const auto &pip = event->GetPips();
+
+                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
+                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
+                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
+                                        // _hists->Fill_WvsQ2(event);
+
+                                        // First loop: count valid combinations
+                                        for (size_t i = 0; i < num_protons; ++i)
                                         {
-                                                for (size_t k = 0; k < event->GetPims().size(); ++k)
+                                                // std::cout << " prot dp inside loop : " << proton_dps[i].second << std::endl;
+
+                                                for (size_t j = 0; j < num_pips; ++j)
                                                 {
-                                                        event->CalcMissMassExcl(*event->GetProtons()[i], *event->GetPips()[j], *event->GetPims()[k]);
+                                                        // std::cout << " pip dp inside loop   : " << pip_dps[j].second << std::endl;
 
-                                                        //                                 //         //                                 two_pion_Excl_events++;
-                                                        //                                 //         //                                 _hists->Fill_WvsQ2(event);
-
-                                                        //                                 //         // // You should have a similar method for π⁻ if applicable
-                                                        //                                 //         dt->dt_calc(event->GetPimIndices()[k]);
-                                                        //                                 //         _hists->Fill_deltat_pim_after_cut(data, dt, event->GetPimIndices()[k], event);
-                                                        //                                 //         _hists->FillHists_pim_pid_with_cuts(data, event, event->GetPimIndices()[k]);
-                                                        //                                 // }
-                                                        //                                 // //                 }
-                                                        //                                 // //         }
-                                                        //                                 // // }
-
-                                                        // if (event->TwoPion_missingPim())
-                                                        // { // // Retrieve the number of protons and pions in the event
-
-                                                        int num_protons = event->GetProtons().size();
-                                                        int num_pips = event->GetPips().size();
-                                                        int num_combinations = 0;
-                                                        // std::cout << "  .......................   Insside .................... " << std::endl;
-                                                        // std::cout << "  event number  " << current_event << "   Number of particles: " << data->gpart() << std::endl;
-                                                        // std::cout << std::endl;
-                                                        // // Calculate the total number of combinations
-                                                        // size_t num_combinations = num_protons * num_pips;
-
-                                                        // // Get the vector of protons
-                                                        // const auto &protons = event->GetProtons();
-                                                        // const auto &pip = event->GetPips();
-
-                                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
-                                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
-                                                        ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
-                                                        // _hists->Fill_WvsQ2(event);
-
-                                                        // First loop: count valid combinations
-                                                        for (size_t i = 0; i < num_protons; ++i)
+                                                        // if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
                                                         {
-                                                                // std::cout << " prot dp inside loop : " << proton_dps[i].second << std::endl;
+                                                                num_combinations++;
+                                                        }
+                                                }
+                                        }
 
-                                                                for (size_t j = 0; j < num_pips; ++j)
+                                        ///////////////////////////////////////////////////
+
+                                        bool proton_cdfd_cut = false;
+                                        bool pip_cdfd_cut = false;
+                                        double dp_Prot = NAN;
+                                        double dtheta_Prot = NAN;
+                                        double dphi_Prot = NAN;
+                                        double dp_Pip = NAN;
+                                        double dtheta_Pip = NAN;
+                                        double dphi_Pip = NAN;
+
+                                        // Loop over particles to check proton and pip
+                                        for (int part1 = 0; part1 < data->gpart(); part1++)
+                                        {
+                                                // std::cout << "  current event  " << current_event << "  no of parts = " << data->gpart()
+                                                //           << " part at " << part1 << " is  " << data->pid(part1) << std::endl;
+                                                dt->dt_calc(part1);
+
+                                                // Proton Block
+                                                if (cuts->IsProton(part1))
+                                                {
+                                                        bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
+                                                        bool isCD1 = (data->status(part1) > 4000);
+                                                        // if (isFD1)
+                                                        //   std::cout << "   part1 " << part1 << "  is in FD with status " << data->status(part1) << "   with id "
+                                                        //             << data->pid(part1) << std::endl;
+                                                        // if (isCD1)
+                                                        //   std::cout << "   part1 " << part1 << "  is in CD with status " << data->status(part1) << "   with id "
+                                                        //             << data->pid(part1) << std::endl;
+
+                                                        if (isFD1 || isCD1)
+                                                        { // Ensure part1 is in FD or CD
+                                                                TLorentzVector track1;
+
+                                                                track1.SetXYZM(data->px(part1), data->py(part1), data->pz(part1), MASS_P);
+
+                                                                for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
                                                                 {
-                                                                        // std::cout << " pip dp inside loop   : " << pip_dps[j].second << std::endl;
-
-                                                                        // if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
+                                                                        if (cuts->IsProton(part2))
                                                                         {
-                                                                                num_combinations++;
-                                                                        }
-                                                                }
-                                                        }
+                                                                                bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
+                                                                                bool isCD2 = (data->status(part2) > 4000);
 
-                                                        ///////////////////////////////////////////////////
+                                                                                // if (isFD2)
+                                                                                //   std::cout << "   part2  " << part2 << "  is in FD with status " << data->status(part2)
+                                                                                //             << "   with id " << data->pid(part2) << std::endl;
+                                                                                // if (isCD2)
+                                                                                //   std::cout << "   part2 " << part2 << "  is in CD with status " << data->status(part2)
+                                                                                //             << "   with id " << data->pid(part2) << std::endl;
 
-                                                        bool proton_cdfd_cut = false;
-                                                        bool pip_cdfd_cut = false;
-                                                        double dp_Prot = NAN;
-                                                        double dtheta_Prot = NAN;
-                                                        double dphi_Prot = NAN;
-                                                        double dp_Pip = NAN;
-                                                        double dtheta_Pip = NAN;
-                                                        double dphi_Pip = NAN;
-
-                                                        // Loop over particles to check proton and pip
-                                                        for (int part1 = 0; part1 < data->gpart(); part1++)
-                                                        {
-                                                                // std::cout << "  current event  " << current_event << "  no of parts = " << data->gpart()
-                                                                //           << " part at " << part1 << " is  " << data->pid(part1) << std::endl;
-                                                                dt->dt_calc(part1);
-
-                                                                // Proton Block
-                                                                if (cuts->IsProton(part1))
-                                                                {
-                                                                        bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
-                                                                        bool isCD1 = (data->status(part1) > 4000);
-                                                                        // if (isFD1)
-                                                                        //   std::cout << "   part1 " << part1 << "  is in FD with status " << data->status(part1) << "   with id "
-                                                                        //             << data->pid(part1) << std::endl;
-                                                                        // if (isCD1)
-                                                                        //   std::cout << "   part1 " << part1 << "  is in CD with status " << data->status(part1) << "   with id "
-                                                                        //             << data->pid(part1) << std::endl;
-
-                                                                        if (isFD1 || isCD1)
-                                                                        { // Ensure part1 is in FD or CD
-                                                                                TLorentzVector track1;
-
-                                                                                track1.SetXYZM(data->px(part1), data->py(part1), data->pz(part1), MASS_P);
-
-                                                                                for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
+                                                                                if ((isFD1 && isCD2) || (isCD1 && isFD2))
                                                                                 {
-                                                                                        if (cuts->IsProton(part2))
+                                                                                        TLorentzVector track2;
+                                                                                        track2.SetXYZM(data->px(part2), data->py(part2), data->pz(part2), MASS_P);
+
+                                                                                        TLorentzVector trackFD = isFD1 ? track1 : track2;
+                                                                                        TLorentzVector trackCD = isCD1 ? track1 : track2;
+
+                                                                                        dp_Prot = (trackFD.P() - trackCD.P());
+                                                                                        dtheta_Prot = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
+                                                                                        dphi_Prot = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
+                                                                                        _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
+
+                                                                                        // Apply proton cuts
+                                                                                        // if (dp_Prot > -0.6 && dp_Prot < 0.2 && dtheta_Prot > -7 && dphi_Prot > -20 && dphi_Prot < 5)
+                                                                                        if (dp_Prot > -0.3 && dp_Prot < 0.0 && dtheta_Prot > -3 && dtheta_Prot < 3 && dphi_Prot > -5 && dphi_Prot < 2)
                                                                                         {
-                                                                                                bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
-                                                                                                bool isCD2 = (data->status(part2) > 4000);
-
-                                                                                                // if (isFD2)
-                                                                                                //   std::cout << "   part2  " << part2 << "  is in FD with status " << data->status(part2)
-                                                                                                //             << "   with id " << data->pid(part2) << std::endl;
-                                                                                                // if (isCD2)
-                                                                                                //   std::cout << "   part2 " << part2 << "  is in CD with status " << data->status(part2)
-                                                                                                //             << "   with id " << data->pid(part2) << std::endl;
-
-                                                                                                if ((isFD1 && isCD2) || (isCD1 && isFD2))
-                                                                                                {
-                                                                                                        TLorentzVector track2;
-                                                                                                        track2.SetXYZM(data->px(part2), data->py(part2), data->pz(part2), MASS_P);
-
-                                                                                                        TLorentzVector trackFD = isFD1 ? track1 : track2;
-                                                                                                        TLorentzVector trackCD = isCD1 ? track1 : track2;
-
-                                                                                                        dp_Prot = (trackFD.P() - trackCD.P());
-                                                                                                        dtheta_Prot = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
-                                                                                                        dphi_Prot = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
-                                                                                                        _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
-
-                                                                                                        // Apply proton cuts
-                                                                                                        // if (dp_Prot > -0.6 && dp_Prot < 0.2 && dtheta_Prot > -7 && dphi_Prot > -20 && dphi_Prot < 5)
-                                                                                                        if (dp_Prot > -0.3 && dp_Prot < 0.0 && dtheta_Prot > -3 && dtheta_Prot < 3 && dphi_Prot > -5 && dphi_Prot < 2)
-                                                                                                        {
-                                                                                                                proton_cdfd_cut = true;
-                                                                                                                //  // } else {  // Fill histograms
-                                                                                                                // h_dp_prot->Fill(dp_Prot, event->weight());
-                                                                                                                // h_dtheta_prot->Fill(dtheta_Prot, event->weight());
-                                                                                                                // h_dphi_prot->Fill(dphi_Prot, event->weight());
-                                                                                                        }
-                                                                                                }
-                                                                                        }
-                                                                                }
-                                                                        }
-                                                                }
-
-                                                                ///////////////////////////
-                                                                // Pip Block
-                                                                if (cuts->IsPip(part1))
-                                                                {
-                                                                        bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
-                                                                        bool isCD1 = (data->status(part1) > 4000);
-
-                                                                        if (isFD1 || isCD1)
-                                                                        { // Ensure part1 is in FD or CD
-                                                                                TLorentzVector track1;
-                                                                                track1.SetXYZM(data->px(part1), data->py(part1), data->pz(part1), MASS_PIP);
-
-                                                                                for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
-                                                                                {
-                                                                                        if (cuts->IsPip(part2))
-                                                                                        {
-                                                                                                bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
-                                                                                                bool isCD2 = (data->status(part2) > 4000);
-
-                                                                                                if ((isFD1 && isCD2) || (isCD1 && isFD2))
-                                                                                                {
-                                                                                                        TLorentzVector track2;
-                                                                                                        track2.SetXYZM(data->px(part2), data->py(part2), data->pz(part2), MASS_PIP);
-
-                                                                                                        TLorentzVector trackFD = isFD1 ? track1 : track2;
-                                                                                                        TLorentzVector trackCD = isCD1 ? track1 : track2;
-
-                                                                                                        dp_Pip = (trackFD.P() - trackCD.P());
-                                                                                                        dtheta_Pip = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
-                                                                                                        dphi_Pip = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
-                                                                                                        _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
-
-                                                                                                        // h_dp_pip->Fill(dp_Pip, event->weight());
-                                                                                                        // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
-                                                                                                        // h_dphi_pip->Fill(dphi_Pip, event->weight());
-                                                                                                        // Apply pip cuts
-                                                                                                        // if (dp_Pip > -0.4 && dp_Pip < 0.2 && dtheta_Pip > -10 && dtheta_Pip < 10 && dphi_Pip > -20 &&
-                                                                                                        //     dphi_Pip < 5)
-                                                                                                        if (dp_Pip > -0.25 && dp_Pip < 0.0 && dtheta_Pip > -3 && dtheta_Pip < 3 && dphi_Pip > -5 && dphi_Pip < 2)
-                                                                                                        {
-                                                                                                                pip_cdfd_cut = true;
-                                                                                                                // // } else {  // Fill histograms
-                                                                                                                // h_dp_pip->Fill(dp_Pip, event->weight());
-                                                                                                                // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
-                                                                                                                // h_dphi_pip->Fill(dphi_Pip, event->weight());
-                                                                                                        }
-                                                                                                }
+                                                                                                proton_cdfd_cut = true;
+                                                                                                //  // } else {  // Fill histograms
+                                                                                                // h_dp_prot->Fill(dp_Prot, event->weight());
+                                                                                                // h_dtheta_prot->Fill(dtheta_Prot, event->weight());
+                                                                                                // h_dphi_prot->Fill(dphi_Prot, event->weight());
                                                                                         }
                                                                                 }
                                                                         }
                                                                 }
                                                         }
+                                                }
 
-                                                        // for (size_t i = 0; i < num_protons; ++i)
-                                                        // {
-                                                        //         for (size_t j = 0; j < num_pips; ++j)
-                                                        //         {
+                                                ///////////////////////////
+                                                // Pip Block
+                                                if (cuts->IsPip(part1))
+                                                {
+                                                        bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
+                                                        bool isCD1 = (data->status(part1) > 4000);
+
+                                                        if (isFD1 || isCD1)
+                                                        { // Ensure part1 is in FD or CD
+                                                                TLorentzVector track1;
+                                                                track1.SetXYZM(data->px(part1), data->py(part1), data->pz(part1), MASS_PIP);
+
+                                                                for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
+                                                                {
+                                                                        if (cuts->IsPip(part2))
+                                                                        {
+                                                                                bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
+                                                                                bool isCD2 = (data->status(part2) > 4000);
+
+                                                                                if ((isFD1 && isCD2) || (isCD1 && isFD2))
+                                                                                {
+                                                                                        TLorentzVector track2;
+                                                                                        track2.SetXYZM(data->px(part2), data->py(part2), data->pz(part2), MASS_PIP);
+
+                                                                                        TLorentzVector trackFD = isFD1 ? track1 : track2;
+                                                                                        TLorentzVector trackCD = isCD1 ? track1 : track2;
+
+                                                                                        dp_Pip = (trackFD.P() - trackCD.P());
+                                                                                        dtheta_Pip = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
+                                                                                        dphi_Pip = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
+                                                                                        _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
+
+                                                                                        // h_dp_pip->Fill(dp_Pip, event->weight());
+                                                                                        // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
+                                                                                        // h_dphi_pip->Fill(dphi_Pip, event->weight());
+                                                                                        // Apply pip cuts
+                                                                                        // if (dp_Pip > -0.4 && dp_Pip < 0.2 && dtheta_Pip > -10 && dtheta_Pip < 10 && dphi_Pip > -20 &&
+                                                                                        //     dphi_Pip < 5)
+                                                                                        if (dp_Pip > -0.25 && dp_Pip < 0.0 && dtheta_Pip > -3 && dtheta_Pip < 3 && dphi_Pip > -5 && dphi_Pip < 2)
+                                                                                        {
+                                                                                                pip_cdfd_cut = true;
+                                                                                                // // } else {  // Fill histograms
+                                                                                                // h_dp_pip->Fill(dp_Pip, event->weight());
+                                                                                                // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
+                                                                                                // h_dphi_pip->Fill(dphi_Pip, event->weight());
+                                                                                        }
+                                                                                }
+                                                                        }
+                                                                }
+                                                        }
+                                                }
+                                        }
+
+                                        for (size_t i = 0; i < num_protons; ++i)
+                                        {
+                                                for (size_t j = 0; j < num_pips; ++j)
+                                                {
                                                         if (!(proton_cdfd_cut == true || pip_cdfd_cut == true))
                                                         //////                                                        if ((proton_cdfd_cut == true || pip_cdfd_cut == true))
                                                         {
@@ -527,9 +527,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 //                  pow(v_swapped_z_Pip - v_original_z_Pip, 2);
 
                                                                                 // // std::cout << "  event->GetProtonIndices()[i]  : " << event->GetProtonIndices()[i] << "  Pip index  : " << event->GetPipIndices()[j] << std::endl;
-                                                                                // event->CalcMissMassPim(*event->GetProtons()[i], *event->GetPips()[j]);
+                                                                                event->CalcMissMassPim(*event->GetProtons()[i], *event->GetPips()[j]);
                                                                                 event->boost(*event->GetProtons()[i], *event->GetPips()[j]);
-                                                                                // event->CalcMissMassPimSwapped();
+                                                                                event->CalcMissMassPimSwapped();
                                                                                 // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
                                                                                 // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
                                                                                 // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
@@ -539,9 +539,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 // // //////// if (event->MM2_mPim() > -0.1 && event->MM2_mPim() < 0.1)
                                                                                 // //     float mmsq_low_values_for_bkg[2][2][3] = {{{-0.004, -0.028, 0.763}, {0.002, 0.071, 0.1003}}, {{-0.004, -0.024, -0.79}, {0.002, 0.079, 0.1025}}};
 
-                                                                                if ((event->MM2_exclusive() < -0.004 || event->MM2_exclusive() > 0.002) &&
-                                                                                    (event->MM2_mpip() < -0.028 || event->MM2_mpip() > 0.071) &&
-                                                                                    (event->MM2_mprot() < 0.763 || event->MM2_mprot() > 1.003))
+                                                                                ////////// if ((event->MM2_exclusive() < -0.004 || event->MM2_exclusive() > 0.002) &&
+                                                                                //////////     (event->MM2_mpip() < -0.028 || event->MM2_mpip() > 0.071) &&
+                                                                                //////// //     (event->MM2_mprot() < 0.763 || event->MM2_mprot() > 1.003))
                                                                                 {
                                                                                         if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
 
@@ -604,28 +604,28 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                                 _hists->Fill_histSevenD_prot_evt(event);
                                                                                                 _hists->Fill_histSevenD_pip_evt(event);
                                                                                                 _hists->Fill_histSevenD_pim_evt(event);
-                                                                                                // }
-                                                                                                // // if (_hists->MM_cut_tight(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                                // // {
-                                                                                                // //         _hists->Fill_MMSQ_mPim_1_comb(event);
-
-                                                                                                _hists->Fill_histSevenD_prot_tight(event);
-                                                                                                _hists->Fill_histSevenD_pip_tight(event);
-                                                                                                _hists->Fill_histSevenD_pim_tight(event);
-                                                                                                _hists->Fill_histSevenD_prot_evt_tight(event);
-                                                                                                _hists->Fill_histSevenD_pip_evt_tight(event);
-                                                                                                _hists->Fill_histSevenD_pim_evt_tight(event);
                                                                                                 // // }
-                                                                                                // // if (_hists->MM_cut_loose(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                                // // {
-                                                                                                // //         _hists->Fill_MMSQ_mPim_2_comb(event);
+                                                                                                // // // if (_hists->MM_cut_tight(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                                // // // {
+                                                                                                // // //         _hists->Fill_MMSQ_mPim_1_comb(event);
 
-                                                                                                _hists->Fill_histSevenD_prot_loose(event);
-                                                                                                _hists->Fill_histSevenD_pip_loose(event);
-                                                                                                _hists->Fill_histSevenD_pim_loose(event);
-                                                                                                _hists->Fill_histSevenD_prot_evt_loose(event);
-                                                                                                _hists->Fill_histSevenD_pip_evt_loose(event);
-                                                                                                _hists->Fill_histSevenD_pim_evt_loose(event);
+                                                                                                // _hists->Fill_histSevenD_prot_tight(event);
+                                                                                                // _hists->Fill_histSevenD_pip_tight(event);
+                                                                                                // _hists->Fill_histSevenD_pim_tight(event);
+                                                                                                // _hists->Fill_histSevenD_prot_evt_tight(event);
+                                                                                                // _hists->Fill_histSevenD_pip_evt_tight(event);
+                                                                                                // _hists->Fill_histSevenD_pim_evt_tight(event);
+                                                                                                // // // }
+                                                                                                // // // if (_hists->MM_cut_loose(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                                // // // {
+                                                                                                // // //         _hists->Fill_MMSQ_mPim_2_comb(event);
+
+                                                                                                // _hists->Fill_histSevenD_prot_loose(event);
+                                                                                                // _hists->Fill_histSevenD_pip_loose(event);
+                                                                                                // _hists->Fill_histSevenD_pim_loose(event);
+                                                                                                // _hists->Fill_histSevenD_prot_evt_loose(event);
+                                                                                                // _hists->Fill_histSevenD_pip_evt_loose(event);
+                                                                                                // _hists->Fill_histSevenD_pim_evt_loose(event);
                                                                                                 // }
                                                                                                 // //         }
                                                                                                 // // }
