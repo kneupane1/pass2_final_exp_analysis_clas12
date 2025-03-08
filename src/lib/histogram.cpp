@@ -418,74 +418,74 @@ void Histogram::Write()
 
         // ///////////////////  tight cuts /////////////////
 
-        // std::cerr << BOLDBLUE << " Hists_7D() tight " << DEF << std::endl;
-        // TDirectory *THnSparse_7D_prot_folder_tight =
-        //     RootOutputFile->mkdir("THnSparse_7D_prot_tight");
-        // THnSparse_7D_prot_folder_tight->cd();
-        // writeHists7D_prot_tight();
+        std::cerr << BOLDBLUE << " Hists_7D() tight " << DEF << std::endl;
+        TDirectory *THnSparse_7D_prot_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_prot_tight");
+        THnSparse_7D_prot_folder_tight->cd();
+        writeHists7D_prot_tight();
 
-        // TDirectory *THnSparse_7D_prot_evt_folder_tight =
-        //     RootOutputFile->mkdir("THnSparse_7D_prot_evt_tight");
-        // THnSparse_7D_prot_evt_folder_tight->cd();
-        // writeHists7D_prot_evt_tight();
+        TDirectory *THnSparse_7D_prot_evt_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_prot_evt_tight");
+        THnSparse_7D_prot_evt_folder_tight->cd();
+        writeHists7D_prot_evt_tight();
 
-        // TDirectory *THnSparse_7D_pim_folder_tight =
-        //     RootOutputFile->mkdir("THnSparse_7D_pim_tight");
-        // THnSparse_7D_pim_folder_tight->cd();
-        // writeHists7D_pim_tight();
+        TDirectory *THnSparse_7D_pim_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_pim_tight");
+        THnSparse_7D_pim_folder_tight->cd();
+        writeHists7D_pim_tight();
 
-        // TDirectory *THnSparse_7D_pim_evt_folder_tight =
-        //     RootOutputFile->mkdir("THnSparse_7D_pim_evt_tight");
-        // THnSparse_7D_pim_evt_folder_tight->cd();
-        // writeHists7D_pim_evt_tight();
+        TDirectory *THnSparse_7D_pim_evt_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_pim_evt_tight");
+        THnSparse_7D_pim_evt_folder_tight->cd();
+        writeHists7D_pim_evt_tight();
 
-        // TDirectory *THnSparse_7D_pip_folder_tight =
-        //     RootOutputFile->mkdir("THnSparse_7D_pip_tight");
-        // THnSparse_7D_pip_folder_tight->cd();
-        // writeHists7D_pip_tight();
+        TDirectory *THnSparse_7D_pip_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_pip_tight");
+        THnSparse_7D_pip_folder_tight->cd();
+        writeHists7D_pip_tight();
 
-        // TDirectory *THnSparse_7D_pip_evt_folder_tight =
-        //     RootOutputFile->mkdir("THnSparse_7D_pip_evt_tight");
-        // THnSparse_7D_pip_evt_folder_tight->cd();
-        // writeHists7D_pip_evt_tight();
+        TDirectory *THnSparse_7D_pip_evt_folder_tight =
+            RootOutputFile->mkdir("THnSparse_7D_pip_evt_tight");
+        THnSparse_7D_pip_evt_folder_tight->cd();
+        writeHists7D_pip_evt_tight();
 
-        // ///////////////////  loose cuts /////////////////
+        ///////////////////  loose cuts /////////////////
 
-        // std::cerr << BOLDBLUE << " Hists_7D() loose " << DEF << std::endl;
-        // TDirectory *THnSparse_7D_prot_folder_loose =
-        //     RootOutputFile->mkdir("THnSparse_7D_prot_loose");
-        // THnSparse_7D_prot_folder_loose->cd();
-        // writeHists7D_prot_loose();
+        std::cerr << BOLDBLUE << " Hists_7D() loose " << DEF << std::endl;
+        TDirectory *THnSparse_7D_prot_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_prot_loose");
+        THnSparse_7D_prot_folder_loose->cd();
+        writeHists7D_prot_loose();
 
-        // TDirectory *THnSparse_7D_prot_evt_folder_loose =
-        //     RootOutputFile->mkdir("THnSparse_7D_prot_evt_loose");
-        // THnSparse_7D_prot_evt_folder_loose->cd();
-        // writeHists7D_prot_evt_loose();
+        TDirectory *THnSparse_7D_prot_evt_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_prot_evt_loose");
+        THnSparse_7D_prot_evt_folder_loose->cd();
+        writeHists7D_prot_evt_loose();
 
-        // TDirectory *THnSparse_7D_pim_folder_loose =
-        //     RootOutputFile->mkdir("THnSparse_7D_pim_loose");
-        // THnSparse_7D_pim_folder_loose->cd();
-        // writeHists7D_pim_loose();
+        TDirectory *THnSparse_7D_pim_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_pim_loose");
+        THnSparse_7D_pim_folder_loose->cd();
+        writeHists7D_pim_loose();
 
-        // TDirectory *THnSparse_7D_pim_evt_folder_loose =
-        //     RootOutputFile->mkdir("THnSparse_7D_pim_evt_loose");
-        // THnSparse_7D_pim_evt_folder_loose->cd();
-        // writeHists7D_pim_evt_loose();
+        TDirectory *THnSparse_7D_pim_evt_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_pim_evt_loose");
+        THnSparse_7D_pim_evt_folder_loose->cd();
+        writeHists7D_pim_evt_loose();
 
-        // TDirectory *THnSparse_7D_pip_folder_loose =
-        //     RootOutputFile->mkdir("THnSparse_7D_pip_loose");
-        // THnSparse_7D_pip_folder_loose->cd();
-        // writeHists7D_pip_loose();
+        TDirectory *THnSparse_7D_pip_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_pip_loose");
+        THnSparse_7D_pip_folder_loose->cd();
+        writeHists7D_pip_loose();
 
-        // TDirectory *THnSparse_7D_pip_evt_folder_loose =
-        //     RootOutputFile->mkdir("THnSparse_7D_pip_evt_loose");
-        // THnSparse_7D_pip_evt_folder_loose->cd();
-        // writeHists7D_pip_evt_loose();
+        TDirectory *THnSparse_7D_pip_evt_folder_loose =
+            RootOutputFile->mkdir("THnSparse_7D_pip_evt_loose");
+        THnSparse_7D_pip_evt_folder_loose->cd();
+        writeHists7D_pip_evt_loose();
 
-        // /////////////////// PID CHECKS //////////////////////
-        // /////////////////// PID CHECKS //////////////////////
-        // /////////////////// PID CHECKS //////////////////////
-        // /////////////////// PID CHECKS //////////////////////
+        /////////////////// PID CHECKS //////////////////////
+        /////////////////// PID CHECKS //////////////////////
+        /////////////////// PID CHECKS //////////////////////
+        /////////////////// PID CHECKS //////////////////////
 
         std::cerr
             << BOLDBLUE << "WvsQ2()" << DEF << std::endl;
