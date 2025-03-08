@@ -121,7 +121,7 @@ void Reaction::SetElec()
         }
         else
         {
-                fe = objMomCorr->dppC(_data->px(0), _data->py(0), _data->pz(0), _data->dc_sec(0), 0) * 0.9 + 1;
+                fe = objMomCorr->dppC(_data->px(0), _data->py(0), _data->pz(0), _data->dc_sec(0), 0) + 1;
                 _elec->SetXYZM(_data->px(0) * fe, _data->py(0) * fe, _data->pz(0) * fe,
                                MASS_E); // this is new electron mom corrections aug 2022
                 // _elec->SetXYZM(_data->px(0) * fe, _data->py(0) * fe, _data->pz(0) * fe,
@@ -410,7 +410,7 @@ void Reaction::SetPip(int i)
                 if (_is_FD_Pip)
                 {
                         // fpip = 1.0;
-                        fpip = objMomCorr->dppC(_px_prime_pip_E, _py_prime_pip_E, _pz_prime_pip_E, _data->dc_sec(i), 1) * 0.9 + 1;
+                        fpip = objMomCorr->dppC(_px_prime_pip_E, _py_prime_pip_E, _pz_prime_pip_E, _data->dc_sec(i), 1) + 1;
                 }
                 else
                 {

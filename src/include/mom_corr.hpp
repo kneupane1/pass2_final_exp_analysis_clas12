@@ -9,10 +9,11 @@
 class mom_corr
 {
 private:
-  //   float alpha_prot_mom_corr_FD[4];
-  //   float alpha_prot_mom_corr_FD[4] = {0.5, 0.6, 0.5, 0.5};
-  float alpha_CD[3][3] = {{1, 1, 1}, {0.9, 0.9, 0.9}, {0.9, 0.9, 0.9}};
-  float alpha_FD[3] = {1.0, 0.9, 0.9};
+  // float alpha_CD[3][3] = {{1, 1, 1}, {0.9, 0.9, 0.9}, {0.9, 0.9, 0.9}};
+  // float alpha_FD[3] = {1.0, 0.9, 0.9};
+
+  float alpha_CD[3][3] = {{0.9, 0.9, 0.9}, {0.8, 0.8, 0.8}, {0.8, 0.8, 0.8}};
+  float alpha_FD[3] = {0.9, 0.8, 0.8};
 
   double sys_fac = 0.9;
 
