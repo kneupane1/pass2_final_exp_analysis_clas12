@@ -40,27 +40,31 @@ public:
     {
     }
     Pass2_Cuts(const std::shared_ptr<Branches12> &data, const std::shared_ptr<Delta_T> &dt) : Cuts(data, dt) {};
-    bool ElectronCuts();
-    bool IsPip(int i);
-    bool IsProton(int i);
+    bool ElectronCuts(std::string condition);
+    bool IsPip(int i, std::string condition);
+    bool IsProton(int i, std::string condition);
     bool IsPim(int i);
     // bool CC_nphe_cut(double nphe);
     bool CC_nphe_cut();
     bool PCAL_minimum_energy();
-    bool EC_sampling_fraction_cut();
-    bool EC_hit_position_fiducial_cut_homogeneous();
-    bool DC_fiducial_cut_XY(int i, int pid);
-    bool DC_z_vertex_cut();
+    bool EC_sampling_fraction_cut(std::string condition);
+    bool EC_hit_position_fiducial_cut_homogeneous(std::string condition);
+    bool DC_fiducial_cut_XY_PIP(int i, int pid, std::string condition);
+    bool DC_fiducial_cut_XY_PROT(int i, int pid, std::string condition);
+    bool DC_fiducial_cut_XY_E(std::string condition);
+    bool DC_z_vertex_cut(std::string condition);
     bool EC_inner_vs_EC_outer();
-    bool PCAL_fiducial_cut_X_Y();
+    bool PCAL_fiducial_cut_X_Y(std::string condition);
+    bool CD_fiducial_had(int i, std::string condition);
+
+    /////////////// Inefficient region cuts ////////////
     bool PCAL_Ineff_cut_X_Y();
-    bool DC_Ineff_cut_X_Y(int i, int pid);
+    bool DC_Ineff_cut_X_Y(int i, int pid, std::string condition);
 
     bool HadronsCuts(int i);
     bool DC_fiducial_cut_theta_phi(int i);
     bool Hadron_Delta_vz_cut(int i);
     bool Hadron_Chi2pid_cut(int i);
-    bool CD_fiducial_had(int i);
     // Function to get the momentum range index based on the value of p
 
     int getMomRangeIndex(double p)

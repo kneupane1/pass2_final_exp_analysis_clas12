@@ -118,7 +118,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                 // if (data->charge(0) == -1)
                 // _hists->FillHists_electron_cuts(data, event);
                 auto cuts = std::make_shared<Pass2_Cuts>(data);
-                if (!cuts->ElectronCuts())
+                if (!cuts->ElectronCuts("mid"))
                         continue;
                 // _hists->FillHists_electron_with_cuts(data, event);
 
@@ -133,7 +133,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                         // _hists->Fill_deltat_before_cut(data, dt, part, event);
 
-                        if (cuts->IsProton(part))
+                        if (cuts->IsProton(part, "mid"))
                         {
                                 // _hists->FillHists_prot_pid_cuts(data, event, part);
 
@@ -145,7 +145,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                         // _hists->Fill_deltat_prot_after_cut(data, dt, part, event);
                                 }
                         }
-                        else if (cuts->IsPip(part))
+                        else if (cuts->IsPip(part, "mid"))
                         {
                                 // _hists->FillHists_pip_pid_cuts(data, event, part);
                                 // if (cuts->HadronsCuts(part))

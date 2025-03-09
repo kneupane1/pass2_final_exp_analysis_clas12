@@ -20,7 +20,6 @@ Histogram::Histogram(const std::string &output_file)
                         p_max = 7.0;
                 }
         }
-
         ////// //////////////////////// This section is for THNSPARSE and related ////////////////////////////////
         ////// //////////////////////// This section is for THNSPARSE and related ////////////////////////////////
         ////// //////////////////////// This section is for THNSPARSE and related ////////////////////////////////
@@ -503,20 +502,20 @@ void Histogram::Write()
         // Write_MomVsBeta_folder->cd();
         // Write_MomVsBeta();
 
-        // std::cerr << BOLDBLUE << "Write_Electron_cuts()" << DEF << std::endl;
-        // TDirectory *Electron_Cuts = RootOutputFile->mkdir("Electron_Cuts");
-        // Electron_Cuts->cd();
-        // Write_Electron_cuts();
+        std::cerr << BOLDBLUE << "Write_Electron_cuts()" << DEF << std::endl;
+        TDirectory *Electron_Cuts = RootOutputFile->mkdir("Electron_Cuts");
+        Electron_Cuts->cd();
+        Write_Electron_cuts();
 
-        // std::cerr << BOLDBLUE << "Write_Hadrons_cuts()" << DEF << std::endl;
-        // TDirectory *Hadrons_Cuts = RootOutputFile->mkdir("Hadrons_Cuts");
-        // Hadrons_Cuts->cd();
-        // Write_Hadrons_cuts();
+        std::cerr << BOLDBLUE << "Write_Hadrons_cuts()" << DEF << std::endl;
+        TDirectory *Hadrons_Cuts = RootOutputFile->mkdir("Hadrons_Cuts");
+        Hadrons_Cuts->cd();
+        Write_Hadrons_cuts();
 
-        // std::cerr << BOLDBLUE << "Write_deltat()" << DEF << std::endl;
-        // TDirectory *Write_deltat_folder = RootOutputFile->mkdir("Delta_t");
-        // Write_deltat_folder->cd();
-        // Write_deltat();
+        std::cerr << BOLDBLUE << "Write_deltat()" << DEF << std::endl;
+        TDirectory *Write_deltat_folder = RootOutputFile->mkdir("Delta_t");
+        Write_deltat_folder->cd();
+        Write_deltat();
 
         // std::cerr << BOLDBLUE << "Write_MMSQ_mPim_3D()" << DEF << std::endl;
         // TDirectory *MMSQ_mPim_folder_3D = RootOutputFile->mkdir("MMSQ_mPim_3D");
@@ -1591,16 +1590,16 @@ void Histogram::writeHists7D_pim_evt_loose()
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
 void Histogram::Fill_cdfd_prot(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
 {
-        dp_prot_cdfd_hist->Fill(dp, _e->weight());
-        dth_prot_cdfd_hist->Fill(dth, _e->weight());
-        dphi_prot_cdfd_hist->Fill(dphi, _e->weight());
+        dp_prot_cdfd_hist->Fill(dp);
+        dth_prot_cdfd_hist->Fill(dth);
+        dphi_prot_cdfd_hist->Fill(dphi);
 }
 
 void Histogram::Fill_cdfd_pip(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
 {
-        dp_pip_cdfd_hist->Fill(dp, _e->weight());
-        dth_pip_cdfd_hist->Fill(dth, _e->weight());
-        dphi_pip_cdfd_hist->Fill(dphi, _e->weight());
+        dp_pip_cdfd_hist->Fill(dp);
+        dth_pip_cdfd_hist->Fill(dth);
+        dphi_pip_cdfd_hist->Fill(dphi);
 }
 void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
 {
@@ -1608,9 +1607,9 @@ void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
         TThread::Lock(); // Lock the thread to ensure exclusive access to the histograms
         // if (_e->MM2_mPim() > -0.06 && _e->MM2_mPim() < 0.08)
         {
-                W_vs_q2->Fill(_e->W(), _e->Q2(), _e->weight());
-                W_hist->Fill(_e->W(), _e->weight());
-                Q2_hist->Fill(_e->Q2(), _e->weight());
+                W_vs_q2->Fill(_e->W(), _e->Q2());
+                W_hist->Fill(_e->W());
+                Q2_hist->Fill(_e->Q2());
                 // weight_hist->Fill(_e->weight());
                 weight_hist->Fill(_e->weight());
 
@@ -1654,8 +1653,8 @@ void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
                 MM_twoPi_mPim->Fill(_e->MM_mPim(), _e->weight());
                 MM2_twoPi_mPim->Fill(_e->MM2_mPim(), _e->weight());
 
-                W_vs_MM->Fill(_e->W(), _e->MM_mPim(), _e->weight());
-                W_vs_MM2->Fill(_e->W(), _e->MM2_mPim(), _e->weight());
+                W_vs_MM->Fill(_e->W(), _e->MM_mPim());
+                W_vs_MM2->Fill(_e->W(), _e->MM2_mPim());
                 TThread::UnLock(); // Unlock after the operation
         }
         // }
@@ -1718,24 +1717,24 @@ void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
         }*/
 }
 
-void Histogram::Fill_WvsQ2_twoPi_thrown(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<MCReaction> &_e)
-{
-        // short sec = _e->sec();
-        // weight_hist->Fill(_e->weight());
+// void Histogram::Fill_WvsQ2_twoPi_thrown(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<MCReaction> &_e)
+// {
+//         // short sec = _e->sec();
+//         // weight_hist->Fill(_e->weight());
 
-        W_vs_q2_twoPi_thrown->Fill(_e->W_mc(), _e->Q2_mc(), _e->weight());
-        // W_hist_twoPi_thrown->Fill(_e->W_mc(), _e->weight());
-        // Q2_hist_twoPi_thrown->Fill(_e->Q2_mc(), _e->weight());
-        // W_vs_Q2_thrown->Fill(_e->W_mc(), _e->Q2_mc(), _e->weight());
-        W_thrown->Fill(_e->W_mc(), _e->weight());
-        Q2_thrown->Fill(_e->Q2_mc(), _e->weight());
+//         W_vs_q2_twoPi_thrown->Fill(_e->W_mc(), _e->Q2_mc(), _e->weight());
+//         // W_hist_twoPi_thrown->Fill(_e->W_mc(), _e->weight());
+//         // Q2_hist_twoPi_thrown->Fill(_e->Q2_mc(), _e->weight());
+//         // W_vs_Q2_thrown->Fill(_e->W_mc(), _e->Q2_mc(), _e->weight());
+//         W_thrown->Fill(_e->W_mc(), _e->weight());
+//         Q2_thrown->Fill(_e->Q2_mc(), _e->weight());
 
-        // theta_prot_thrown->Fill(_e->MCprot_theta_thrown(), _e->weight());
-        // theta_pip_thrown->Fill(_e->MCpip_theta_thrown(), _e->weight());
-        // theta_pim_thrown->Fill(_e->MCpim_theta_thrown(), _e->weight());
+//         // theta_prot_thrown->Fill(_e->MCprot_theta_thrown(), _e->weight());
+//         // theta_pip_thrown->Fill(_e->MCpip_theta_thrown(), _e->weight());
+//         // theta_pim_thrown->Fill(_e->MCpim_theta_thrown(), _e->weight());
 
-        // mc_pid_at_zero->Fill(_d->mc_pid(0));
-}
+//         // mc_pid_at_zero->Fill(_d->mc_pid(0));
+// }
 void Histogram::Write_WvsQ2()
 {
         W_thrown->SetXTitle("W_thrown (GeV)");
@@ -2222,105 +2221,105 @@ void Histogram::FillHists_electron_cuts(const std::shared_ptr<Branches12> &_d, c
         if (_e->W() > 1.35 && _e->W() <= 2.15 && _e->Q2() > 1.95 && _e->Q2() <= 9.0)
         {
 
-                vz_position[before_any_cuts]->Fill(_d->vz(0), _e->weight());
+                vz_position[before_any_cuts]->Fill(_d->vz(0));
                 if (_d->vz(0) > -10 && _d->vz(0) < 5)
-                        vz_position[with_one_cut]->Fill(_d->vz(0), _e->weight());
+                        vz_position[with_one_cut]->Fill(_d->vz(0));
                 else
-                        vz_position[outside_one_cut]->Fill(_d->vz(0), _e->weight());
+                        vz_position[outside_one_cut]->Fill(_d->vz(0));
 
                 //// pcal
-                pcal_sec[before_any_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
-                if (elec_cuts->EC_hit_position_fiducial_cut_homogeneous())
-                        pcal_sec[with_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
+                pcal_sec[before_any_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
+                if (elec_cuts->EC_hit_position_fiducial_cut_homogeneous(condition_of_cut))
+                        pcal_sec[with_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
                 else
-                        pcal_sec[outside_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
+                        pcal_sec[outside_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
                 //// pcal hx hy
-                pcal_hx_hy_sec[before_any_cuts]->Fill(_d->ec_pcal_hx(0), _d->ec_pcal_hy(0), _e->weight());
-                if (elec_cuts->PCAL_fiducial_cut_X_Y())
-                        pcal_hx_hy_sec[with_one_cut]->Fill(_d->ec_pcal_hx(0), _d->ec_pcal_hy(0), _e->weight());
+                pcal_hx_hy_sec[before_any_cuts]->Fill(_d->ec_pcal_hx(0), _d->ec_pcal_hy(0));
+                if (elec_cuts->PCAL_fiducial_cut_X_Y(condition_of_cut))
+                        pcal_hx_hy_sec[with_one_cut]->Fill(_d->ec_pcal_hx(0), _d->ec_pcal_hy(0));
                 else
-                        pcal_hx_hy_sec[outside_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
+                        pcal_hx_hy_sec[outside_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
 
                 //// pcal ineff
-                pcal_sec_ineff_cuts[before_any_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
+                pcal_sec_ineff_cuts[before_any_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
                 if (elec_cuts->PCAL_Ineff_cut_X_Y())
-                        pcal_sec_ineff_cuts[with_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
+                        pcal_sec_ineff_cuts[with_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
                 else
-                        pcal_sec_ineff_cuts[outside_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
+                        pcal_sec_ineff_cuts[outside_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
                 // dc
-                dcr1_sec[before_any_cuts]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0), _e->weight());
-                dcr2_sec[before_any_cuts]->Fill(_d->dc_r2_x(0), _d->dc_r2_y(0), _e->weight());
-                dcr3_sec[before_any_cuts]->Fill(_d->dc_r3_x(0), _d->dc_r3_y(0), _e->weight());
+                dcr1_sec[before_any_cuts]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0));
+                dcr2_sec[before_any_cuts]->Fill(_d->dc_r2_x(0), _d->dc_r2_y(0));
+                dcr3_sec[before_any_cuts]->Fill(_d->dc_r3_x(0), _d->dc_r3_y(0));
 
-                if (elec_cuts->DC_fiducial_cut_XY(ith_part, 0))
+                if (elec_cuts->DC_fiducial_cut_XY_E(condition_of_cut))
                 {
-                        dcr1_sec[with_one_cut]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0), _e->weight());
-                        dcr2_sec[with_one_cut]->Fill(_d->dc_r2_x(0), _d->dc_r2_y(0), _e->weight());
-                        dcr3_sec[with_one_cut]->Fill(_d->dc_r3_x(0), _d->dc_r3_y(0), _e->weight());
+                        dcr1_sec[with_one_cut]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0));
+                        dcr2_sec[with_one_cut]->Fill(_d->dc_r2_x(0), _d->dc_r2_y(0));
+                        dcr3_sec[with_one_cut]->Fill(_d->dc_r3_x(0), _d->dc_r3_y(0));
                 }
                 else
                 {
-                        dcr1_sec[outside_one_cut]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0), _e->weight());
-                        dcr2_sec[outside_one_cut]->Fill(_d->dc_r2_x(0), _d->dc_r2_y(0), _e->weight());
-                        dcr3_sec[outside_one_cut]->Fill(_d->dc_r3_x(0), _d->dc_r3_y(0), _e->weight());
+                        dcr1_sec[outside_one_cut]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0));
+                        dcr2_sec[outside_one_cut]->Fill(_d->dc_r2_x(0), _d->dc_r2_y(0));
+                        dcr3_sec[outside_one_cut]->Fill(_d->dc_r3_x(0), _d->dc_r3_y(0));
                 }
 
-                momentum[before_any_cuts]->Fill(_d->p(0), _e->weight());
+                momentum[before_any_cuts]->Fill(_d->p(0));
                 if (_d->p(0) > 1.50)
-                        momentum[with_one_cut]->Fill(_d->p(0), _e->weight());
+                        momentum[with_one_cut]->Fill(_d->p(0));
                 else
-                        momentum[outside_one_cut]->Fill(_d->p(0), _e->weight());
+                        momentum[outside_one_cut]->Fill(_d->p(0));
 
-                EC_sampling_fraction[before_any_cuts]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0), _e->weight());
-                if (elec_cuts->EC_sampling_fraction_cut())
+                EC_sampling_fraction[before_any_cuts]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
+                if (elec_cuts->EC_sampling_fraction_cut(condition_of_cut))
 
-                        EC_sampling_fraction[with_one_cut]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0), _e->weight());
+                        EC_sampling_fraction[with_one_cut]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
                 else
-                        EC_sampling_fraction[outside_one_cut]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0), _e->weight());
+                        EC_sampling_fraction[outside_one_cut]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
 
                 //
-                ECin_sf_vs_PCAL_sf[before_any_cuts]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)), _e->weight());
-                if (elec_cuts->EC_sampling_fraction_cut())
+                ECin_sf_vs_PCAL_sf[before_any_cuts]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)));
+                if (elec_cuts->EC_sampling_fraction_cut(condition_of_cut))
 
-                        ECin_sf_vs_PCAL_sf[with_one_cut]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)), _e->weight());
+                        ECin_sf_vs_PCAL_sf[with_one_cut]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)));
                 else
-                        ECin_sf_vs_PCAL_sf[outside_one_cut]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)), _e->weight());
+                        ECin_sf_vs_PCAL_sf[outside_one_cut]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)));
                 /////////
                 if (sec > 0 && sec <= 6)
                 {
                         /// nphe
-                        // htcc_nphe_sec[before_any_cuts][sec - 1]->Fill(_d->cc_htcc_nphe(0), _e->weight());
+                        // htcc_nphe_sec[before_any_cuts][sec - 1]->Fill(_d->cc_htcc_nphe(0));
                         // if (_d->cc_htcc_nphe(0) > 2)
-                        //         htcc_nphe_sec[with_one_cut][sec - 1]->Fill(_d->cc_htcc_nphe(0), _e->weight());
+                        //         htcc_nphe_sec[with_one_cut][sec - 1]->Fill(_d->cc_htcc_nphe(0));
                         // else
-                        //         htcc_nphe_sec[outside_one_cut][sec - 1]->Fill(_d->cc_htcc_nphe(0), _e->weight());
+                        //         htcc_nphe_sec[outside_one_cut][sec - 1]->Fill(_d->cc_htcc_nphe(0));
 
                         // chi2pid
-                        elec_Chi2pid_sec[before_any_cuts][sec - 1]->Fill(_d->chi2pid(0), _e->weight());
+                        elec_Chi2pid_sec[before_any_cuts][sec - 1]->Fill(_d->chi2pid(0));
                         if (_d->chi2pid(0) < 3)
-                                elec_Chi2pid_sec[with_one_cut][sec - 1]->Fill(_d->chi2pid(0), _e->weight());
+                                elec_Chi2pid_sec[with_one_cut][sec - 1]->Fill(_d->chi2pid(0));
                         else
-                                elec_Chi2pid_sec[outside_one_cut][sec - 1]->Fill(_d->chi2pid(0), _e->weight());
+                                elec_Chi2pid_sec[outside_one_cut][sec - 1]->Fill(_d->chi2pid(0));
                         // vz cut
-                        vz_sec[before_any_cuts][sec - 1]->Fill(_d->vz(0), _e->weight());
+                        vz_sec[before_any_cuts][sec - 1]->Fill(_d->vz(0));
                         // if (_d->vz(0) > -(2.78 + 3 * 2.16) && _d->vz(0) < (-2.78 + 3 * 2.16))
                         if (_d->vz(0) > -10 && _d->vz(0) < 5)
-                                vz_sec[with_one_cut][sec - 1]->Fill(_d->vz(0), _e->weight());
+                                vz_sec[with_one_cut][sec - 1]->Fill(_d->vz(0));
                         else
-                                vz_sec[outside_one_cut][sec - 1]->Fill(_d->vz(0), _e->weight());
+                                vz_sec[outside_one_cut][sec - 1]->Fill(_d->vz(0));
                         // ecal vs pcal
                         int momRangeIdx = getMomRange(_d->p(0));
-                        ECAL_VS_PCAL[before_any_cuts][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)), _e->weight());
+                        ECAL_VS_PCAL[before_any_cuts][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
                         if (elec_cuts->EC_inner_vs_EC_outer())
-                                ECAL_VS_PCAL[with_one_cut][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)), _e->weight());
+                                ECAL_VS_PCAL[with_one_cut][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
                         else
-                                ECAL_VS_PCAL[outside_one_cut][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)), _e->weight());
+                                ECAL_VS_PCAL[outside_one_cut][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
 
-                        SF_VS_MOM[before_any_cuts][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0), _e->weight());
-                        if (elec_cuts->EC_sampling_fraction_cut())
-                                SF_VS_MOM[with_one_cut][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0), _e->weight());
+                        SF_VS_MOM[before_any_cuts][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
+                        if (elec_cuts->EC_sampling_fraction_cut(condition_of_cut))
+                                SF_VS_MOM[with_one_cut][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
                         else
-                                SF_VS_MOM[outside_one_cut][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0), _e->weight());
+                                SF_VS_MOM[outside_one_cut][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
                 }
         }
 }
@@ -2333,29 +2332,29 @@ void Histogram::FillHists_electron_with_cuts(const std::shared_ptr<Branches12> &
         if (_e->W() > 1.35 && _e->W() <= 2.15 && _e->Q2() > 1.95 && _e->Q2() <= 9.0)
         {
 
-                vz_position[after_all_cuts]->Fill(_d->vz(0), _e->weight());
-                pcal_sec[after_all_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
-                pcal_hx_hy_sec[after_all_cuts]->Fill(_d->ec_pcal_hx(0), _d->ec_pcal_hy(0), _e->weight());
-                pcal_sec_ineff_cuts[after_all_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0), _e->weight());
+                vz_position[after_all_cuts]->Fill(_d->vz(0));
+                pcal_sec[after_all_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
+                pcal_hx_hy_sec[after_all_cuts]->Fill(_d->ec_pcal_hx(0), _d->ec_pcal_hy(0));
+                pcal_sec_ineff_cuts[after_all_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
 
-                dcr1_sec[after_all_cuts]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0), _e->weight());
-                dcr2_sec[after_all_cuts]->Fill(_d->dc_r2_x(0), _d->dc_r2_y(0), _e->weight());
-                dcr3_sec[after_all_cuts]->Fill(_d->dc_r3_x(0), _d->dc_r3_y(0), _e->weight());
-                EC_sampling_fraction[after_all_cuts]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0), _e->weight());
-                ECin_sf_vs_PCAL_sf[after_all_cuts]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)), _e->weight());
+                dcr1_sec[after_all_cuts]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0));
+                dcr2_sec[after_all_cuts]->Fill(_d->dc_r2_x(0), _d->dc_r2_y(0));
+                dcr3_sec[after_all_cuts]->Fill(_d->dc_r3_x(0), _d->dc_r3_y(0));
+                EC_sampling_fraction[after_all_cuts]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
+                ECin_sf_vs_PCAL_sf[after_all_cuts]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)));
 
-                momentum[after_all_cuts]->Fill(_d->p(0), _e->weight());
+                momentum[after_all_cuts]->Fill(_d->p(0));
 
                 if (sec > 0 && sec <= 6)
                 {
                         // htcc_nph
-                        // e_sec[after_all_cuts][sec - 1]->Fill(_d->cc_htcc_nphe(0), _e->weight());
-                        elec_Chi2pid_sec[after_all_cuts][sec - 1]->Fill(_d->chi2pid(0), _e->weight());
-                        vz_sec[after_all_cuts][sec - 1]->Fill(_d->vz(0), _e->weight());
-                        ECAL_VS_PCAL[after_all_cuts][sec - 1][momRangeIdx1]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)), _e->weight());
-                        SF_VS_MOM[after_all_cuts][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0), _e->weight());
+                        // e_sec[after_all_cuts][sec - 1]->Fill(_d->cc_htcc_nphe(0));
+                        elec_Chi2pid_sec[after_all_cuts][sec - 1]->Fill(_d->chi2pid(0));
+                        vz_sec[after_all_cuts][sec - 1]->Fill(_d->vz(0));
+                        ECAL_VS_PCAL[after_all_cuts][sec - 1][momRangeIdx1]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
+                        SF_VS_MOM[after_all_cuts][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
 
-                        Theta_fd_elec_lab_vs_mom_elec[sec - 1]->Fill(_e->elec_mom(), _e->elec_th(), _e->weight());
+                        Theta_fd_elec_lab_vs_mom_elec[sec - 1]->Fill(_e->elec_mom(), _e->elec_th());
                 }
         }
 }
@@ -2367,62 +2366,62 @@ void Histogram::FillHists_prot_pid_cuts(const std::shared_ptr<Branches12> &_d, c
         {
                 if (abs(_d->status(i)) < 4000)
                 {
-                        prot_Delta_vz_cut_fd[before_any_cuts]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
-                        prot_Chi2pid_cut_fd[before_any_cuts]->Fill(_d->chi2pid(i), _e->weight());
+                        prot_Delta_vz_cut_fd[before_any_cuts]->Fill((_d->vz(i) - _d->vz(0)));
+                        prot_Chi2pid_cut_fd[before_any_cuts]->Fill(_d->chi2pid(i));
 
-                        // theta_prot_fd[before_any_cuts]->Fill(_e->prot_theta_lab(), _e->weight());
-                        // phi_vs_mom_prot_fd[before_any_cuts]->Fill(_e->prot_Phi_lab(), _e->prot_momentum(), _e->weight());
-                        // Theta_prot_lab_vs_mom_prot_fd[before_any_cuts]->Fill(_e->prot_momentum(), _e->prot_theta_lab(), _e->weight());
+                        // theta_prot_fd[before_any_cuts]->Fill(_e->prot_theta_lab());
+                        // phi_vs_mom_prot_fd[before_any_cuts]->Fill(_e->prot_Phi_lab(), _e->prot_momentum());
+                        // Theta_prot_lab_vs_mom_prot_fd[before_any_cuts]->Fill(_e->prot_momentum(), _e->prot_theta_lab());
 
-                        dcr1_sec_prot[before_any_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-                        dcr2_sec_prot[before_any_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-                        dcr3_sec_prot[before_any_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
+                        dcr1_sec_prot[before_any_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+                        dcr2_sec_prot[before_any_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+                        dcr3_sec_prot[before_any_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
                         if (_cuts->Hadron_Delta_vz_cut(i))
-                                prot_Delta_vz_cut_fd[with_one_cut]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
+                                prot_Delta_vz_cut_fd[with_one_cut]->Fill((_d->vz(i) - _d->vz(0)));
                         else
-                                prot_Delta_vz_cut_fd[outside_one_cut]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
+                                prot_Delta_vz_cut_fd[outside_one_cut]->Fill((_d->vz(i) - _d->vz(0)));
 
                         if (_cuts->Hadron_Chi2pid_cut(i))
-                                prot_Chi2pid_cut_fd[with_one_cut]->Fill(_d->chi2pid(i), _e->weight());
+                                prot_Chi2pid_cut_fd[with_one_cut]->Fill(_d->chi2pid(i));
                         else
-                                prot_Chi2pid_cut_fd[outside_one_cut]->Fill(_d->chi2pid(i), _e->weight());
+                                prot_Chi2pid_cut_fd[outside_one_cut]->Fill(_d->chi2pid(i));
 
-                        if (_cuts->DC_fiducial_cut_XY(i, 1))
+                        if (_cuts->DC_fiducial_cut_XY_PROT(i, 1, condition_of_cut))
                         {
-                                dcr1_sec_prot[with_one_cut]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-                                dcr2_sec_prot[with_one_cut]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-                                dcr3_sec_prot[with_one_cut]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
+                                dcr1_sec_prot[with_one_cut]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+                                dcr2_sec_prot[with_one_cut]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+                                dcr3_sec_prot[with_one_cut]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
                         }
                         else
                         {
 
-                                dcr1_sec_prot[outside_one_cut]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-                                dcr2_sec_prot[outside_one_cut]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-                                dcr3_sec_prot[outside_one_cut]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
+                                dcr1_sec_prot[outside_one_cut]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+                                dcr2_sec_prot[outside_one_cut]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+                                dcr3_sec_prot[outside_one_cut]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
                         }
                 }
                 else if (abs(_d->status(i)) >= 4000)
                 {
-                        prot_Delta_vz_cut_cd[before_any_cuts]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
-                        prot_Chi2pid_cut_cd[before_any_cuts]->Fill((_d->chi2pid(i)), _e->weight());
-                        // phi_vs_momT_prot_cd[before_any_cuts]->Fill(_e->prot_Phi_lab(), _e->prot_momT(), _e->weight());
-                        // theta_prot_cd[before_any_cuts]->Fill(_e->prot_theta_lab(), _e->weight());
-                        // Theta_prot_lab_vs_mom_prot_cd[before_any_cuts]->Fill(_e->prot_momentum(), _e->prot_theta_lab(), _e->weight());
+                        prot_Delta_vz_cut_cd[before_any_cuts]->Fill((_d->vz(i) - _d->vz(0)));
+                        prot_Chi2pid_cut_cd[before_any_cuts]->Fill((_d->chi2pid(i)));
+                        // phi_vs_momT_prot_cd[before_any_cuts]->Fill(_e->prot_Phi_lab(), _e->prot_momT());
+                        // theta_prot_cd[before_any_cuts]->Fill(_e->prot_theta_lab());
+                        // Theta_prot_lab_vs_mom_prot_cd[before_any_cuts]->Fill(_e->prot_momentum(), _e->prot_theta_lab());
 
                         if (_cuts->Hadron_Delta_vz_cut(i))
-                                prot_Delta_vz_cut_cd[with_one_cut]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
+                                prot_Delta_vz_cut_cd[with_one_cut]->Fill((_d->vz(i) - _d->vz(0)));
                         else
-                                prot_Delta_vz_cut_cd[outside_one_cut]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
+                                prot_Delta_vz_cut_cd[outside_one_cut]->Fill((_d->vz(i) - _d->vz(0)));
 
                         if (_cuts->Hadron_Chi2pid_cut(i))
-                                prot_Chi2pid_cut_cd[with_one_cut]->Fill(_d->chi2pid(i), _e->weight());
+                                prot_Chi2pid_cut_cd[with_one_cut]->Fill(_d->chi2pid(i));
                         else
-                                prot_Chi2pid_cut_cd[outside_one_cut]->Fill(_d->chi2pid(i), _e->weight());
+                                prot_Chi2pid_cut_cd[outside_one_cut]->Fill(_d->chi2pid(i));
 
                         // if (_cuts->CD_fiducial_had(i))
-                        //         phi_vs_momT_prot_cd[with_one_cut]->Fill(_e->prot_Phi_lab(), _e->prot_momT(), _e->weight());
+                        //         phi_vs_momT_prot_cd[with_one_cut]->Fill(_e->prot_Phi_lab(), _e->prot_momT());
                         // else
-                        //         phi_vs_momT_prot_cd[outside_one_cut]->Fill(_e->prot_Phi_lab(), _e->prot_momT(), _e->weight());
+                        //         phi_vs_momT_prot_cd[outside_one_cut]->Fill(_e->prot_Phi_lab(), _e->prot_momT());
                 }
         }
 }
@@ -2439,17 +2438,17 @@ void Histogram::FillHists_prot_pid_with_cuts(const std::shared_ptr<Branches12> &
                 if (abs(_d->status(i)) < 4000)
                 // if (dt->isCtof() == false)
                 {
-                        dcr1_sec_prot[after_all_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-                        dcr2_sec_prot[after_all_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-                        dcr3_sec_prot[after_all_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
-                        prot_Delta_vz_cut_fd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
-                        phi_vs_mom_prot_fd[after_all_cuts]->Fill(_e->prot_Phi_lab(prot), _e->prot_momentum(prot), _e->weight());
-                        prot_Chi2pid_cut_fd[after_all_cuts]->Fill((_d->chi2pid(i)), _e->weight());
-                        theta_prot_fd[after_all_cuts]->Fill(_e->prot_theta_lab(prot), _e->weight());
-                        Theta_prot_lab_vs_mom_prot_fd[after_all_cuts]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot), _e->weight());
+                        dcr1_sec_prot[after_all_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+                        dcr2_sec_prot[after_all_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+                        dcr3_sec_prot[after_all_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
+                        prot_Delta_vz_cut_fd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)));
+                        phi_vs_mom_prot_fd[after_all_cuts]->Fill(_e->prot_Phi_lab(prot), _e->prot_momentum(prot));
+                        prot_Chi2pid_cut_fd[after_all_cuts]->Fill((_d->chi2pid(i)));
+                        theta_prot_fd[after_all_cuts]->Fill(_e->prot_theta_lab(prot));
+                        Theta_prot_lab_vs_mom_prot_fd[after_all_cuts]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
                         if (sec > 0 && sec <= 6)
                         {
-                                Theta_fd_prot_lab_vs_mom_prot[sec - 1]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot), _e->weight());
+                                Theta_fd_prot_lab_vs_mom_prot[sec - 1]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
                         }
                 }
                 else if (abs(_d->status(i)) > 4000)
@@ -2457,11 +2456,11 @@ void Histogram::FillHists_prot_pid_with_cuts(const std::shared_ptr<Branches12> &
                 {
                         // std::cout << "  status of ctof particle :  " << _d->status(i) << "  prot lab angle theta " << _e->prot_theta_lab(prot) << std::endl;
 
-                        prot_Delta_vz_cut_cd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
-                        prot_Chi2pid_cut_cd[after_all_cuts]->Fill(_d->chi2pid(i), _e->weight());
-                        phi_vs_momT_prot_cd[after_all_cuts]->Fill(_e->prot_Phi_lab(prot), _e->prot_momT(prot), _e->weight());
-                        theta_prot_cd[after_all_cuts]->Fill(_e->prot_theta_lab(prot), _e->weight());
-                        Theta_prot_lab_vs_mom_prot_cd[after_all_cuts]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot), _e->weight());
+                        prot_Delta_vz_cut_cd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)));
+                        prot_Chi2pid_cut_cd[after_all_cuts]->Fill(_d->chi2pid(i));
+                        phi_vs_momT_prot_cd[after_all_cuts]->Fill(_e->prot_Phi_lab(prot), _e->prot_momT(prot));
+                        theta_prot_cd[after_all_cuts]->Fill(_e->prot_theta_lab(prot));
+                        Theta_prot_lab_vs_mom_prot_cd[after_all_cuts]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
                 }
 
                 // std::cout << "weighr = " << _e->weight() << '\n';
@@ -2476,61 +2475,61 @@ void Histogram::FillHists_pip_pid_cuts(const std::shared_ptr<Branches12> &_d, co
 
                 if (abs(_d->status(i)) < 4000)
                 {
-                        pip_Delta_vz_cut_fd[before_any_cuts]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
-                        pip_Chi2pid_cut_fd[before_any_cuts]->Fill(_d->chi2pid(i), _e->weight());
-                        // phi_vs_mom_pip_fd[before_any_cuts]->Fill(_e->pip_Phi_lab(), _e->pip_momentum(), _e->weight());
-                        // theta_pip_fd[before_any_cuts]->Fill(_e->pip_theta_lab(), _e->weight());
-                        // Theta_pip_lab_vs_mom_pip_fd[before_any_cuts]->Fill(_e->pip_momentum(), _e->pip_theta_lab(), _e->weight());
+                        pip_Delta_vz_cut_fd[before_any_cuts]->Fill((_d->vz(i) - _d->vz(0)));
+                        pip_Chi2pid_cut_fd[before_any_cuts]->Fill(_d->chi2pid(i));
+                        // phi_vs_mom_pip_fd[before_any_cuts]->Fill(_e->pip_Phi_lab(), _e->pip_momentum());
+                        // theta_pip_fd[before_any_cuts]->Fill(_e->pip_theta_lab());
+                        // Theta_pip_lab_vs_mom_pip_fd[before_any_cuts]->Fill(_e->pip_momentum(), _e->pip_theta_lab());
 
-                        dcr1_sec_pip[before_any_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-                        dcr2_sec_pip[before_any_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-                        dcr3_sec_pip[before_any_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
+                        dcr1_sec_pip[before_any_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+                        dcr2_sec_pip[before_any_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+                        dcr3_sec_pip[before_any_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
 
                         if (_cuts->Hadron_Delta_vz_cut(i))
-                                pip_Delta_vz_cut_fd[with_one_cut]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
+                                pip_Delta_vz_cut_fd[with_one_cut]->Fill((_d->vz(i) - _d->vz(0)));
                         else
-                                pip_Delta_vz_cut_fd[outside_one_cut]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
+                                pip_Delta_vz_cut_fd[outside_one_cut]->Fill((_d->vz(i) - _d->vz(0)));
 
                         if (_cuts->Hadron_Chi2pid_cut(i))
-                                pip_Chi2pid_cut_fd[with_one_cut]->Fill(_d->chi2pid(i), _e->weight());
+                                pip_Chi2pid_cut_fd[with_one_cut]->Fill(_d->chi2pid(i));
                         else
-                                pip_Chi2pid_cut_fd[outside_one_cut]->Fill(_d->chi2pid(i), _e->weight());
+                                pip_Chi2pid_cut_fd[outside_one_cut]->Fill(_d->chi2pid(i));
                 }
                 else if (abs(_d->status(i)) > 4000)
                 {
-                        pip_Delta_vz_cut_cd[before_any_cuts]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
-                        pip_Chi2pid_cut_cd[before_any_cuts]->Fill(_d->chi2pid(i), _e->weight());
-                        // phi_vs_momT_pip_cd[before_any_cuts]->Fill(_e->pip_Phi_lab(), _e->pip_momT(), _e->weight());
-                        // theta_pip_cd[before_any_cuts]->Fill(_e->pip_theta_lab(), _e->weight());
-                        // Theta_pip_lab_vs_mom_pip_cd[before_any_cuts]->Fill(_e->pip_momentum(), _e->pip_theta_lab(), _e->weight());
+                        pip_Delta_vz_cut_cd[before_any_cuts]->Fill((_d->vz(i) - _d->vz(0)));
+                        pip_Chi2pid_cut_cd[before_any_cuts]->Fill(_d->chi2pid(i));
+                        // phi_vs_momT_pip_cd[before_any_cuts]->Fill(_e->pip_Phi_lab(), _e->pip_momT());
+                        // theta_pip_cd[before_any_cuts]->Fill(_e->pip_theta_lab());
+                        // Theta_pip_lab_vs_mom_pip_cd[before_any_cuts]->Fill(_e->pip_momentum(), _e->pip_theta_lab());
 
                         // if (_cuts->CD_fiducial_had(i))
-                        //         phi_vs_momT_pip_cd[with_one_cut]->Fill(_e->pip_Phi_lab(), _e->pip_momT(), _e->weight());
+                        //         phi_vs_momT_pip_cd[with_one_cut]->Fill(_e->pip_Phi_lab(), _e->pip_momT());
                         // else
-                        //         phi_vs_momT_pip_cd[outside_one_cut]->Fill(_e->pip_Phi_lab(), _e->pip_momT(), _e->weight());
+                        //         phi_vs_momT_pip_cd[outside_one_cut]->Fill(_e->pip_Phi_lab(), _e->pip_momT());
 
                         if (_cuts->Hadron_Delta_vz_cut(i))
-                                pip_Delta_vz_cut_cd[with_one_cut]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
+                                pip_Delta_vz_cut_cd[with_one_cut]->Fill((_d->vz(i) - _d->vz(0)));
                         else
-                                pip_Delta_vz_cut_cd[outside_one_cut]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
+                                pip_Delta_vz_cut_cd[outside_one_cut]->Fill((_d->vz(i) - _d->vz(0)));
 
                         if (_cuts->Hadron_Chi2pid_cut(i))
-                                pip_Chi2pid_cut_cd[with_one_cut]->Fill(_d->chi2pid(i), _e->weight());
+                                pip_Chi2pid_cut_cd[with_one_cut]->Fill(_d->chi2pid(i));
                         else
-                                pip_Chi2pid_cut_cd[outside_one_cut]->Fill(_d->chi2pid(i), _e->weight());
+                                pip_Chi2pid_cut_cd[outside_one_cut]->Fill(_d->chi2pid(i));
                 }
 
-                if (_cuts->DC_fiducial_cut_XY(i, 2))
+                if (_cuts->DC_fiducial_cut_XY_PIP(i, 2, condition_of_cut))
                 {
-                        dcr1_sec_pip[with_one_cut]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-                        dcr2_sec_pip[with_one_cut]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-                        dcr3_sec_pip[with_one_cut]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
+                        dcr1_sec_pip[with_one_cut]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+                        dcr2_sec_pip[with_one_cut]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+                        dcr3_sec_pip[with_one_cut]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
                 }
                 else
                 {
-                        dcr1_sec_pip[outside_one_cut]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-                        dcr2_sec_pip[outside_one_cut]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-                        dcr3_sec_pip[outside_one_cut]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
+                        dcr1_sec_pip[outside_one_cut]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+                        dcr2_sec_pip[outside_one_cut]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+                        dcr3_sec_pip[outside_one_cut]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
                 }
         }
 }
@@ -2546,51 +2545,52 @@ void Histogram::FillHists_pip_pid_with_cuts(const std::shared_ptr<Branches12> &_
                 if (abs(_d->status(i)) < 4000)
                 // if (dt->isCtof() == false)
                 {
-                        pip_Delta_vz_cut_fd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
-                        pip_Chi2pid_cut_fd[after_all_cuts]->Fill(_d->chi2pid(i), _e->weight());
-                        phi_vs_mom_pip_fd[after_all_cuts]->Fill(_e->pip_Phi_lab(pip), _e->pip_momentum(pip), _e->weight());
-                        theta_pip_fd[after_all_cuts]->Fill(_e->pip_theta_lab(pip), _e->weight());
-                        Theta_pip_lab_vs_mom_pip_fd[after_all_cuts]->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip), _e->weight());
-                        dcr1_sec_pip[after_all_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-                        dcr2_sec_pip[after_all_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-                        dcr3_sec_pip[after_all_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
+                        pip_Delta_vz_cut_fd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)));
+                        pip_Chi2pid_cut_fd[after_all_cuts]->Fill(_d->chi2pid(i));
+                        phi_vs_mom_pip_fd[after_all_cuts]->Fill(_e->pip_Phi_lab(pip), _e->pip_momentum(pip));
+                        theta_pip_fd[after_all_cuts]->Fill(_e->pip_theta_lab(pip));
+                        Theta_pip_lab_vs_mom_pip_fd[after_all_cuts]->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip));
+                        dcr1_sec_pip[after_all_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+                        dcr2_sec_pip[after_all_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+                        dcr3_sec_pip[after_all_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
 
                         if (sec > 0 && sec <= 6)
                         {
-                                Theta_fd_pip_lab_vs_mom_pip[sec - 1]->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip), _e->weight());
+                                Theta_fd_pip_lab_vs_mom_pip[sec - 1]->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip));
                         }
                 }
                 else if (abs(_d->status(i)) > 4000)
                 // else if (dt->isCtof() == true)
                 {
-                        pip_Delta_vz_cut_cd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)), _e->weight());
-                        pip_Chi2pid_cut_cd[after_all_cuts]->Fill(_d->chi2pid(i), _e->weight());
-                        phi_vs_momT_pip_cd[after_all_cuts]->Fill(_e->pip_Phi_lab(pip), _e->pip_momT(pip), _e->weight());
-                        theta_pip_cd[after_all_cuts]->Fill(_e->pip_theta_lab(pip), _e->weight());
-                        Theta_pip_lab_vs_mom_pip_cd[after_all_cuts]->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip), _e->weight());
+                        pip_Delta_vz_cut_cd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)));
+                        pip_Chi2pid_cut_cd[after_all_cuts]->Fill(_d->chi2pid(i));
+                        phi_vs_momT_pip_cd[after_all_cuts]->Fill(_e->pip_Phi_lab(pip), _e->pip_momT(pip));
+                        theta_pip_cd[after_all_cuts]->Fill(_e->pip_theta_lab(pip));
+                        Theta_pip_lab_vs_mom_pip_cd[after_all_cuts]->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip));
                 }
                 // std::cout << "weighr = " << _e->weight() << '\n';
         }
 }
+
 void Histogram::FillHists_pim_pid_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i)
 {
-        pim_Delta_vz_cut[before_any_cuts]->Fill((_d->vz(0) - _d->vz(i)), _e->weight());
-        pim_Chi2pid_cut[before_any_cuts]->Fill(_d->chi2pid(i), _e->weight());
-        dcr1_sec_pim[before_any_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-        dcr2_sec_pim[before_any_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-        dcr3_sec_pim[before_any_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
-        // phi_vs_momT_cd_pim[before_any_cuts]->Fill(_e->pim_Phi_lab_measured(), _e->pim_momT(), _e->weight());
-        //         theta_pim->Fill(_e->pim_theta_lab_measured(), _e->weight());
-        //         Theta_pim_lab_vs_mom_pim->Fill(_e->pim_momentum_measured(), _e->pim_theta_lab_measured(), _e->weight());
+        pim_Delta_vz_cut[before_any_cuts]->Fill((_d->vz(0) - _d->vz(i)));
+        pim_Chi2pid_cut[before_any_cuts]->Fill(_d->chi2pid(i));
+        dcr1_sec_pim[before_any_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+        dcr2_sec_pim[before_any_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+        dcr3_sec_pim[before_any_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
+        // phi_vs_momT_cd_pim[before_any_cuts]->Fill(_e->pim_Phi_lab_measured(), _e->pim_momT());
+        //         theta_pim->Fill(_e->pim_theta_lab_measured());
+        //         Theta_pim_lab_vs_mom_pim->Fill(_e->pim_momentum_measured(), _e->pim_theta_lab_measured());
 }
 void Histogram::FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i)
 {
-        pim_Delta_vz_cut[after_all_cuts]->Fill((_d->vz(0) - _d->vz(i)), _e->weight());
-        pim_Chi2pid_cut[after_all_cuts]->Fill(_d->chi2pid(i), _e->weight());
-        dcr1_sec_pim[after_all_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i), _e->weight());
-        dcr2_sec_pim[after_all_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i), _e->weight());
-        dcr3_sec_pim[after_all_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i), _e->weight());
-        // phi_vs_momT_cd_pim[after_all_cuts]->Fill(_e->pim_Phi_lab(pim), _e->pim_momT(pim), _e->weight());
+        pim_Delta_vz_cut[after_all_cuts]->Fill((_d->vz(0) - _d->vz(i)));
+        pim_Chi2pid_cut[after_all_cuts]->Fill(_d->chi2pid(i));
+        dcr1_sec_pim[after_all_cuts]->Fill(_d->dc_r1_x(i), _d->dc_r1_y(i));
+        dcr2_sec_pim[after_all_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
+        dcr3_sec_pim[after_all_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
+        // phi_vs_momT_cd_pim[after_all_cuts]->Fill(_e->pim_Phi_lab(pim), _e->pim_momT(pim));
 }
 void Histogram::Write_Electron_cuts()
 {
@@ -3098,7 +3098,7 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                                 {
                                         time[1] = dt->dt_Pi();
                                         time_fd[1] = dt->dt_Pi();
-                                        delta_t_hist[1][0][1]->Fill(mom, time_fd[1], _e->weight());
+                                        delta_t_hist[1][0][1]->Fill(mom, time_fd[1]);
                                 }
                                 // std::cout << " dt_Pi() .... =  " << dt->dt_Pi() << std::endl;
                                 // std::cout << " dt_Pi(int i) .... =  " << dt->dt_Pi(pid) << std::endl;
@@ -3108,7 +3108,7 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
 
                                         time[0] = dt->dt_P();
                                         time_fd[0] = dt->dt_P();
-                                        delta_t_hist[0][0][1]->Fill(mom, time_fd[0], _e->weight());
+                                        delta_t_hist[0][0][1]->Fill(mom, time_fd[0]);
                                 }
                         }
                         else if (charge == -1)
@@ -3119,7 +3119,7 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
 
                                         time[2] = dt->dt_Pi();
                                         time_fd[2] = dt->dt_Pi();
-                                        delta_t_hist[2][0][1]->Fill(mom, time_fd[2], _e->weight());
+                                        delta_t_hist[2][0][1]->Fill(mom, time_fd[2]);
                                 }
                         }
 
@@ -3127,9 +3127,9 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                         {
                                 // std::cout << mom << " int mom =  " << int((mom - 0.2) / 0.25) << std::endl;
 
-                                dt_prot_fd_hist[int((mom - 0.2) / 0.25)]->Fill(time_fd[0], _e->weight());
-                                dt_pip_fd_hist[int((mom - 0.2) / 0.25)]->Fill(time_fd[1], _e->weight());
-                                dt_pim_fd_hist[int((mom - 0.2) / 0.25)]->Fill(time_fd[2], _e->weight());
+                                dt_prot_fd_hist[int((mom - 0.2) / 0.25)]->Fill(time_fd[0]);
+                                dt_pip_fd_hist[int((mom - 0.2) / 0.25)]->Fill(time_fd[1]);
+                                dt_pim_fd_hist[int((mom - 0.2) / 0.25)]->Fill(time_fd[2]);
                         }
                 }
                 else if (cd_part)
@@ -3142,14 +3142,14 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
 
                                         time[0] = dt->dt_P();
                                         time_cd[0] = dt->dt_P();
-                                        delta_t_hist[0][0][2]->Fill(mom, time_cd[0], _e->weight());
+                                        delta_t_hist[0][0][2]->Fill(mom, time_cd[0]);
                                 }
 
                                 // else if (pid == PIP)
                                 {
                                         time[1] = dt->dt_Pi();
                                         time_cd[1] = dt->dt_Pi();
-                                        delta_t_hist[1][0][2]->Fill(mom, time_cd[1], _e->weight());
+                                        delta_t_hist[1][0][2]->Fill(mom, time_cd[1]);
                                 }
                         }
                         else if (charge == -1)
@@ -3159,7 +3159,7 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                                 {
                                         time[2] = dt->dt_Pi();
                                         time_cd[2] = dt->dt_Pi();
-                                        delta_t_hist[2][0][2]->Fill(mom, time_cd[2], _e->weight());
+                                        delta_t_hist[2][0][2]->Fill(mom, time_cd[2]);
                                 }
                         }
 
@@ -3167,15 +3167,15 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                         {
                                 // std::cout << mom << " int mom =  " << int((mom - 0.2) / 0.25) << std::endl;
 
-                                dt_prot_cd_hist[int((mom - 0.2) / 0.25)]->Fill(time_cd[0], _e->weight());
-                                dt_pip_cd_hist[int((mom - 0.2) / 0.25)]->Fill(time_cd[1], _e->weight());
-                                dt_pim_cd_hist[int((mom - 0.2) / 0.25)]->Fill(time_cd[2], _e->weight());
+                                dt_prot_cd_hist[int((mom - 0.2) / 0.25)]->Fill(time_cd[0]);
+                                dt_pip_cd_hist[int((mom - 0.2) / 0.25)]->Fill(time_cd[1]);
+                                dt_pim_cd_hist[int((mom - 0.2) / 0.25)]->Fill(time_cd[2]);
                         }
                 }
 
-                delta_t_hist[0][0][0]->Fill(mom, time[0], _e->weight());
-                delta_t_hist[1][0][0]->Fill(mom, time[1], _e->weight());
-                delta_t_hist[2][0][0]->Fill(mom, time[2], _e->weight());
+                delta_t_hist[0][0][0]->Fill(mom, time[0]);
+                delta_t_hist[1][0][0]->Fill(mom, time[1]);
+                delta_t_hist[2][0][0]->Fill(mom, time[2]);
         }
 }
 void Histogram::Fill_deltat_prot_after_cut(const std::shared_ptr<Branches12> &data, const std::shared_ptr<Delta_T> &dt, int part,
@@ -3208,17 +3208,17 @@ void Histogram::Fill_deltat_prot_after_cut(const std::shared_ptr<Branches12> &da
                                 {
                                         time = dt->dt_P();
                                         time_fd = dt->dt_P();
-                                        delta_t_hist[0][1][1]->Fill(mom, time_fd, _e->weight());
+                                        delta_t_hist[0][1][1]->Fill(mom, time_fd);
                                 }
                                 else if (cd_part)
                                 {
 
                                         time = dt->dt_P();
                                         time_cd = dt->dt_P();
-                                        delta_t_hist[0][1][2]->Fill(mom, time_cd, _e->weight());
+                                        delta_t_hist[0][1][2]->Fill(mom, time_cd);
                                 }
 
-                                delta_t_hist[0][1][0]->Fill(mom, time, _e->weight());
+                                delta_t_hist[0][1][0]->Fill(mom, time);
                         }
                 }
         }
@@ -3253,17 +3253,17 @@ void Histogram::Fill_deltat_pip_after_cut(const std::shared_ptr<Branches12> &dat
                                 {
                                         time = dt->dt_Pi();
                                         time_fd = dt->dt_Pi();
-                                        delta_t_hist[1][1][1]->Fill(mom, time_fd, _e->weight());
+                                        delta_t_hist[1][1][1]->Fill(mom, time_fd);
                                 }
                                 else if (cd_part)
                                 {
 
                                         time = dt->dt_Pi();
                                         time_cd = dt->dt_Pi();
-                                        delta_t_hist[1][1][2]->Fill(mom, time_cd, _e->weight());
+                                        delta_t_hist[1][1][2]->Fill(mom, time_cd);
                                 }
 
-                                delta_t_hist[1][1][0]->Fill(mom, time, _e->weight());
+                                delta_t_hist[1][1][0]->Fill(mom, time);
                         }
                 }
         }
@@ -3295,17 +3295,17 @@ void Histogram::Fill_deltat_pim_after_cut(const std::shared_ptr<Branches12> &dat
                                 {
                                         time = dt->dt_Pi();
                                         time_fd = dt->dt_Pi();
-                                        delta_t_hist[2][1][1]->Fill(mom, time_fd, _e->weight());
+                                        delta_t_hist[2][1][1]->Fill(mom, time_fd);
                                 }
                                 else if (cd_part)
                                 {
 
                                         time = dt->dt_Pi();
                                         time_cd = dt->dt_Pi();
-                                        delta_t_hist[2][1][2]->Fill(mom, time_cd, _e->weight());
+                                        delta_t_hist[2][1][2]->Fill(mom, time_cd);
                                 }
 
-                                delta_t_hist[2][1][0]->Fill(mom, time, _e->weight());
+                                delta_t_hist[2][1][0]->Fill(mom, time);
                         }
                 }
         }
@@ -3414,18 +3414,18 @@ void Histogram::Fill_MomVsBeta(const std::shared_ptr<Branches12> &data, int part
                         }
                         if (charge == -1)
                         {
-                                momvsbeta_hist[p][1][0]->Fill(mom, beta, _e->weight());
+                                momvsbeta_hist[p][1][0]->Fill(mom, beta);
                                 if (good_ID == 11)
-                                        momvsbeta_hist[0][1][1]->Fill(mom, beta, _e->weight());
+                                        momvsbeta_hist[0][1][1]->Fill(mom, beta);
                                 else if (-good_ID == pid)
-                                        momvsbeta_hist[p][1][1]->Fill(mom, beta, _e->weight());
+                                        momvsbeta_hist[p][1][1]->Fill(mom, beta);
                         }
                         else if (charge == 1)
                         {
-                                momvsbeta_hist[p][0][0]->Fill(mom, beta, _e->weight());
+                                momvsbeta_hist[p][0][0]->Fill(mom, beta);
                                 if (good_ID == pid)
                                 {
-                                        momvsbeta_hist[p][0][1]->Fill(mom, beta, _e->weight());
+                                        momvsbeta_hist[p][0][1]->Fill(mom, beta);
                                 }
                         }
                 }
@@ -3452,38 +3452,38 @@ void Histogram::Write_MomVsBeta()
 
 void Histogram::Fill_deltaP_prot(const std::shared_ptr<Reaction> &_e, double dp)
 {
-        dp_prot_hist->Fill(dp, _e->weight());
+        dp_prot_hist->Fill(dp);
 }
 void Histogram::Fill_deltaP_pip(const std::shared_ptr<Reaction> &_e, double dp)
 {
-        dp_pip_hist->Fill(dp, _e->weight());
+        dp_pip_hist->Fill(dp);
 }
 
 void Histogram::Fill_deltaP_pip_for_prot(const std::shared_ptr<Reaction> &_e, double dp)
 {
-        dp_pip_for_prot_hist->Fill(dp, _e->weight());
+        dp_pip_for_prot_hist->Fill(dp);
 }
 void Histogram::Fill_deltaP_prot_for_pip(const std::shared_ptr<Reaction> &_e, double dp)
 {
-        dp_prot_for_pip_hist->Fill(dp, _e->weight());
+        dp_prot_for_pip_hist->Fill(dp);
 }
 
 void Histogram::Fill_deltaP_sum(const std::shared_ptr<Reaction> &_e, double dp)
 {
-        dp_sum_hist->Fill(dp, _e->weight());
+        dp_sum_hist->Fill(dp);
 }
 void Histogram::Fill_deltaP_sum_twoPi(const std::shared_ptr<Reaction> &_e, double dp)
 {
-        dp_sum_hist_twoPi->Fill(dp, _e->weight());
+        dp_sum_hist_twoPi->Fill(dp);
 }
 
 void Histogram::Fill_deltaP_ambi_prot(const std::shared_ptr<Reaction> &_e, double dp)
 {
-        dp_ambi_prot_all_hist->Fill(dp, _e->weight());
+        dp_ambi_prot_all_hist->Fill(dp);
 }
 void Histogram::Fill_deltaP_ambi_pip(const std::shared_ptr<Reaction> &_e, double dp)
 {
-        dp_ambi_pip_all_hist->Fill(dp, _e->weight());
+        dp_ambi_pip_all_hist->Fill(dp);
 }
 
 void Histogram::Fill_Entries(int num_entries)

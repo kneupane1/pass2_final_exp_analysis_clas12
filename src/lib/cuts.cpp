@@ -72,7 +72,7 @@ double dt_cut_cd_down[2][3][3] = {{{-0.04974, 0.286, -0.73},
 //                                {-0.0731, 0.303, -0.58745},
 //                                {-0.03882, 0.1859, -0.519}};
 
-bool Pass2_Cuts::IsPip(int i)
+bool Pass2_Cuts::IsPip(int i, std::string condition)
 {
         int is_mc = 0;
         if (_mc)
@@ -104,8 +104,8 @@ bool Pass2_Cuts::IsPip(int i)
                                           dt_cut_fd_down[is_mc][1][2] * pow(_data->p(i), 3) + dt_cut_fd_down[is_mc][1][3] * pow(_data->p(i), 2) +
                                           dt_cut_fd_down[is_mc][1][4] * pow(_data->p(i), 1) + dt_cut_fd_down[is_mc][1][5]));
 
-                _pip &= DC_fiducial_cut_XY(i, 2);
-                _pip &= DC_Ineff_cut_X_Y(i, 2);
+                _pip &= DC_fiducial_cut_XY_PIP(i, 2, condition);
+                _pip &= DC_Ineff_cut_X_Y(i, 2, condition);
         }
         // }
         else if (abs(_data->status(i)) >= 4000)
@@ -117,14 +117,14 @@ bool Pass2_Cuts::IsPip(int i)
                 // _pip &= (_data->p(i) < 1.7);
                 _pip &= (_dt->dt_Pi(i) < (dt_cut_cd_up[is_mc][1][0] * pow(_data->p(i), 2) + dt_cut_cd_up[is_mc][1][1] * _data->p(i) + dt_cut_cd_up[is_mc][1][2]));
                 _pip &= (_dt->dt_Pi(i) > (dt_cut_cd_down[is_mc][1][0] * pow(_data->p(i), 2) + dt_cut_cd_down[is_mc][1][1] * _data->p(i) + dt_cut_cd_down[is_mc][1][2]));
-                _pip &= CD_fiducial_had(i);
+                _pip &= CD_fiducial_had(i, condition);
         }
         // _pip &= (_data->p(i) > 0.2);
         _pip &= Hadron_Delta_vz_cut(i);
         _pip &= Hadron_Chi2pid_cut(i);
         return _pip;
 }
-bool Pass2_Cuts::IsProton(int i)
+bool Pass2_Cuts::IsProton(int i, std::string condition)
 {
         int is_mc = 0;
         if (_mc)
@@ -156,8 +156,8 @@ bool Pass2_Cuts::IsProton(int i)
                                             dt_cut_fd_down[is_mc][0][2] * pow(_data->p(i), 3) + dt_cut_fd_down[is_mc][0][3] * pow(_data->p(i), 2) +
                                             dt_cut_fd_down[is_mc][0][4] * pow(_data->p(i), 1) + dt_cut_fd_down[is_mc][0][5]));
 
-                _proton &= DC_fiducial_cut_XY(i, 1);
-                _proton &= DC_Ineff_cut_X_Y(i, 1);
+                _proton &= DC_fiducial_cut_XY_PROT(i, 1, condition);
+                _proton &= DC_Ineff_cut_X_Y(i, 1, condition);
         }
         // }
         else if (abs(_data->status(i)) >= 4000)
@@ -169,7 +169,7 @@ bool Pass2_Cuts::IsProton(int i)
                 // _proton &= (_data->p(i) < 2.0);
                 _proton &= (_dt->dt_P(i) < (dt_cut_cd_up[is_mc][0][0] * pow(_data->p(i), 2) + dt_cut_cd_up[is_mc][0][1] * _data->p(i) + dt_cut_cd_up[is_mc][0][2]));
                 _proton &= (_dt->dt_P(i) > (dt_cut_cd_down[is_mc][0][0] * pow(_data->p(i), 2) + dt_cut_cd_down[is_mc][0][1] * _data->p(i) + dt_cut_cd_down[is_mc][0][2]));
-                _proton &= CD_fiducial_had(i);
+                _proton &= CD_fiducial_had(i, condition);
         }
         // _proton &= (_data->p(i) > 0.2);
         // _proton &= (abs(_data->chi2d(i)) < 0.5);
@@ -222,7 +222,7 @@ bool Pass2_Cuts::IsPim(int i)
         return _pim;
 }
 // /////////////////////// Pass2_Cuts ///////////////////////
-bool Pass2_Cuts::ElectronCuts()
+bool Pass2_Cuts::ElectronCuts(std::string condition)
 {
         bool cut = true;
         if (!cut)
@@ -232,18 +232,18 @@ bool Pass2_Cuts::ElectronCuts()
         // // //
         cut &= (_data->pid(0) == ELECTRON);
         cut &= (_data->charge(0) == NEGATIVE);
-        cut &= DC_z_vertex_cut();
+        cut &= DC_z_vertex_cut(condition);
         cut &= (_data->p(0) > 1.50);
-        // // cut &= (_data->vz(0) > -(2.78 + 3 * 2.16) && _data->vz(0) < (-2.78 + 3 * 2.16)); // 3 sigma cut
+        // cut &= (_data->vz(0) > -(2.78 + 3 * 2.16) && _data->vz(0) < (-2.78 + 3 * 2.16)); // 3 sigma cut
         cut &= (2000 <= abs(_data->status(0)) && abs(_data->status(0)) < 4000);
         // // cut &= (abs(_data->chi2pid(0)) < 3); ////////////// check it....... along with simulations
         // // cut &= CC_nphe_cut();
-        cut &= DC_fiducial_cut_XY(0, 0);
-        cut &= EC_sampling_fraction_cut();
+        cut &= DC_fiducial_cut_XY_E(condition);
+        cut &= EC_sampling_fraction_cut(condition);
         cut &= PCAL_minimum_energy();
-        cut &= PCAL_fiducial_cut_X_Y();
+        cut &= PCAL_fiducial_cut_X_Y(condition);
         // // //cut &= EC_inner_vs_EC_outer();
-        cut &= EC_hit_position_fiducial_cut_homogeneous();
+        cut &= EC_hit_position_fiducial_cut_homogeneous(condition);
         cut &= PCAL_Ineff_cut_X_Y();
 
         return cut;
@@ -278,32 +278,49 @@ bool Pass2_Cuts::PCAL_minimum_energy()
         return (_data->ec_pcal_energy(0) > edep_medium);
 }
 
-bool Pass2_Cuts::EC_sampling_fraction_cut()
+bool Pass2_Cuts::EC_sampling_fraction_cut(std::string condition)
 {
         int isec = (_data->ec_pcal_sec(0) - 1);
         double upper_lim_total = 0;
         double lower_lim_total = 0;
-        int is_mc = 0;
-        if (_mc)
-        {
-                is_mc = 1;
-        }
 
-        ///// Both  ////////
-        double mean_minus_3_5_sigma[2][6][3] = {{{-0.001124, 0.01212, 0.1616}, {-0.001773, 0.02165, 0.1334}, {-0.002983, 0.03586, 0.0957}, {-0.001408, 0.01909, 0.1344}, {-0.0007095, 0.00882, 0.1687}, {-0.002068, 0.02394, 0.1298}},
-                                                {{-0.00058, 0.00687, 0.19312}, {-0.00088, 0.01022, 0.18360}, {-0.00089, 0.00941, 0.18832}, {-0.00066, 0.00888, 0.18466}, {-0.00066, 0.00798, 0.18884}, {-0.00055, 0.00685, 0.19319}}};
-        double mean_plus_3_5_sigma[2][6][3] = {{{-0.001306, 0.012856, 0.2598}, {-0.00082, 0.00801, 0.271}, {-0.00118, 0.01078, 0.269}, {-0.0009036, 0.01098, 0.2607}, {-0.0001322, 0.002972, 0.2744}, {-0.001183, 0.01233, 0.257}},
-                                               {{-0.00002, -0.00078, 0.29991}, {0.00023, -0.00396, 0.31026}, {0.00010, -0.00156, 0.30077}, {0.00017, -0.00400, 0.31052}, {0.00018, -0.00342, 0.30823}, {0.00012, -0.00297, 0.30706}}};
+        double mean_minus_3_5_sigma[6][3] = {{-0.001124, 0.01212, 0.1616}, {-0.001773, 0.02165, 0.1334}, {-0.002983, 0.03586, 0.0957}, {-0.001408, 0.01909, 0.1344}, {-0.0007095, 0.00882, 0.1687}, {-0.002068, 0.02394, 0.1298}};
+        double mean_plus_3_5_sigma[6][3] = {{-0.001306, 0.012856, 0.2598}, {-0.00082, 0.00801, 0.271}, {-0.00118, 0.01078, 0.269}, {-0.0009036, 0.01098, 0.2607}, {-0.0001322, 0.002972, 0.2744}, {-0.001183, 0.01233, 0.257}};
+        // double mean_minus_3_sigma[6][3] = {{-0.001138, 0.01218, 0.1686}, {-0.001705, 0.02068, 0.1433}, {-0.002853, 0.03406, 0.1081}, {-0.001371, 0.01851, 0.1434}, {-0.0006685, 0.00841, 0.1763}, {-0.002005, 0.02312, 0.1389}};
+        // double mean_plus_3_sigma[6][3] = {{-0.001293, 0.0128, 0.2527}, {-0.0008883, 0.00899, 0.261}, {-0.001308, 0.01257, 0.2566}, {-0.0009394, 0.01156, 0.2517}, {-0.0001734, 0.00339, 0.2668}, {-0.0012455, 0.01316, 0.2479}};
+        // double mean_minus_4_sigma[6][3] = {{-0.001112, 0.01207, 0.1545}, {-0.001841, 0.02263, 0.1236}, {-0.003113, 0.03763, 0.0833}, {-0.001444, 0.01967, 0.1255}, {-0.000751, 0.00924, 0.1613}, {-0.00213, 0.02478, 0.12067}};
+        // double mean_plus_4_sigma[6][3] = {{-0.001319, 0.01291, 0.2668}, {-0.0007524, 0.00704, 0.2808}, {-0.001051, 0.008995, 0.2815}, {-0.0008674, 0.0104, 0.2698}, {-9.09e-05, 0.002552, 0.282}, {-0.00112, 0.0115, 0.266}};
 
         for (Int_t k = 0; k < 6; k++)
         {
                 if (isec == k)
                 {
-                        upper_lim_total = mean_plus_3_5_sigma[is_mc][k][0] * pow(_data->p(0), 2) + (mean_plus_3_5_sigma[is_mc][k][1]) * _data->p(0) +
-                                          mean_plus_3_5_sigma[is_mc][k][2];
+                        // if (condition == "mid")
+                        // {
+                        upper_lim_total = mean_plus_3_5_sigma[k][0] * pow(_data->p(0), 2) + (mean_plus_3_5_sigma[k][1]) * _data->p(0) +
+                                          mean_plus_3_5_sigma[k][2];
 
-                        lower_lim_total = mean_minus_3_5_sigma[is_mc][k][0] * pow(_data->p(0), 2) + (mean_minus_3_5_sigma[is_mc][k][1]) * _data->p(0) +
-                                          mean_minus_3_5_sigma[is_mc][k][2];
+                        lower_lim_total = mean_minus_3_5_sigma[k][0] * pow(_data->p(0), 2) + (mean_minus_3_5_sigma[k][1]) * _data->p(0) +
+                                          mean_minus_3_5_sigma[k][2];
+                        // }
+
+                        // if (condition == "tight")
+                        // {
+                        //         upper_lim_total = mean_plus_3_sigma[k][0] * pow(_data->p(0), 2) + (mean_plus_3_sigma[k][1]) * _data->p(0) +
+                        //                           mean_plus_3_sigma[k][2];
+
+                        //         lower_lim_total = mean_minus_3_sigma[k][0] * pow(_data->p(0), 2) + (mean_minus_3_sigma[k][1]) * _data->p(0) +
+                        //                           mean_minus_3_sigma[k][2];
+                        // }
+
+                        // if (condition == "loose")
+                        // {
+                        //         upper_lim_total = mean_plus_4_sigma[k][0] * pow(_data->p(0), 2) + (mean_plus_4_sigma[k][1]) * _data->p(0) +
+                        //                           mean_plus_4_sigma[k][2];
+
+                        //         lower_lim_total = mean_minus_4_sigma[k][0] * pow(_data->p(0), 2) + (mean_minus_4_sigma[k][1]) * _data->p(0) +
+                        //                           mean_minus_4_sigma[k][2];
+                        // }
                 }
         }
         bool pass_band = _data->ec_tot_energy(0) / _data->p(0) <= upper_lim_total &&
@@ -365,34 +382,10 @@ bool Pass2_Cuts::EC_inner_vs_EC_outer()
         // std::cout << "ec sec " << isector << " a  " << a << " b  " << b << '\n';
 
         return sf_pcal > a + b * sf_ecin;
-
-        // double param_a_sim[9][6] = {
-        //     {0.20233, 0.202647, 0.200986, 0.201774, 0.201084, 0.201648},  // <2 GeV
-        //     {0.212437, 0.21288, 0.211826, 0.213158, 0.212129, 0.212346},  // 2−3 GeV
-        //     {0.219554, 0.220162, 0.219478, 0.220034, 0.219012, 0.219218}, // 3−4 GeV
-        //     {0.224078, 0.224914, 0.223814, 0.224357, 0.224371, 0.224192}, // 4−5 GeV
-        //     {0.22785, 0.228319, 0.227713, 0.228105, 0.22709, 0.227346},   // 5−6 GeV
-        //     {0.230326, 0.230837, 0.230451, 0.230969, 0.229402, 0.229665}, // 6−7 GeV
-        //     {0.23258, 0.233087, 0.2319, 0.233145, 0.232148, 0.232072},    // 7−8 GeV
-        //     {0.232341, 0.233287, 0.231747, 0.232848, 0.231751, 0.232098}, // 8−9 GeV
-        //     {0.22484, 0.233669, 0.236727, 0.233346, 0.233825, 0.23524}    // >9 GeV
-        // };
-
-        // double param_b_sim[9][6] = {
-        //     {-0.949695, -0.956382, -0.934262, -0.940217, -0.933617, -0.936363}, // <2 GeV
-        //     {-1.04219, -1.04446, -1.035, -1.04832, -1.03597, -1.03963},         // 2−3 GeV
-        //     {-1.08307, -1.09327, -1.08529, -1.08885, -1.07962, -1.08145},       // 3−4 GeV
-        //     {-1.11223, -1.11772, -1.10889, -1.11142, -1.11528, -1.11228},       // 4−5 GeV
-        //     {-1.13177, -1.13684, -1.13048, -1.13521, -1.12421, -1.12983},       // 5−6 GeV
-        //     {-1.14596, -1.14755, -1.14677, -1.15218, -1.13488, -1.14008},       // 6−7 GeV
-        //     {-1.16058, -1.16113, -1.1519, -1.1639, -1.15457, -1.1564},          // 7−8 GeV
-        //     {-1.15733, -1.16306, -1.14965, -1.15888, -1.15131, -1.15527},       // 8−9 GeV
-        //     {-1.08707, -1.16674, -1.21746, -1.18771, -1.17542, -1.19943}        // >9 GeV
-        // };
 }
 /////////////////////////////////////////////////////////////////////////////
 
-bool Pass2_Cuts::EC_hit_position_fiducial_cut_homogeneous()
+bool Pass2_Cuts::EC_hit_position_fiducial_cut_homogeneous(std::string condition)
 {
         // Cut using the natural directions of the scintillator bars/ fibers:
         ///////////////////////////////////////////////////////////////////
@@ -419,40 +412,23 @@ bool Pass2_Cuts::EC_hit_position_fiducial_cut_homogeneous()
         double max_v = max_v_med_inb[isec];
         double min_w = min_w_med_inb[isec];
         double max_w = max_w_med_inb[isec];
-        return (_data->ec_pcal_lv(0) > min_v && _data->ec_pcal_lv(0) < max_v && _data->ec_pcal_lw(0) > min_w &&
-                _data->ec_pcal_lw(0) < max_w);
-}
-//////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////
 
-bool Pass2_Cuts::PCAL_fiducial_cut_X_Y()
-{
+        if (condition == "tight")
+        {
+                return (_data->ec_pcal_lv(0) > 19 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 19 &&
+                        _data->ec_pcal_lw(0) < 400);
+        }
 
-        double minparams_pcal_in[6][2] = {{-0.53233, 21.92333}, {-0.53876, 22.35121}, {-0.50470, 21.58152}, {-0.52421, 24.02394}, {-0.52700, 25.79000}, {-0.52324, 21.14879}};
-        double maxparams_pcal_in[6][2] = {{0.51997, -20.34515}, {0.50942, -22.93788}, {0.52876, -25.21121}, {0.53930, -22.61848}, {0.52876, -25.21121}, {0.54148, -22.88758}};
-
-        // double min_radious[6] = {71.245, 71.587, 72.142, 73.101, 72.025, 72.921};
-        double min_radious = 75;
-        double max_radious = 260;
-
-        short pcal_sector = (_data->ec_pcal_sec(0) - 1);
-
-        double X = _data->ec_pcal_x(0);
-        double Y = _data->ec_pcal_y(0);
-
-        float X_new = X * cos(DEG2RAD * (-60 * (pcal_sector))) - Y * sin(DEG2RAD * (-60 * (pcal_sector)));
-        Y = X * sin(DEG2RAD * (-60 * (pcal_sector))) + Y * cos(DEG2RAD * (-60 * (pcal_sector)));
-
-        X = X_new;
-
-        double radious = sqrt(X * X + Y * Y);
-        double Min_radious = min_radious; //[pcal_sector];
-        double Max_radious = max_radious;
-
-        double calc_min = minparams_pcal_in[pcal_sector][0] * X + minparams_pcal_in[pcal_sector][1];
-        double calc_max = maxparams_pcal_in[pcal_sector][0] * X + maxparams_pcal_in[pcal_sector][1];
-
-        return ((Y > calc_min) && (Y < calc_max) && (radious > Min_radious) && (radious < Max_radious));
+        else if (condition == "loose")
+        {
+                return (_data->ec_pcal_lv(0) > 9 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 9 &&
+                        _data->ec_pcal_lw(0) < 400);
+        }
+        else
+        {
+                return (_data->ec_pcal_lv(0) > min_v && _data->ec_pcal_lv(0) < max_v && _data->ec_pcal_lw(0) > min_w &&
+                        _data->ec_pcal_lw(0) < max_w);
+        }
 }
 
 bool Pass2_Cuts::PCAL_Ineff_cut_X_Y()
@@ -495,7 +471,62 @@ bool Pass2_Cuts::PCAL_Ineff_cut_X_Y()
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
-bool Pass2_Cuts::DC_Ineff_cut_X_Y(int i, int pid)
+bool Pass2_Cuts::PCAL_fiducial_cut_X_Y(std::string condition)
+{
+        double minparams_pcal_in[6][2];
+        double maxparams_pcal_in[6][2];
+        double min_radious;
+        double max_radious;
+
+        if (condition == "mid")
+        {
+                double minparams_pcal_in_m[6][2] = {{-0.53233, 21.92333}, {-0.53876, 22.35121}, {-0.50470, 21.58152}, {-0.52421, 24.02394}, {-0.52700, 25.79000}, {-0.52324, 21.14879}};
+                double maxparams_pcal_in_m[6][2] = {{0.51997, -20.34515}, {0.50942, -22.93788}, {0.52876, -25.21121}, {0.53930, -22.61848}, {0.52876, -25.21121}, {0.54148, -22.88758}};
+                min_radious = 75;
+                max_radious = 260;
+                std::copy(&minparams_pcal_in_m[0][0], &minparams_pcal_in_m[0][0] + 6 * 2, &minparams_pcal_in[0][0]);
+                std::copy(&maxparams_pcal_in_m[0][0], &maxparams_pcal_in_m[0][0] + 6 * 2, &maxparams_pcal_in[0][0]);
+        }
+        else if (condition == "tight")
+        {
+                double minparams_pcal_in_t[6][2] = {{-0.50197, 21.60515}, {-0.50633, 21.74333}, {-0.47652, 21.53242}, {-0.48470, 22.18152}, {-0.49209, 24.28455}, {-0.49221, 20.74394}};
+                double maxparams_pcal_in_t[6][2] = {{0.48403, -19.53485}, {0.48258, -23.14212}, {0.49688, -24.31061}, {0.50961, -22.54697}, {0.49221, -23.46394}, {0.51106, -22.37970}};
+                min_radious = 78;
+                max_radious = 257;
+                std::copy(&minparams_pcal_in_t[0][0], &minparams_pcal_in_t[0][0] + 6 * 2, &minparams_pcal_in[0][0]);
+                std::copy(&maxparams_pcal_in_t[0][0], &maxparams_pcal_in_t[0][0] + 6 * 2, &maxparams_pcal_in[0][0]);
+        }
+        else if (condition == "loose")
+        {
+                double minparams_pcal_in_l[6][2] = {{-0.57476, 22.79121}, {-0.57403, 22.51485}, {-0.54324, 22.54879}, {-0.55803, 23.79485}, {-0.57082, 27.02091}, {-0.56615, 22.25424}};
+                double maxparams_pcal_in_l[6][2] = {{0.55433, -20.38333}, {0.54524, -23.36879}, {0.56615, -25.85424}, {0.58221, -23.72394}, {0.56258, -24.98212}, {0.58494, -24.26030}};
+                min_radious = 72;
+                max_radious = 263;
+                std::copy(&minparams_pcal_in_l[0][0], &minparams_pcal_in_l[0][0] + 6 * 2, &minparams_pcal_in[0][0]);
+                std::copy(&maxparams_pcal_in_l[0][0], &maxparams_pcal_in_l[0][0] + 6 * 2, &maxparams_pcal_in[0][0]);
+        }
+        else
+        {
+                std::cerr << "Invalid condition: " << condition << ". Choose 'loose', 'mid', or 'tight'.\n";
+                return false;
+        }
+
+        short pcal_sector = (_data->ec_pcal_sec(0) - 1);
+        double X = _data->ec_pcal_x(0);
+        double Y = _data->ec_pcal_y(0);
+
+        float X_new = X * cos(DEG2RAD * (-60 * (pcal_sector))) - Y * sin(DEG2RAD * (-60 * (pcal_sector)));
+        Y = X * sin(DEG2RAD * (-60 * (pcal_sector))) + Y * cos(DEG2RAD * (-60 * (pcal_sector)));
+        X = X_new;
+
+        double radious = sqrt(X * X + Y * Y);
+        double calc_min = minparams_pcal_in[pcal_sector][0] * X + minparams_pcal_in[pcal_sector][1];
+        double calc_max = maxparams_pcal_in[pcal_sector][0] * X + maxparams_pcal_in[pcal_sector][1];
+
+        return ((Y > calc_min) && (Y < calc_max) && (radious > min_radious) && (radious < max_radious));
+}
+
+bool Pass2_Cuts::DC_Ineff_cut_X_Y(int i, int pid, std::string condition)
 {
         bool _dc_ineff_cut = true;
 
@@ -511,36 +542,190 @@ bool Pass2_Cuts::DC_Ineff_cut_X_Y(int i, int pid)
         // double DC_r3 = sqrt(X3 * X3 + Y3 * Y3);
         // double Min_r3 = min_r[pid][region_3 - 1][dc_sector];
         // double Max_r3 = max_r[pid][region_3 - 1][dc_sector];
+        float del_intercept = 0;
 
-        if (pid == 1)
+        if (condition == "tight")
+        {
+                del_intercept = 5;
+        }
+        else if (condition == "loose")
+        {
+                del_intercept = -5;
+        }
+
+        if (pid == 1) ///// for proton
         {
                 _dc_ineff_cut &= X3 < 330;
                 if (dc_sector == 1 || dc_sector == 4)
                 {
-                        _dc_ineff_cut &= ((Y3 > (1.36 * X3 - 515.8)) && (Y3 < (-1.36 * X3 + 515.8)));
+                        _dc_ineff_cut &= ((Y3 > (1.36 * X3 - 515.8 + del_intercept)) && (Y3 < (-1.36 * X3 + 515.8 - del_intercept)));
                 }
                 else if (dc_sector == 2 || dc_sector == 5)
                 {
-                        _dc_ineff_cut &= ((Y3 > (1.11 * X3 - 425.7)) && (Y3 < (-1.11 * X3 + 425.7)));
+                        _dc_ineff_cut &= ((Y3 > (1.11 * X3 - 425.7 + del_intercept)) && (Y3 < (-1.11 * X3 + 425.7 - del_intercept)));
                 }
         }
-        if (pid == 2)
+        if (pid == 2) ////// for pip
         {
                 _dc_ineff_cut &= X3 < 330;
 
                 if (dc_sector == 1 || dc_sector == 4)
                 {
-                        _dc_ineff_cut &= ((Y3 > (1.36 * X3 - 505.8)) && (Y3 < (-1.36 * X3 + 505.8)));
+                        _dc_ineff_cut &= ((Y3 > (1.36 * X3 - 505.8 + del_intercept)) && (Y3 < (-1.36 * X3 + 505.8 - del_intercept)));
                 }
                 else if (dc_sector == 2 || dc_sector == 5)
                 {
-                        _dc_ineff_cut &= ((Y3 > (1.11 * X3 - 425.7)) && (Y3 < (-1.11 * X3 + 425.7)));
+                        _dc_ineff_cut &= ((Y3 > (1.11 * X3 - 425.7 + del_intercept)) && (Y3 < (-1.11 * X3 + 425.7 - del_intercept)));
                 }
         }
         return _dc_ineff_cut;
 }
 
-bool Pass2_Cuts::DC_fiducial_cut_XY(int i, int pid)
+bool Pass2_Cuts::DC_fiducial_cut_XY_E(std::string condition)
+
+{
+        bool _dc_fid_cut = true;
+
+        /// supergaus
+        double minparams_in_m[6][3][2] = {
+
+            {{-0.62170, 15.22182}, {-0.62585, 22.49044}, {-0.56401, 22.36676}},
+            {{-0.61648, 14.61909}, {-0.61152, 20.72934}, {-0.56335, 21.28434}},
+            {{-0.58788, 14.42273}, {-0.60119, 22.33538}, {-0.53533, 21.37390}},
+            {{-0.59939, 14.92364}, {-0.60844, 22.53813}, {-0.54571, 22.24121}},
+            {{-0.61624, 16.14455}, {-0.61723, 24.04363}, {-0.55016, 23.68214}},
+            {{-0.61624, 14.84455}, {-0.61829, 21.46714}, {-0.54973, 20.49643}}
+
+        };
+
+        double maxparams_in_m[6][3][2] = {
+            {{0.60679, -14.11727}, {0.61275, -20.82582}, {0.56231, -21.30000}},
+            {{0.60255, -15.79273}, {0.61130, -23.74527}, {0.54742, -23.90027}},
+            {{0.66073, -18.50364}, {0.61798, -24.23231}, {0.56500, -25.25962}},
+            {{0.62242, -15.04545}, {0.62954, -22.36560}, {0.56780, -21.79451}},
+            {{0.64133, -17.42000}, {0.62492, -24.55736}, {0.56440, -24.99945}},
+            {{0.61624, -14.84455}, {0.62725, -22.55989}, {0.56951, -22.53049}}};
+
+        // ########### tight cuts 0.5 ##########
+        double maxparams_in_t[6][3][2] = {
+            {{0.57079, -13.46727}, {0.58879, -20.73407}, {0.52813, -20.14341}},
+            {{0.56073, -14.83364}, {0.58448, -23.36066}, {0.52522, -23.29478}},
+            {{0.62473, -17.85364}, {0.59886, -24.36143}, {0.53742, -24.79643}},
+            {{0.58242, -14.04545}, {0.59934, -21.59780}, {0.55747, -23.14945}},
+            {{0.58776, -16.14545}, {0.59525, -23.87989}, {0.53313, -24.02225}},
+            {{0.59309, -15.06545}, {0.60242, -22.46044}, {0.55495, -23.27198}}};
+        double minparams_in_t[6][3][2] = {
+            {{-0.58933, 15.03000}, {-0.59903, 22.10582}, {-0.54181, 21.96126}},
+            {{-0.58242, 14.04545}, {-0.59240, 20.85846}, {-0.55192, 22.29423}},
+            {{-0.55927, 14.26636}, {-0.57437, 21.95077}, {-0.51302, 21.37775}},
+            {{-0.56533, 14.35000}, {-0.58022, 22.08407}, {-0.52533, 22.67005}},
+            {{-0.56412, 15.01727}, {-0.58703, 23.30440}, {-0.53396, 24.24066}},
+            {{-0.57624, 13.84455}, {-0.59547, 21.72110}, {-0.53071, 20.85082}}};
+
+        // ########### loose cuts 0.9 ##########
+        double maxparams_in_l[6][3][2] = {
+            {{0.63055, -13.52273}, {0.63187, -20.28242}, {0.58192, -20.20577}},
+            {{0.63939, -15.92364}, {0.63354, -23.33275}, {0.57808, -24.01731}},
+            {{0.68824, -18.48455}, {0.65174, -24.94198}, {0.58791, -24.84670}},
+            {{0.69600, -17.11000}, {0.64369, -21.33945}, {0.59495, -21.86429}},
+            {{0.68824, -18.48455}, {0.65174, -24.94198}, {0.59764, -25.69313}},
+            {{0.67636, -16.21182}, {0.64655, -21.63231}, {0.60016, -22.64753}}};
+        double minparams_in_l[6][3][2] = {
+            {{-0.67636, 16.21182}, {-0.64941, 22.01088}, {-0.59093, 21.87830}},
+            {{-0.69442, 16.88545}, {-0.63956, 20.79615}, {-0.59115, 21.10577}},
+            {{-0.64776, 16.01545}, {-0.63086, 22.59857}, {-0.55813, 21.37802}},
+            {{-0.66582, 16.68909}, {-0.63613, 22.65901}, {-0.57835, 22.67473}},
+            {{-0.68230, 18.05818}, {-0.64479, 24.20264}, {-0.57643, 23.77280}},
+            {{-0.64158, 14.47455}, {-0.63886, 21.11857}, {-0.57665, 20.33874}}};
+
+        double min_r[3][6] =
+            {{36.754, 36.386, 36.528, 36.946, 36.680, 36.903},
+             {54.504, 54.487, 54.405, 54.644, 54.858, 54.992},
+             {63.980, 64.513, 63.854, 63.939, 63.953, 64.713}
+
+            };
+        double max_r[3][6] =
+            {{101, 101, 101, 101, 101, 101},
+             {155, 155, 155, 155, 155, 155},
+             {210, 210, 210, 210, 210, 210}};
+
+        double minparams_in[6][3][2]; // Array to hold selected min cut
+        double maxparams_in[6][3][2]; // Array to hold selected max cut
+
+        if (condition == "tight")
+        {
+                std::copy(&minparams_in_t[0][0][0], &minparams_in_t[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+                std::copy(&maxparams_in_t[0][0][0], &maxparams_in_t[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        }
+        else if (condition == "loose")
+        {
+                std::copy(&minparams_in_l[0][0][0], &minparams_in_l[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+                std::copy(&maxparams_in_l[0][0][0], &maxparams_in_l[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        }
+        else
+        {
+                // Default to medium
+                std::copy(&minparams_in_m[0][0][0], &minparams_in_m[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+                std::copy(&maxparams_in_m[0][0][0], &maxparams_in_m[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        }
+
+        short dc_sector = (_data->dc_sec(0) - 1);
+
+        // region 1
+        double X1 = _data->dc_r1_x(0);
+        double Y1 = _data->dc_r1_y(0);
+        float X1_new = X1 * cos(DEG2RAD * (-60 * (dc_sector))) - Y1 * sin(DEG2RAD * (-60 * (dc_sector)));
+        Y1 = X1 * sin(DEG2RAD * (-60 * (dc_sector))) + Y1 * cos(DEG2RAD * (-60 * (dc_sector)));
+
+        X1 = X1_new;
+        int region_1 = 1;
+
+        double calc_min1 = minparams_in[dc_sector][region_1 - 1][0] * X1 + minparams_in[dc_sector][region_1 - 1][1];
+        double calc_max1 = maxparams_in[dc_sector][region_1 - 1][0] * X1 + maxparams_in[dc_sector][region_1 - 1][1];
+        double DC_r1 = sqrt(X1 * X1 + Y1 * Y1);
+        double Min_r1 = min_r[region_1 - 1][dc_sector];
+        double Max_r1 = max_r[region_1 - 1][dc_sector];
+
+        // region 2
+        double X2 = _data->dc_r2_x(0);
+        double Y2 = _data->dc_r2_y(0);
+        float X2_new = X2 * cos(DEG2RAD * (-60 * (dc_sector))) - Y2 * sin(DEG2RAD * (-60 * (dc_sector)));
+        Y2 = X2 * sin(DEG2RAD * (-60 * (dc_sector))) + Y2 * cos(DEG2RAD * (-60 * (dc_sector)));
+        X2 = X2_new;
+        int region_2 = 2;
+        double calc_min2 = minparams_in[dc_sector][region_2 - 1][0] * X2 + minparams_in[dc_sector][region_2 - 1][1];
+        double calc_max2 = maxparams_in[dc_sector][region_2 - 1][0] * X2 + maxparams_in[dc_sector][region_2 - 1][1];
+        double DC_r2 = sqrt(X2 * X2 + Y2 * Y2);
+        double Min_r2 = min_r[region_2 - 1][dc_sector];
+        double Max_r2 = max_r[region_2 - 1][dc_sector];
+
+        // region 3
+        double X3 = _data->dc_r3_x(0);
+        double Y3 = _data->dc_r3_y(0);
+        float X3_new = X3 * cos(DEG2RAD * (-60 * (dc_sector))) - Y3 * sin(DEG2RAD * (-60 * (dc_sector)));
+        Y3 = X3 * sin(DEG2RAD * (-60 * (dc_sector))) + Y3 * cos(DEG2RAD * (-60 * (dc_sector)));
+        X3 = X3_new;
+        int region_3 = 3;
+        double calc_min3 = minparams_in[dc_sector][region_3 - 1][0] * X3 + minparams_in[dc_sector][region_3 - 1][1];
+        double calc_max3 = maxparams_in[dc_sector][region_3 - 1][0] * X3 + maxparams_in[dc_sector][region_3 - 1][1];
+        double DC_r3 = sqrt(X3 * X3 + Y3 * Y3);
+        double Min_r3 = min_r[region_3 - 1][dc_sector];
+        double Max_r3 = max_r[region_3 - 1][dc_sector];
+
+        // double Max_line = max_line[region_3 - 1][dc_sector];
+
+        // /// data should be above
+        // y = 1.36x−505.8
+        //     /// data should be below
+        //     y =−1.36x + 505.8
+
+        return ((Y1 > calc_min1) && (Y1 < calc_max1) && (Y2 > calc_min2) && (Y2 < calc_max2) && (Y3 > calc_min3) &&
+                (Y3 < calc_max3) && (DC_r1 > Min_r1) && (DC_r2 > Min_r2) && (DC_r3 > Min_r3) // && (DC_r1 < Max_r1) && (DC_r2 < Max_r2)
+                && (DC_r3 < Max_r3));
+        //////    //&& (Y3 > (1.36 * X3 - 505.8)) && (Y3 < (-1.36 * X3 + 505.8)));
+}
+
+bool Pass2_Cuts::DC_fiducial_cut_XY_PIP(int i, int pid, std::string condition)
 {
         bool _dc_fid_cut = true;
         // bool isinbending = true;
@@ -551,110 +736,89 @@ bool Pass2_Cuts::DC_fiducial_cut_XY(int i, int pid)
         // maxparams_in[1][6][3][2] -> [pid][sec][regions][a,b]->a*x+b
 
         /// supergaus
-        double minparams_in[3][6][3][2] = {
-            //     {{{-0.58933, 15.03000}, {-0.60189, 22.39868}, {-0.54181, 21.96126}},
-            //      {{-0.58242, 14.04545}, {-0.59240, 20.85846}, {-0.55192, 22.29423}},
-            //      {{-0.55927, 14.26636}, {-0.57437, 21.95077}, {-0.51302, 21.37775}},
-            //      {{-0.56533, 14.35000}, {-0.57253, 21.57033}, {-0.52352, 22.35879}},
-            //      {{-0.58582, 16.10909}, {-0.58703, 23.30440}, {-0.52440, 23.26868}},
-            //      {{-0.57624, 13.84455}, {-0.59262, 21.42824}, {-0.53071, 20.85082}}},
+        double minparams_in_pip_m[6][3][2] = {
 
-            {{{-0.62170, 15.22182}, {-0.62585, 22.49044}, {-0.56401, 22.36676}},
-             {{-0.61648, 14.61909}, {-0.61152, 20.72934}, {-0.56335, 21.28434}},
-             {{-0.58788, 14.42273}, {-0.60119, 22.33538}, {-0.53533, 21.37390}},
-             {{-0.59939, 14.92364}, {-0.60844, 22.53813}, {-0.54571, 22.24121}},
-             {{-0.61624, 16.14455}, {-0.61723, 24.04363}, {-0.55016, 23.68214}},
-             {{-0.61624, 14.84455}, {-0.61829, 21.46714}, {-0.54973, 20.49643}}},
-
-            {{{-0.51812, 4.80882}, {-0.60660, 19.32861}, {-0.60392, 34.35024}},
-             {{-0.52912, 5.39632}, {-0.61995, 20.57325}, {-0.62008, 37.14595}},
-             {{-0.50012, 4.10882}, {-0.59236, 18.29823}, {-0.58771, 32.53500}},
-             {{-0.52647, 5.16029}, {-0.60426, 18.88900}, {-0.60434, 34.83024}},
-             {{-0.50600, 4.00000}, {-0.58717, 17.29909}, {-0.57177, 28.34119}},
-             {{-0.52388, 4.91618}, {-0.60842, 19.32450}, {-0.61696, 36.42214}}},
-
-            {{{-0.48371, 2.71544}, {-0.56539, 14.80074}, {-0.56644, 28.90231}},
-             {{-0.49800, 3.45000}, {-0.56931, 14.84191}, {-0.56402, 27.89462}},
-             {{-0.49165, 3.19853}, {-0.55265, 13.67279}, {-0.56789, 30.39264}},
-             {{-0.48529, 2.72206}, {-0.56480, 14.85221}, {-0.57158, 30.11088}},
-             {{-0.46906, 1.67941}, {-0.55137, 13.52941}, {-0.54323, 24.85703}},
-             {{-0.51318, 4.11324}, {-0.56931, 14.84191}, {-0.56697, 28.84165}}}
+            {{-0.48371, 2.71544}, {-0.56539, 14.80074}, {-0.56644, 28.90231}},
+            {{-0.49800, 3.45000}, {-0.56931, 14.84191}, {-0.56402, 27.89462}},
+            {{-0.49165, 3.19853}, {-0.55265, 13.67279}, {-0.56789, 30.39264}},
+            {{-0.48529, 2.72206}, {-0.56480, 14.85221}, {-0.57158, 30.11088}},
+            {{-0.46906, 1.67941}, {-0.55137, 13.52941}, {-0.54323, 24.85703}},
+            {{-0.51318, 4.11324}, {-0.56931, 14.84191}, {-0.56697, 28.84165}}
 
         };
 
-        double maxparams_in[3][6][3][2] = {
-            //     {{{0.57079, -13.46727}, {0.57108, -19.36121}, {0.52978, -20.38791}},
-            //      {{0.56255, -14.79273}, {0.58448, -23.36066}, {0.52522, -23.29478}},
-            //      {{0.62473, -17.85364}, {0.59042, -23.65901}, {0.53396, -24.24066}},
-            //      {{0.58242, -14.04545}, {0.59934, -21.59780}, {0.55005, -22.42995}},
-            //      {{0.57624, -15.64455}, {0.59525, -23.87989}, {0.53313, -24.02225}},
-            //      {{0.59309, -15.06545}, {0.60044, -22.17527}, {0.54753, -22.55247}}},
+        double maxparams_in_pip_m[6][3][2] = {
 
-            {{{0.60679, -14.11727}, {0.61275, -20.82582}, {0.56231, -21.30000}},
-             {{0.60255, -15.79273}, {0.61130, -23.74527}, {0.54742, -23.90027}},
-             {{0.66073, -18.50364}, {0.61798, -24.23231}, {0.56500, -25.25962}},
-             {{0.62242, -15.04545}, {0.62954, -22.36560}, {0.56780, -21.79451}},
-             {{0.64133, -17.42000}, {0.62492, -24.55736}, {0.56440, -24.99945}},
-             {{0.61624, -14.84455}, {0.62725, -22.55989}, {0.56951, -22.53049}}},
+            {{0.49447, -3.13529}, {0.55402, -12.47426}, {0.57062, -26.22209}},
+            {{0.49800, -3.45000}, {0.56431, -13.96176}, {0.57756, -28.62341}},
+            {{0.49235, -2.92647}, {0.55402, -12.61544}, {0.56486, -26.74143}},
+            {{0.49818, -3.30074}, {0.56431, -13.45588}, {0.56947, -26.46780}},
+            {{0.48971, -2.89044}, {0.55402, -12.61544}, {0.55198, -24.45110}},
+            {{0.49818, -3.30074}, {0.56431, -13.45588}, {0.56565, -25.70758}}};
 
-            {{{0.53865, -5.86103}, {0.61408, -19.00965}, {0.64226, -38.73976}},
-             {{0.52876, -5.36985}, {0.61309, -19.36563}, {0.61519, -34.45357}},
-             {{0.52388, -4.91618}, {0.60462, -18.49771}, {0.61353, -34.83833}},
-             {{0.53606, -5.61691}, {0.61106, -18.60558}, {0.62413, -35.58310}},
-             {{0.51347, -4.49779}, {0.60016, -18.02074}, {0.59738, -31.99500}},
-             {{0.52918, -5.16324}, {0.60592, -18.18320}, {0.61468, -33.58214}}},
+        double minparams_in_pip_t[6][3][2] = {
+            {{-0.47453, 2.52721}, {-0.55284, 14.50662}, {-0.56802, 31.43462}},
+            {{-0.49876, 3.89485}, {-0.56363, 15.42574}, {-0.562, 29.69857}},
+            {{-0.47759, 2.80662}, {-0.55284, 14.50662}, {-0.56947, 32.55352}},
+            {{-0.47718, 2.61324}, {-0.55186, 14.27868}, {-0.56459, 31.05747}},
+            {{-0.46447, 1.83529}, {-0.53559, 12.6125}, {-0.54002, 26.22604}},
+            {{-0.50047, 3.86029}, {-0.56363, 15.42574}, {-0.55585, 28.77769}}};
 
-            {{{0.49447, -3.13529}, {0.55402, -12.47426}, {0.57062, -26.22209}},
-             {{0.49800, -3.45000}, {0.56431, -13.96176}, {0.57756, -28.62341}},
-             {{0.49235, -2.92647}, {0.55402, -12.61544}, {0.56486, -26.74143}},
-             {{0.49818, -3.30074}, {0.56431, -13.45588}, {0.56947, -26.46780}},
-             {{0.48971, -2.89044}, {0.55402, -12.61544}, {0.55198, -24.45110}},
-             {{0.49818, -3.30074}, {0.56431, -13.45588}, {0.56565, -25.70758}}}};
+        double maxparams_in_pip_t[6][3][2] = {
+            {{0.49571, -3.61544}, {0.56696, -14.71838}, {0.5631, -27.22934}},
+            {{0.49241, -3.69338}, {0.57186, -15.70515}, {0.56644, -28.55945}},
+            {{0.49571, -3.61544}, {0.55706, -13.89853}, {0.56182, -27.63308}},
+            {{0.49571, -3.61544}, {0.56892, -15.05662}, {0.56745, -28.27176}},
+            {{0.47241, -2.31838}, {0.54431, -12.77059}, {0.55062, -26.0078}},
+            {{0.49571, -3.61544}, {0.56892, -15.05662}, {0.55453, -25.64363}}};
+        double minparams_in_pip_l[6][3][2] = {
+            {{-0.48929, 2.29706}, {-0.55794, 13.11544}, {-0.57725, 29.25879}},
+            {{-0.51312, 3.52132}, {-0.56824, 13.95588}, {-0.57756, 28.62341}},
+            {{-0.49588, 2.89118}, {-0.56137, 13.56029}, {-0.5747, 29.75198}},
+            {{-0.48982, 2.22426}, {-0.56039, 13.46176}, {-0.56569, 27.24538}},
+            {{-0.48765, 2.09853}, {-0.55402, 12.61544}, {-0.55198, 24.4511}},
+            {{-0.51529, 3.52206}, {-0.58, 15.10294}, {-0.58033, 29.70495}}};
 
-        // // simu
-        // double maxparams_in_sim[3][6][3][2] = {
-        //     {{0.56012, -12.48727}, {0.57116, -18.59769}, {0.53214, -18.98324}},
-        //     {{0.55394, -12.28636}, {0.56703, -18.46868}, {0.51978, -18.26868}},
-        //     {{0.53236, -10.51182}, {0.55455, -16.73088}, {0.51912, -16.84011}},
-        //     {{0.55079, -11.41727}, {0.56356, -17.47758}, {0.52621, -17.83379}},
-        //     {{0.53236, -10.01182}, {0.55960, -16.57868}, {0.51181, -15.30357}},
-        //     {{0.55467, -12.07000}, {0.57042, -18.40901}, {0.53214, -18.98324}}};
+        double maxparams_in_pip_l[6][3][2] = {
+            {{0.50465, -3.11103}, {0.57686, -13.75}, {0.57831, -25.9089}},
+            {{0.50771, -3.39044}, {0.5751, -14.375}, {0.57114, -25.81857}},
+            {{0.50788, -3.19118}, {0.5499, -11.41103}, {0.57114, -25.81857}},
+            {{0.51053, -3.27721}, {0.57686, -13.75}, {0.58574, -27.74033}},
+            {{0.48671, -2.05294}, {0.55775, -12.05809}, {0.54938, -21.8922}},
+            {{0.50788, -3.19118}, {0.57686, -13.75}, {0.5533, -21.87088}}};
 
-        // double minparams_in_sim[3][6][3][2] = {
-        //     {{-0.55079, 11.41727}, {-0.57226, 17.96088}, {-0.52852, 17.96071}},
-        //     {{-0.55079, 11.41727}, {-0.56356, 17.47758}, {-0.52621, 17.83379}},
-        //     {{-0.53394, 10.23636}, {-0.55960, 16.57868}, {-0.51462, 15.83846}},
-        //     {{-0.55988, 12.71273}, {-0.57815, 19.81956}, {-0.51929, 18.59148}},
-        //     {{-0.53830, 10.43818}, {-0.55178, 16.16022}, {-0.51462, 15.83846}},
-        //     {{-0.55079, 11.41727}, {-0.57424, 18.24604}, {-0.52852, 17.96071}}};
-
-        double min_r[3][3][6] = {
-            {{36.754, 36.386, 36.528, 36.946, 36.680, 36.903},
-             {54.504, 54.487, 54.405, 54.644, 54.858, 54.992},
-             {63.980, 64.513, 63.854, 63.939, 63.953, 64.713}},
+        double min_r[3][6] =
 
             {{36.754, 36.386, 36.528, 36.946, 36.680, 36.903},
-             {56, 56, 56, 56, 56, 56},
-             {135, 135, 135, 135, 135, 135}},
+             {66, 66, 66, 66, 66, 66},
+             {135, 135, 135, 135, 135, 135}
 
-            {{36.754, 36.386, 36.528, 36.946, 36.680, 36.903},
-             {56, 56, 56, 56, 56, 56},
-             {135, 135, 135, 135, 135, 135}},
+            };
 
-        };
-
-        double max_r[3][3][6] = {
-            {{101, 101, 101, 101, 101, 101},
-             {155, 155, 155, 155, 155, 155},
-             {210, 210, 210, 210, 210, 210}},
-
-            {{145, 145, 145, 145, 145, 145},
-             {220, 220, 220, 220, 220, 220},
-             {350, 350, 350, 350, 350, 350}},
-
+        double max_r[3][6] =
             {{140, 145, 145, 145, 145, 140},
              {210, 220, 220, 220, 220, 210},
-             {325, 340, 340, 340, 340, 325}}};
+             {325, 340, 340, 340, 340, 325}};
+
+        double minparams_pip_in[6][3][2]; // Array to hold selected min cut
+        double maxparams_pip_in[6][3][2]; // Array to hold selected max cut
+
+        if (condition == "tight")
+        {
+                std::copy(&minparams_in_pip_t[0][0][0], &minparams_in_pip_t[0][0][0] + 6 * 3 * 2, &minparams_pip_in[0][0][0]);
+                std::copy(&maxparams_in_pip_t[0][0][0], &maxparams_in_pip_t[0][0][0] + 6 * 3 * 2, &maxparams_pip_in[0][0][0]);
+        }
+        else if (condition == "loose")
+        {
+                std::copy(&minparams_in_pip_l[0][0][0], &minparams_in_pip_l[0][0][0] + 6 * 3 * 2, &minparams_pip_in[0][0][0]);
+                std::copy(&maxparams_in_pip_l[0][0][0], &maxparams_in_pip_l[0][0][0] + 6 * 3 * 2, &maxparams_pip_in[0][0][0]);
+        }
+        else
+        {
+                // Default to medium
+                std::copy(&minparams_in_pip_m[0][0][0], &minparams_in_pip_m[0][0][0] + 6 * 3 * 2, &minparams_pip_in[0][0][0]);
+                std::copy(&maxparams_in_pip_m[0][0][0], &maxparams_in_pip_m[0][0][0] + 6 * 3 * 2, &maxparams_pip_in[0][0][0]);
+        }
 
         short dc_sector = (_data->dc_sec(i) - 1);
 
@@ -667,11 +831,11 @@ bool Pass2_Cuts::DC_fiducial_cut_XY(int i, int pid)
         X1 = X1_new;
         int region_1 = 1;
 
-        double calc_min1 = minparams_in[pid][dc_sector][region_1 - 1][0] * X1 + minparams_in[pid][dc_sector][region_1 - 1][1];
-        double calc_max1 = maxparams_in[pid][dc_sector][region_1 - 1][0] * X1 + maxparams_in[pid][dc_sector][region_1 - 1][1];
+        double calc_min1 = minparams_pip_in[dc_sector][region_1 - 1][0] * X1 + minparams_pip_in[dc_sector][region_1 - 1][1];
+        double calc_max1 = maxparams_pip_in[dc_sector][region_1 - 1][0] * X1 + maxparams_pip_in[dc_sector][region_1 - 1][1];
         double DC_r1 = sqrt(X1 * X1 + Y1 * Y1);
-        double Min_r1 = min_r[pid][region_1 - 1][dc_sector];
-        double Max_r1 = max_r[pid][region_1 - 1][dc_sector];
+        double Min_r1 = min_r[region_1 - 1][dc_sector];
+        double Max_r1 = max_r[region_1 - 1][dc_sector];
 
         // region 2
         double X2 = _data->dc_r2_x(i);
@@ -680,11 +844,11 @@ bool Pass2_Cuts::DC_fiducial_cut_XY(int i, int pid)
         Y2 = X2 * sin(DEG2RAD * (-60 * (dc_sector))) + Y2 * cos(DEG2RAD * (-60 * (dc_sector)));
         X2 = X2_new;
         int region_2 = 2;
-        double calc_min2 = minparams_in[pid][dc_sector][region_2 - 1][0] * X2 + minparams_in[pid][dc_sector][region_2 - 1][1];
-        double calc_max2 = maxparams_in[pid][dc_sector][region_2 - 1][0] * X2 + maxparams_in[pid][dc_sector][region_2 - 1][1];
+        double calc_min2 = minparams_pip_in[dc_sector][region_2 - 1][0] * X2 + minparams_pip_in[dc_sector][region_2 - 1][1];
+        double calc_max2 = maxparams_pip_in[dc_sector][region_2 - 1][0] * X2 + maxparams_pip_in[dc_sector][region_2 - 1][1];
         double DC_r2 = sqrt(X2 * X2 + Y2 * Y2);
-        double Min_r2 = min_r[pid][region_2 - 1][dc_sector];
-        double Max_r2 = max_r[pid][region_2 - 1][dc_sector];
+        double Min_r2 = min_r[region_2 - 1][dc_sector];
+        double Max_r2 = max_r[region_2 - 1][dc_sector];
 
         // region 3
         double X3 = _data->dc_r3_x(i);
@@ -693,12 +857,171 @@ bool Pass2_Cuts::DC_fiducial_cut_XY(int i, int pid)
         Y3 = X3 * sin(DEG2RAD * (-60 * (dc_sector))) + Y3 * cos(DEG2RAD * (-60 * (dc_sector)));
         X3 = X3_new;
         int region_3 = 3;
-        double calc_min3 = minparams_in[pid][dc_sector][region_3 - 1][0] * X3 + minparams_in[pid][dc_sector][region_3 - 1][1];
-        double calc_max3 = maxparams_in[pid][dc_sector][region_3 - 1][0] * X3 + maxparams_in[pid][dc_sector][region_3 - 1][1];
+        double calc_min3 = minparams_pip_in[dc_sector][region_3 - 1][0] * X3 + minparams_pip_in[dc_sector][region_3 - 1][1];
+        double calc_max3 = maxparams_pip_in[dc_sector][region_3 - 1][0] * X3 + maxparams_pip_in[dc_sector][region_3 - 1][1];
         double DC_r3 = sqrt(X3 * X3 + Y3 * Y3);
-        double Min_r3 = min_r[pid][region_3 - 1][dc_sector];
-        double Max_r3 = max_r[pid][region_3 - 1][dc_sector];
-        // double Max_line = max_line[pid][region_3 - 1][dc_sector];
+        double Min_r3 = min_r[region_3 - 1][dc_sector];
+        double Max_r3 = max_r[region_3 - 1][dc_sector];
+        // double Max_line = max_line[region_3 - 1][dc_sector];
+
+        // /// data should be above
+        // y = 1.36x−505.8
+        //     /// data should be below
+        //     y =−1.36x + 505.8
+
+        return ((Y1 > calc_min1) && (Y1 < calc_max1) && (Y2 > calc_min2) && (Y2 < calc_max2) && (Y3 > calc_min3) &&
+                (Y3 < calc_max3) && (DC_r1 > Min_r1) && (DC_r2 > Min_r2) && (DC_r3 > Min_r3) // && (DC_r1 < Max_r1) && (DC_r2 < Max_r2)
+                && (DC_r3 < Max_r3));
+        //////    //&& (Y3 > (1.36 * X3 - 505.8)) && (Y3 < (-1.36 * X3 + 505.8)));
+
+        // // if(inbending == true) pid = 0; // use only for electrons in inbending case
+        // double calc_min = minparams[dc_sector - 1][region - 1] + minparams[dc_sector - 1][region - 1][1] *
+        // X; double calc_max = maxparams[dc_sector - 1][region - 1] + maxparams[dc_sector - 1][region -
+        // 1][1] * X; return (Y > calc_min) && (Y < calc_max);
+}
+
+bool Pass2_Cuts::DC_fiducial_cut_XY_PROT(int i, int pid, std::string condition)
+{
+        bool _dc_fid_cut = true;
+        // bool isinbending = true;
+        // new cut parameters for the linear cut based on x and y coordinates (inbending field):
+        // replace it in the function: bool DC_fiducial_cut_XY(int j, int region)
+        // (optimized for electrons, do not use it for hadrons)
+
+        // maxparams_in[1][6][3][2] -> [sec][regions][a,b]->a*x+b
+
+        /// supergaus
+        double minparams_in_prot_m[6][3][2] = {
+
+            {{-0.51812, 4.80882}, {-0.60660, 19.32861}, {-0.60392, 34.35024}},
+            {{-0.52912, 5.39632}, {-0.61995, 20.57325}, {-0.62008, 37.14595}},
+            {{-0.50012, 4.10882}, {-0.59236, 18.29823}, {-0.58771, 32.53500}},
+            {{-0.52647, 5.16029}, {-0.60426, 18.88900}, {-0.60434, 34.83024}},
+            {{-0.50600, 4.00000}, {-0.58717, 17.29909}, {-0.57177, 28.34119}},
+            {{-0.52388, 4.91618}, {-0.60842, 19.32450}, {-0.61696, 36.42214}}
+
+        };
+
+        double maxparams_in_prot_m[6][3][2] = {
+
+            {{0.53865, -5.86103}, {0.61408, -19.00965}, {0.64226, -38.73976}},
+            {{0.52876, -5.36985}, {0.61309, -19.36563}, {0.61519, -34.45357}},
+            {{0.52388, -4.91618}, {0.60462, -18.49771}, {0.61353, -34.83833}},
+            {{0.53606, -5.61691}, {0.61106, -18.60558}, {0.62413, -35.58310}},
+            {{0.51347, -4.49779}, {0.60016, -18.02074}, {0.59738, -31.99500}},
+            {{0.52918, -5.16324}, {0.60592, -18.18320}, {0.61468, -33.58214}}};
+
+        double minparams_in_prot_t[6][3][2] = {
+            {{-0.51224, 5.16765}, {-0.59564, 19.15749}, {-0.5926, 34.80833}},
+            {{-0.52806, 6.01691}, {-0.61382, 20.94494}, {-0.60371, 35.52929}},
+            {{-0.50712, 5.07132}, {-0.58701, 18.7974}, {-0.5859, 34.06119}},
+            {{-0.51082, 4.83676}, {-0.5946, 19.16528}, {-0.60392, 36.52167}},
+            {{-0.49694, 4.14559}, {-0.58566, 18.04944}, {-0.56771, 30.15167}},
+            {{-0.52394, 5.60809}, {-0.60343, 19.78476}, {-0.60112, 35.8769}},
+        };
+
+        double maxparams_in_prot_t[6][3][2] = {
+            {{0.519, -5.1625}, {0.60826, -19.19424}, {0.61104, -34.6631}},
+            {{0.52276, -5.89485}, {0.60338, -19.30325}, {0.60018, -33.51595}},
+            {{0.51871, -5.47794}, {0.60026, -18.879}, {0.60849, -35.335}},
+            {{0.52276, -5.54485}, {0.60426, -18.889}, {0.60709, -34.33167}},
+            {{0.50118, -4.36324}, {0.59081, -18.08134}, {0.586, -31.12881}},
+            {{0.52271, -5.70294}, {0.60197, -18.75948}, {0.60709, -34.33167}},
+        };
+
+        double minparams_in_prot_l[6][3][2] = {
+            {{-0.52224, 4.54265}, {-0.61242, 19.00117}, {-0.60912, 34.15024}},
+            {{-0.53994, 5.65809}, {-0.62951, 20.80061}, {-0.63005, 36.81833}},
+            {{-0.51629, 4.38456}, {-0.59927, 18.18736}, {-0.60413, 34.00929}},
+            {{-0.52135, 4.41397}, {-0.6119, 19.04316}, {-0.61312, 35.025}},
+            {{-0.50665, 3.48603}, {-0.59262, 17.04866}, {-0.59332, 31.3769}},
+            {{-0.53229, 4.78456}, {-0.61808, 19.38156}, {-0.61987, 35.31548}},
+        };
+
+        double maxparams_in_prot_l[6][3][2] = {
+            {{0.53441, -5.04338}, {0.62712, -19.26043}, {0.63847, -36.1431}},
+            {{0.53765, -5.52353}, {0.61662, -18.66104}, {0.61862, -33.53262}},
+            {{0.53271, -5.07794}, {0.61496, -18.45255}, {0.62236, -34.3669}},
+            {{0.53235, -4.97647}, {0.61366, -18.15753}, {0.62465, -34.37833}},
+            {{0.52753, -4.78971}, {0.60468, -17.54113}, {0.61862, -33.53262}},
+            {{0.53235, -4.97647}, {0.6121, -17.94065}, {0.60418, -30.45738}},
+        };
+
+        double min_r[3][6] =
+
+            {{36.754, 36.386, 36.528, 36.946, 36.680, 36.903},
+             {56, 56, 56, 56, 56, 56},
+             {135, 135, 135, 135, 135, 135}
+
+            };
+
+        double max_r[3][6] =
+            {{145, 145, 145, 145, 145, 145},
+             {220, 220, 220, 220, 220, 220},
+             {350, 350, 350, 350, 350, 350}};
+
+        double minparams_in[6][3][2]; // Array to hold selected min cut
+        double maxparams_in[6][3][2]; // Array to hold selected max cut
+
+        if (condition == "tight")
+        {
+                std::copy(&minparams_in_prot_t[0][0][0], &minparams_in_prot_t[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+                std::copy(&maxparams_in_prot_t[0][0][0], &maxparams_in_prot_t[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        }
+        else if (condition == "loose")
+        {
+                std::copy(&minparams_in_prot_l[0][0][0], &minparams_in_prot_l[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+                std::copy(&maxparams_in_prot_l[0][0][0], &maxparams_in_prot_l[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        }
+        else
+        {
+                // Default to medium
+                std::copy(&minparams_in_prot_m[0][0][0], &minparams_in_prot_m[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+                std::copy(&maxparams_in_prot_m[0][0][0], &maxparams_in_prot_m[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        }
+        short dc_sector = (_data->dc_sec(i) - 1);
+
+        // region 1
+        double X1 = _data->dc_r1_x(i);
+        double Y1 = _data->dc_r1_y(i);
+        float X1_new = X1 * cos(DEG2RAD * (-60 * (dc_sector))) - Y1 * sin(DEG2RAD * (-60 * (dc_sector)));
+        Y1 = X1 * sin(DEG2RAD * (-60 * (dc_sector))) + Y1 * cos(DEG2RAD * (-60 * (dc_sector)));
+
+        X1 = X1_new;
+        int region_1 = 1;
+
+        double calc_min1 = minparams_in[dc_sector][region_1 - 1][0] * X1 + minparams_in[dc_sector][region_1 - 1][1];
+        double calc_max1 = maxparams_in[dc_sector][region_1 - 1][0] * X1 + maxparams_in[dc_sector][region_1 - 1][1];
+        double DC_r1 = sqrt(X1 * X1 + Y1 * Y1);
+        double Min_r1 = min_r[region_1 - 1][dc_sector];
+        double Max_r1 = max_r[region_1 - 1][dc_sector];
+
+        // region 2
+        double X2 = _data->dc_r2_x(i);
+        double Y2 = _data->dc_r2_y(i);
+        float X2_new = X2 * cos(DEG2RAD * (-60 * (dc_sector))) - Y2 * sin(DEG2RAD * (-60 * (dc_sector)));
+        Y2 = X2 * sin(DEG2RAD * (-60 * (dc_sector))) + Y2 * cos(DEG2RAD * (-60 * (dc_sector)));
+        X2 = X2_new;
+        int region_2 = 2;
+        double calc_min2 = minparams_in[dc_sector][region_2 - 1][0] * X2 + minparams_in[dc_sector][region_2 - 1][1];
+        double calc_max2 = maxparams_in[dc_sector][region_2 - 1][0] * X2 + maxparams_in[dc_sector][region_2 - 1][1];
+        double DC_r2 = sqrt(X2 * X2 + Y2 * Y2);
+        double Min_r2 = min_r[region_2 - 1][dc_sector];
+        double Max_r2 = max_r[region_2 - 1][dc_sector];
+
+        // region 3
+        double X3 = _data->dc_r3_x(i);
+        double Y3 = _data->dc_r3_y(i);
+        float X3_new = X3 * cos(DEG2RAD * (-60 * (dc_sector))) - Y3 * sin(DEG2RAD * (-60 * (dc_sector)));
+        Y3 = X3 * sin(DEG2RAD * (-60 * (dc_sector))) + Y3 * cos(DEG2RAD * (-60 * (dc_sector)));
+        X3 = X3_new;
+        int region_3 = 3;
+        double calc_min3 = minparams_in[dc_sector][region_3 - 1][0] * X3 + minparams_in[dc_sector][region_3 - 1][1];
+        double calc_max3 = maxparams_in[dc_sector][region_3 - 1][0] * X3 + maxparams_in[dc_sector][region_3 - 1][1];
+        double DC_r3 = sqrt(X3 * X3 + Y3 * Y3);
+        double Min_r3 = min_r[region_3 - 1][dc_sector];
+        double Max_r3 = max_r[region_3 - 1][dc_sector];
+        // double Max_line = max_line[region_3 - 1][dc_sector];
 
         // /// data should be above
         // y = 1.36x−505.8
@@ -716,7 +1039,7 @@ bool Pass2_Cuts::DC_fiducial_cut_XY(int i, int pid)
         // 1][1] * X; return (Y > calc_min) && (Y < calc_max);
 }
 
-bool Pass2_Cuts::DC_z_vertex_cut()
+bool Pass2_Cuts::DC_z_vertex_cut(std::string condition)
 {
         int pcal_sector = _data->ec_pcal_sec(0);
         float partvz = _data->vz(0);
@@ -737,7 +1060,19 @@ bool Pass2_Cuts::DC_z_vertex_cut()
         float vz_min = vz_min_sect[isec];
         float vz_max = vz_max_sect[isec];
 
-        return partvz > vz_min && partvz < vz_max;
+        if (condition == "tight")
+        {
+                return partvz > -9 && partvz < 4;
+        }
+
+        else if (condition == "loose")
+        {
+                return partvz > -11 && partvz < 6;
+        }
+        else
+        {
+                return partvz > vz_min && partvz < vz_max;
+        }
 }
 
 // public class HadronCuts {
@@ -851,7 +1186,7 @@ bool Pass2_Cuts::Hadron_Chi2pid_cut(int i)
         // }
 }
 // bool Pass2_Cuts::CD_fiducial_Prot(double phi, double theta, double momT)
-bool Pass2_Cuts::CD_fiducial_had(int i)
+bool Pass2_Cuts::CD_fiducial_had(int i, std::string condition)
 {
         bool pass_fiducial = true;
         // int pid = _data->pid(i);
@@ -861,7 +1196,20 @@ bool Pass2_Cuts::CD_fiducial_had(int i)
                 double theta = atan2(momT, _data->pz(i)) * 180 / PI;
                 double phi = atan2(_data->py(i), _data->px(i)) * 180 / PI;
 
-                double fiducial_phi_width = 3; // 3 is used by andrew
+                double fiducial_phi_width; // = 3; // 3 is used by andrew
+                if (condition == "tight")
+                {
+                        fiducial_phi_width = 5;
+                }
+                if (condition == "loose")
+                {
+                        fiducial_phi_width = 1;
+                }
+                else
+                {
+                        fiducial_phi_width = 3;
+                }
+
                 double fiducial_phi_shift = 0;
                 double fiducial_momT_start = 0.15;
                 double fiducial_phi_central = (-asin(fiducial_momT_start / momT) - (PI / 2)) * 180 / PI;
