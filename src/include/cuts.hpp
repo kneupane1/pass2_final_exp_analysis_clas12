@@ -63,8 +63,8 @@ public:
 
     bool HadronsCuts(int i);
     bool DC_fiducial_cut_theta_phi(int i);
-    bool Hadron_Delta_vz_cut(int i);
-    bool Hadron_Chi2pid_cut(int i);
+    bool Hadron_Delta_vz_cut(int i, std::string condition);
+    bool Hadron_Chi2pid_cut(int i, std::string condition);
     // Function to get the momentum range index based on the value of p
 
     int getMomRangeIndex(double p)
