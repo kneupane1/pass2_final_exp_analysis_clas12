@@ -74,6 +74,7 @@ double dt_cut_cd_down[2][3][3] = {{{-0.04974, 0.286, -0.73},
 
 bool Pass2_Cuts::IsPip(int i, std::string condition)
 {
+        float dt_shift = -0.06;
         int is_mc = 0;
         if (_mc)
         {
@@ -100,11 +101,11 @@ bool Pass2_Cuts::IsPip(int i, std::string condition)
                 _pip &= (_dt->dt_Pi(i) < ((dt_cut_fd_up[is_mc][1][0] * pow(_data->p(i), 5) + dt_cut_fd_up[is_mc][1][1] * pow(_data->p(i), 4) +
                                            dt_cut_fd_up[is_mc][1][2] * pow(_data->p(i), 3) + dt_cut_fd_up[is_mc][1][3] * pow(_data->p(i), 2) +
                                            dt_cut_fd_up[is_mc][1][4] * pow(_data->p(i), 1) + dt_cut_fd_up[is_mc][1][5]) +
-                                          0.06));
+                                          dt_shift));
                 _pip &= (_dt->dt_Pi(i) > ((dt_cut_fd_down[is_mc][1][0] * pow(_data->p(i), 5) + dt_cut_fd_down[is_mc][1][1] * pow(_data->p(i), 4) +
                                            dt_cut_fd_down[is_mc][1][2] * pow(_data->p(i), 3) + dt_cut_fd_down[is_mc][1][3] * pow(_data->p(i), 2) +
                                            dt_cut_fd_down[is_mc][1][4] * pow(_data->p(i), 1) + dt_cut_fd_down[is_mc][1][5]) -
-                                          0.06));
+                                          dt_shift));
 
                 _pip &= DC_fiducial_cut_XY_PIP(i, 2, condition);
                 _pip &= DC_Ineff_cut_X_Y(i, 2, condition);
@@ -117,8 +118,8 @@ bool Pass2_Cuts::IsPip(int i, std::string condition)
 
                 _pip &= (_data->p(i) > 0.2);
                 // _pip &= (_data->p(i) < 1.7);
-                _pip &= (_dt->dt_Pi(i) < ((dt_cut_cd_up[is_mc][1][0] * pow(_data->p(i), 2) + dt_cut_cd_up[is_mc][1][1] * _data->p(i) + dt_cut_cd_up[is_mc][1][2]) + 0.06));
-                _pip &= (_dt->dt_Pi(i) > ((dt_cut_cd_down[is_mc][1][0] * pow(_data->p(i), 2) + dt_cut_cd_down[is_mc][1][1] * _data->p(i) + dt_cut_cd_down[is_mc][1][2]) - 0.06));
+                _pip &= (_dt->dt_Pi(i) < ((dt_cut_cd_up[is_mc][1][0] * pow(_data->p(i), 2) + dt_cut_cd_up[is_mc][1][1] * _data->p(i) + dt_cut_cd_up[is_mc][1][2]) + dt_shift));
+                _pip &= (_dt->dt_Pi(i) > ((dt_cut_cd_down[is_mc][1][0] * pow(_data->p(i), 2) + dt_cut_cd_down[is_mc][1][1] * _data->p(i) + dt_cut_cd_down[is_mc][1][2]) - dt_shift));
                 _pip &= CD_fiducial_had(i, condition);
         }
         // _pip &= (_data->p(i) > 0.2);
@@ -128,6 +129,7 @@ bool Pass2_Cuts::IsPip(int i, std::string condition)
 }
 bool Pass2_Cuts::IsProton(int i, std::string condition)
 {
+        float dt_shift = -0.06;
         int is_mc = 0;
         if (_mc)
         {
@@ -153,12 +155,12 @@ bool Pass2_Cuts::IsProton(int i, std::string condition)
                 _proton &= (_dt->dt_P(i) < ((dt_cut_fd_up[is_mc][0][0] * pow(_data->p(i), 5) + dt_cut_fd_up[is_mc][0][1] * pow(_data->p(i), 4) +
                                              dt_cut_fd_up[is_mc][0][2] * pow(_data->p(i), 3) + dt_cut_fd_up[is_mc][0][3] * pow(_data->p(i), 2) +
                                              dt_cut_fd_up[is_mc][0][4] * pow(_data->p(i), 1) + dt_cut_fd_up[is_mc][0][5]) +
-                                            0.06));
+                                            dt_shift));
 
                 _proton &= (_dt->dt_P(i) > ((dt_cut_fd_down[is_mc][0][0] * pow(_data->p(i), 5) + dt_cut_fd_down[is_mc][0][1] * pow(_data->p(i), 4) +
                                              dt_cut_fd_down[is_mc][0][2] * pow(_data->p(i), 3) + dt_cut_fd_down[is_mc][0][3] * pow(_data->p(i), 2) +
                                              dt_cut_fd_down[is_mc][0][4] * pow(_data->p(i), 1) + dt_cut_fd_down[is_mc][0][5]) -
-                                            0.06));
+                                            dt_shift));
 
                 _proton &= DC_fiducial_cut_XY_PROT(i, 1, condition);
                 _proton &= DC_Ineff_cut_X_Y(i, 1, condition);
@@ -171,8 +173,8 @@ bool Pass2_Cuts::IsProton(int i, std::string condition)
 
                 _proton &= (_data->p(i) > 0.2); /// this 0.4 look harse when we do missing Pim channel
                 // _proton &= (_data->p(i) < 2.0);
-                _proton &= (_dt->dt_P(i) < ((dt_cut_cd_up[is_mc][0][0] * pow(_data->p(i), 2) + dt_cut_cd_up[is_mc][0][1] * _data->p(i) + dt_cut_cd_up[is_mc][0][2]) + 0.06));
-                _proton &= (_dt->dt_P(i) > ((dt_cut_cd_down[is_mc][0][0] * pow(_data->p(i), 2) + dt_cut_cd_down[is_mc][0][1] * _data->p(i) + dt_cut_cd_down[is_mc][0][2]) - 0.06));
+                _proton &= (_dt->dt_P(i) < ((dt_cut_cd_up[is_mc][0][0] * pow(_data->p(i), 2) + dt_cut_cd_up[is_mc][0][1] * _data->p(i) + dt_cut_cd_up[is_mc][0][2]) + dt_shift));
+                _proton &= (_dt->dt_P(i) > ((dt_cut_cd_down[is_mc][0][0] * pow(_data->p(i), 2) + dt_cut_cd_down[is_mc][0][1] * _data->p(i) + dt_cut_cd_down[is_mc][0][2]) - dt_shift));
                 _proton &= CD_fiducial_had(i, condition);
         }
         // _proton &= (_data->p(i) > 0.2);
