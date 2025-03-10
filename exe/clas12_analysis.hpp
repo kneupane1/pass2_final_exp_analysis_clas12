@@ -130,7 +130,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                 ///// auto cuts = std::make_unique<rga_Cuts>(data);
                 auto cuts = std::make_unique<Pass2_Cuts>(data);
 
-                if (!cuts->ElectronCuts("loose"))
+                if (!cuts->ElectronCuts("tight"))
                         continue;
                 // event->SetMomCorrElec();
 
@@ -228,7 +228,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                            }
                                                    }*/
 
-                                                if (cuts->IsProton(part, "loose"))
+                                                if (cuts->IsProton(part, "tight"))
                                                 {
 
                                                         prot++;
@@ -243,7 +243,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                         // _hists->FillHists_prot_pid_with_cuts(data, event, part, *event->GetProtons()[prot_idx]);
                                                 }
 
-                                                if (cuts->IsPip(part, "loose"))
+                                                if (cuts->IsPip(part, "tight"))
                                                 {
                                                         {
                                                                 pip++;
@@ -366,7 +366,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                 dt->dt_calc(part1);
 
                                                 // Proton Block
-                                                if (cuts->IsProton(part1, "loose"))
+                                                if (cuts->IsProton(part1, "tight"))
                                                 {
                                                         bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
                                                         bool isCD1 = (data->status(part1) > 4000);
@@ -385,7 +385,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                 for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
                                                                 {
-                                                                        if (cuts->IsProton(part2, "loose"))
+                                                                        if (cuts->IsProton(part2, "tight"))
                                                                         {
                                                                                 bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
                                                                                 bool isCD2 = (data->status(part2) > 4000);
@@ -428,7 +428,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                 ///////////////////////////
                                                 // Pip Block
-                                                if (cuts->IsPip(part1, "loose"))
+                                                if (cuts->IsPip(part1, "tight"))
                                                 {
                                                         bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
                                                         bool isCD1 = (data->status(part1) > 4000);
@@ -440,7 +440,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                 for (int part2 = part1 + 1; part2 < data->gpart(); part2++)
                                                                 {
-                                                                        if (cuts->IsPip(part2, "loose"))
+                                                                        if (cuts->IsPip(part2, "tight"))
                                                                         {
                                                                                 bool isFD2 = ((data->status(part2) > 2000) && (data->status(part2) < 4000));
                                                                                 bool isCD2 = (data->status(part2) > 4000);
