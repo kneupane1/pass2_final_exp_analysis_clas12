@@ -3094,7 +3094,7 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
 
                         if (charge == 1)
                         {
-                                // if (pid == PIP)
+                                if (pid == PIP)
                                 {
                                         time[1] = dt->dt_Pi();
                                         time_fd[1] = dt->dt_Pi();
@@ -3103,7 +3103,7 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                                 // std::cout << " dt_Pi() .... =  " << dt->dt_Pi() << std::endl;
                                 // std::cout << " dt_Pi(int i) .... =  " << dt->dt_Pi(pid) << std::endl;
 
-                                // else if (pid == PROTON)
+                                else if (pid == PROTON)
                                 {
 
                                         time[0] = dt->dt_P();
@@ -3113,8 +3113,8 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                         }
                         else if (charge == -1)
                         {
-                                // if (pid == PIM)
-                                if (pid != ELECTRON)
+                                if (pid == PIM)
+                                // if (pid != ELECTRON)
                                 {
 
                                         time[2] = dt->dt_Pi();
@@ -3137,7 +3137,7 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                         if (charge == 1)
                         {
                                 // std::cout << " charge after cd =  " << charge << std::endl;
-                                // if (pid == PROTON)
+                                if (pid == PROTON)
                                 {
 
                                         time[0] = dt->dt_P();
@@ -3145,7 +3145,7 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                                         delta_t_hist[0][0][2]->Fill(mom, time_cd[0]);
                                 }
 
-                                // else if (pid == PIP)
+                                else if (pid == PIP)
                                 {
                                         time[1] = dt->dt_Pi();
                                         time_cd[1] = dt->dt_Pi();
@@ -3154,8 +3154,8 @@ void Histogram::Fill_deltat_before_cut(const std::shared_ptr<Branches12> &data, 
                         }
                         else if (charge == -1)
                         {
-                                // if (pid == PIM)
-                                if (pid != ELECTRON)
+                                if (pid == PIM)
+                                // if (pid != ELECTRON)
                                 {
                                         time[2] = dt->dt_Pi();
                                         time_cd[2] = dt->dt_Pi();
