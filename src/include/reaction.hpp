@@ -333,15 +333,15 @@ public:
         float MM2_exclusive();
         float MM_exclusive();
         float weight();
-        /*         inline float weight()
-                 {
-                //         if (_mc)
-                //                 return _data->mc_weight();
+        // inline float weight()
+        // {
+        //         //         if (_mc)
+        //         //                 return _data->mc_weight();
 
-                //         else
-                                 return 1.0;
-                 }
-        */
+        //         //         else
+        //         return 1.0;
+        // }
+
         /// smearing fx's function
         void SmearingFunc(int part_id, int status_part, double p, double theta, double phi, double &pNew, double &thetaNew,
                           double &phiNew)

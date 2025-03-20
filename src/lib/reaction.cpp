@@ -1155,7 +1155,6 @@ void Reaction::EffCorrFactor(const TLorentzVector &prot, const TLorentzVector &p
 
         // return (1 / _eff_corr_fact_mPim);
 }
-
 float Reaction::weight()
 {
         // std::cout << " the factor is:  " << 1 / _eff_corr_fact_mPim << std::endl;
