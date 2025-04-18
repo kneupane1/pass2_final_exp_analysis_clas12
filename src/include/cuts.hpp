@@ -43,7 +43,7 @@ public:
     bool ElectronCuts(std::string condition);
     bool IsPip(int i, std::string condition);
     bool IsProton(int i, std::string condition);
-    bool IsPim(int i);
+    bool IsPim(int i, std::string condition);
     // bool CC_nphe_cut(double nphe);
     bool CC_nphe_cut();
     bool PCAL_minimum_energy();
@@ -51,6 +51,8 @@ public:
     bool EC_hit_position_fiducial_cut_homogeneous(std::string condition);
     bool DC_fiducial_cut_XY_PIP(int i, int pid, std::string condition);
     bool DC_fiducial_cut_XY_PROT(int i, int pid, std::string condition);
+    bool DC_fiducial_cut_XY_PIM(int i, std::string condition);
+
     bool DC_fiducial_cut_XY_E(std::string condition);
     bool DC_z_vertex_cut(std::string condition);
     bool EC_inner_vs_EC_outer();

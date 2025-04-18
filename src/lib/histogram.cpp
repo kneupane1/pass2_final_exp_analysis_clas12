@@ -1976,25 +1976,25 @@ void Histogram::Write_WvsQ2()
                                 vz_sec[c][i]->Write();
                 }
         }
-        ///////////////////////// //////////////////////////
-        auto ECAL_VS_PCAL_sec = RootOutputFile->mkdir("ECAL_VS_PCAL_sec");
-        ECAL_VS_PCAL_sec->cd();
-        for (auto &&cut : before_after_cut)
-        {
-                int c = cut.first;
+        // ///////////////////////// //////////////////////////
+        // auto ECAL_VS_PCAL_sec = RootOutputFile->mkdir("ECAL_VS_PCAL_sec");
+        // ECAL_VS_PCAL_sec->cd();
+        // for (auto &&cut : before_after_cut)
+        // {
+        //         int c = cut.first;
 
-                for (short i = 0; i < num_sectors; i++)
-                {
-                        for (short j = 0; j < 9; j++) // mom bins
-                        {
-                                ECAL_VS_PCAL[c][i][j]->SetOption("COLZ1");
-                                ECAL_VS_PCAL[c][i][j]->SetYTitle("SF PCAL ");
-                                ECAL_VS_PCAL[c][i][j]->SetXTitle("SF ECIN");
-                                // if (ECAL_VS_PCAL[i][j]->GetEntries())
-                                ECAL_VS_PCAL[c][i][j]->Write();
-                        }
-                }
-        }
+        //         for (short i = 0; i < num_sectors; i++)
+        //         {
+        //                 for (short j = 0; j < 9; j++) // mom bins
+        //                 {
+        //                         ECAL_VS_PCAL[c][i][j]->SetOption("COLZ1");
+        //                         ECAL_VS_PCAL[c][i][j]->SetYTitle("SF PCAL ");
+        //                         ECAL_VS_PCAL[c][i][j]->SetXTitle("SF ECIN");
+        //                         // if (ECAL_VS_PCAL[i][j]->GetEntries())
+        //                         ECAL_VS_PCAL[c][i][j]->Write();
+        //                 }
+        //         }
+        // }
 
         /////////////////////////  //////////////////////////
         auto SF_VS_MOM_sec = RootOutputFile->mkdir("SF_VS_MOM_sec");
@@ -2309,11 +2309,11 @@ void Histogram::FillHists_electron_cuts(const std::shared_ptr<Branches12> &_d, c
                                 vz_sec[outside_one_cut][sec - 1]->Fill(_d->vz(0));
                         // ecal vs pcal
                         int momRangeIdx = getMomRange(_d->p(0));
-                        ECAL_VS_PCAL[before_any_cuts][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
-                        if (elec_cuts->EC_inner_vs_EC_outer())
-                                ECAL_VS_PCAL[with_one_cut][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
-                        else
-                                ECAL_VS_PCAL[outside_one_cut][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
+                        // ECAL_VS_PCAL[before_any_cuts][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
+                        // if (elec_cuts->EC_inner_vs_EC_outer())
+                        //         ECAL_VS_PCAL[with_one_cut][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
+                        // else
+                        //         ECAL_VS_PCAL[outside_one_cut][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
 
                         SF_VS_MOM[before_any_cuts][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
                         if (elec_cuts->EC_sampling_fraction_cut(condition_of_cut))
@@ -2351,7 +2351,7 @@ void Histogram::FillHists_electron_with_cuts(const std::shared_ptr<Branches12> &
                         // e_sec[after_all_cuts][sec - 1]->Fill(_d->cc_htcc_nphe(0));
                         elec_Chi2pid_sec[after_all_cuts][sec - 1]->Fill(_d->chi2pid(0));
                         vz_sec[after_all_cuts][sec - 1]->Fill(_d->vz(0));
-                        ECAL_VS_PCAL[after_all_cuts][sec - 1][momRangeIdx1]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
+                        // ECAL_VS_PCAL[after_all_cuts][sec - 1][momRangeIdx1]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
                         SF_VS_MOM[after_all_cuts][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
 
                         Theta_fd_elec_lab_vs_mom_elec[sec - 1]->Fill(_e->elec_mom(), _e->elec_th());
@@ -2941,14 +2941,14 @@ void Histogram::makeHists_sector()
                                                               Form("vz sec: %d%s", i + 1, type),
                                                               200, -20, 20);
 
-                        for (short j = 0; j < 9; j++) // mom bins
-                        {
-                                auto mom_bin = ECIN_ECOUT_MOM_NAME[j].c_str();
+                        // for (short j = 0; j < 9; j++) // mom bins
+                        // {
+                        //         auto mom_bin = ECIN_ECOUT_MOM_NAME[j].c_str();
 
-                                ECAL_VS_PCAL[c][i][j] = std::make_shared<TH2D>(
-                                    Form("ECAL_VS_PCAL_%d%s%s", i + 1, type, mom_bin), Form("ECAL_VS_PCAL_%d%s%s", i + 1, type, mom_bin), bins,
-                                    0, 0.2, bins, 0, 0.25);
-                        }
+                        //         ECAL_VS_PCAL[c][i][j] = std::make_shared<TH2D>(
+                        //             Form("ECAL_VS_PCAL_%d%s%s", i + 1, type, mom_bin), Form("ECAL_VS_PCAL_%d%s%s", i + 1, type, mom_bin), bins,
+                        //             0, 0.2, bins, 0, 0.25);
+                        // }
                         SF_VS_MOM[c][i] = std::make_shared<TH2D>(
                             Form("SF_VS_MOM_%d%s", i + 1, type), Form("SF_VS_MOM_%d%s", i + 1, type), bins,
                             0, 10.0, bins, 0, 0.5);
