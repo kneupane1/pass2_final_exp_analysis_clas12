@@ -159,7 +159,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                         status_pip = abs(data->status(part));
                                 }
                         }
-                        else if (cuts->IsPim(part))
+                        else if (cuts->IsPim(part, "mid"))
                         {
                                 // _hists->FillHists_pim_pid_cuts(data, event, part);
 
