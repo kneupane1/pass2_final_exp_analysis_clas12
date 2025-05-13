@@ -333,21 +333,21 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                 ////////////  CONTROL OVER HAOW MANY Prot/Pip PER EVENT /////////
                                 // _hists->Fill_WvsQ2(event);
 
-                                // // First loop: count valid combinations
-                                // for (size_t i = 0; i < num_protons; ++i)
-                                // {
-                                //         // std::cout << " prot dp inside loop : " << proton_dps[i].second << std::endl;
+                                // First loop: count valid combinations
+                                for (size_t i = 0; i < num_protons; ++i)
+                                {
+                                        // std::cout << " prot dp inside loop : " << proton_dps[i].second << std::endl;
 
-                                //         for (size_t j = 0; j < num_pips; ++j)
-                                //         {
-                                //                 // std::cout << " pip dp inside loop   : " << pip_dps[j].second << std::endl;
+                                        for (size_t j = 0; j < num_pips; ++j)
+                                        {
+                                                // std::cout << " pip dp inside loop   : " << pip_dps[j].second << std::endl;
 
-                                //                 // if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
-                                //                 {
-                                //                         num_combinations++;
-                                //                 }
-                                //         }
-                                // }
+                                                // if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
+                                                {
+                                                        num_combinations++;
+                                                }
+                                        }
+                                }
 
                                 ///////////////////////////////////////////////////
 
@@ -417,9 +417,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 // if (dp_Prot > -0.3 && dp_Prot < 0.0 && dtheta_Prot > -3 && dtheta_Prot < 3 && dphi_Prot > -5 && dphi_Prot < 2)
 
                                                                                 /////////new //
-                                                                                // if (dp_Prot > -0.25 && dp_Prot < 0.02 && dtheta_Prot > -3 && dtheta_Prot < 3 && dphi_Prot > -10 && dphi_Prot < 5)
+                                                                                if (dp_Prot > -0.25 && dp_Prot < 0.02 && dtheta_Prot > -3 && dtheta_Prot < 3 && dphi_Prot > -10 && dphi_Prot < 5)
                                                                                 /////tight
-                                                                                if (dp_Prot > -0.3 && dp_Prot < 0.07 && dtheta_Prot > -4 && dtheta_Prot < 4 && dphi_Prot > -12.5 && dphi_Prot < 7.5)
+                                                                                // if (dp_Prot > -0.3 && dp_Prot < 0.07 && dtheta_Prot > -4 && dtheta_Prot < 4 && dphi_Prot > -12.5 && dphi_Prot < 7.5)
                                                                                 //// loose
                                                                                 // if (dp_Prot > -0.2 && dp_Prot < -0.02 && dtheta_Prot > -2 && dtheta_Prot < 2 && dphi_Prot > -7.5 && dphi_Prot < 2.5)
 
@@ -545,7 +545,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                         //                  pow(v_swapped_z_Pip - v_original_z_Pip, 2);
 
                                                                         // // // std::cout << "  event->GetProtonIndices()[i]  : " << event->GetProtonIndices()[i] << "  Pip index  : " << event->GetPipIndices()[j] << std::endl;
-                                                                        // event->CalcMissMassPim(*event->GetProtons()[i], *event->GetPips()[j]);
+                                                                        event->CalcMissMassPim(*event->GetProtons()[i], *event->GetPips()[j]);
                                                                         event->boost(*event->GetProtons()[i], *event->GetPips()[j]);
                                                                         // event->CalcMissMassPimSwapped();
                                                                         // // ////////////  CONTROL OVER HAOW MANY FILLING PER EVENT /////////
