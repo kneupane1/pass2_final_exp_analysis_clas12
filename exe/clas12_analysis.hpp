@@ -558,9 +558,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 // // // //////// if (event->MM2_mPim() > -0.1 && event->MM2_mPim() < 0.1)
                                                                                 // // //     float mmsq_low_values_for_bkg[2][2][3] = {{{-0.004, -0.028, 0.763}, {0.002, 0.071, 0.1003}}, {{-0.004, -0.024, -0.79}, {0.002, 0.079, 0.1025}}};
 
-                                                                                if ((event->MM2_exclusive() < -0.004 || event->MM2_exclusive() > 0.002) &&
-                                                                                    (event->MM2_mpip() < -0.028 || event->MM2_mpip() > 0.071) &&
-                                                                                    (event->MM2_mprot() < 0.763 || event->MM2_mprot() > 1.003))
+                                                                                // if ((event->MM2_exclusive() < -0.004 || event->MM2_exclusive() > 0.002) &&
+                                                                                //     (event->MM2_mpip() < -0.028 || event->MM2_mpip() > 0.071) &&
+                                                                                //     (event->MM2_mprot() < 0.763 || event->MM2_mprot() > 1.003))
                                                                                 {
                                                                                         if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
 
