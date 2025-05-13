@@ -11,6 +11,8 @@ include_directories(src/include)
 # # Use the QADB environment variable for absolute paths
  include_directories($ENV{QADB}/srcC/include)
  include_directories($ENV{QADB}/srcC/rapidjson/include)
+ include_directories(/Users/krishnaneupane/Documents/GitHub/clas12-qadb/srcC/include)
+ include_directories(/Users/krishnaneupane/Documents/GitHub/clas12-qadb/srcC/rapidjson/include)
 
 # # Print include directories for debugging
  message(STATUS "Include directories: ${CMAKE_INCLUDE_PATH}")

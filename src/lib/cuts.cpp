@@ -212,6 +212,7 @@ bool Pass2_Cuts::IsPim(int i, std::string condition)
                                           dt_cut_fd_down[is_mc][2][4] * pow(_data->p(i), 1) + dt_cut_fd_down[is_mc][2][5]));
 
                 _pim &= DC_fiducial_cut_XY_PIM(i, condition);
+                _pim &= DC_Ineff_cut_X_Y(i, 3, condition);
         }
         else if (abs(_data->status(i)) >= 4000)
         {
@@ -527,6 +528,11 @@ bool Pass2_Cuts::DC_Ineff_cut_X_Y(int i, int pid, std::string condition)
         bool _dc_ineff_cut = true;
 
         short dc_sector = (_data->dc_sec(i));
+        // region 1
+        double X1 = _data->dc_r1_x(i);
+        double Y1 = _data->dc_r1_y(i);
+        int region_1 = 1;
+
         // region 3
         double X3 = _data->dc_r3_x(i);
         double Y3 = _data->dc_r3_y(i);
@@ -574,6 +580,15 @@ bool Pass2_Cuts::DC_Ineff_cut_X_Y(int i, int pid, std::string condition)
                         _dc_ineff_cut &= ((Y3 > (1.11 * X3 - 425.7 + del_intercept)) && (Y3 < (-1.11 * X3 + 425.7 - del_intercept)));
                 }
         }
+        if (pid == 3) ////// for pim
+        {
+
+                if (dc_sector == 2)
+                {
+                        _dc_ineff_cut &= ((Y1 < (-0.44287 * X1 + 158.417 + del_intercept)) || (Y1 > (-0.4647 * X1 + 164.32 - del_intercept)));
+                }
+        }
+
         return _dc_ineff_cut;
 }
 
@@ -1117,7 +1132,7 @@ bool Pass2_Cuts::DC_fiducial_cut_XY_PIM(int i, std::string condition)
 
         double max_r[3][6] = {{145, 145, 145, 145, 145, 145},
                               {220, 220, 220, 220, 220, 220},
-                              {325, 310, 310, 310, 325, 325}};
+                              {325, 325, 325, 325, 325, 325}};
 
         double minparams_pim_in[6][3][2]; // Array to hold selected min cut
         double maxparams_pim_in[6][3][2]; // Array to hold selected max cut
