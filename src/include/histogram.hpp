@@ -778,6 +778,10 @@ protected:
     TH1D_ptr htcc_nphe_sec[CUTS][num_sectors];
     TH1D_ptr elec_Chi2pid_sec[CUTS][num_sectors];
     TH1D_ptr vz_sec[CUTS][num_sectors];
+    TH1D_ptr pcal_lu_sec[CUTS][num_sectors];
+    TH1D_ptr pcal_lv_sec[CUTS][num_sectors];
+    TH1D_ptr pcal_lw_sec[CUTS][num_sectors];
+
     TH2D_ptr ECAL_VS_PCAL[CUTS][num_sectors][9];
     TH2D_ptr SF_VS_MOM[CUTS][num_sectors];
     std::string ECIN_ECOUT_MOM_NAME[9] = {" p<2 GeV ", " 2<p<=3 GeV ", " 3<p<=4 GeV ",

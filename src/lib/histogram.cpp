@@ -674,7 +674,9 @@ void Histogram::Fill_MMSQ_mPim(const std::shared_ptr<Reaction> &_e)
 {
         if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
         {
-                MMSQ_mPim_hist[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim(), _e->weight());
+                // MMSQ_mPim_hist[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim(), _e->weight());
+                MMSQ_mPim_hist[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim());
+
                 // if (MM_cut(_e->W(), _e->Q2(), _e->MM2_mPim()))
                 //         MMSQ_mPim_hist_with_cut[q2_bining(_e->Q2())][int((_e->W() - 1.4) / 0.05)]->Fill(_e->MM2_mPim(), _e->weight());
 
@@ -1669,7 +1671,8 @@ void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
                 // if(_e->cut1(_e->Energy_excl()) &&  _e->cut3(_e->MM2_mpip()) &&  _e->cut4(_e->MM2_mprot())) {
                 //         MM_twoPi->Fill(_e->MM_mPim(), _e->weight());
                 MM_twoPi_mPim->Fill(_e->MM_mPim(), _e->weight());
-                MM2_twoPi_mPim->Fill(_e->MM2_mPim(), _e->weight());
+                MM2_twoPi_mPim->Fill(_e->MM2_mPim());
+                // MM2_twoPi_mPim->Fill(_e->MM2_mPim(), _e->weight());
 
                 W_vs_MM->Fill(_e->W(), _e->MM_mPim());
                 W_vs_MM2->Fill(_e->W(), _e->MM2_mPim());
@@ -1992,6 +1995,49 @@ void Histogram::Write_WvsQ2()
                         vz_sec[c][i]->SetXTitle("Vz (cm)");
                         if (vz_sec[c][i]->GetEntries())
                                 vz_sec[c][i]->Write();
+                }
+        }
+
+        ///////////////////////// //////////////////////////
+        auto Pcal_lu_sec = RootOutputFile->mkdir("pcal_lu_sec");
+        Pcal_lu_sec->cd();
+        for (auto &&cut : before_after_cut)
+        {
+                int c = cut.first;
+
+                for (short i = 0; i < num_sectors; i++)
+                {
+                        pcal_lu_sec[c][i]->SetXTitle("Pcal lu (cm)");
+                        if (pcal_lu_sec[c][i]->GetEntries())
+                                pcal_lu_sec[c][i]->Write();
+                }
+        }
+        ///////////////////////// //////////////////////////
+        auto Pcal_lv_sec = RootOutputFile->mkdir("pcal_lv_sec");
+        Pcal_lv_sec->cd();
+        for (auto &&cut : before_after_cut)
+        {
+                int c = cut.first;
+
+                for (short i = 0; i < num_sectors; i++)
+                {
+                        pcal_lv_sec[c][i]->SetXTitle("Pcal lv (cm)");
+                        if (pcal_lv_sec[c][i]->GetEntries())
+                                pcal_lv_sec[c][i]->Write();
+                }
+        }
+        ///////////////////////// //////////////////////////
+        auto Pcal_lw_sec = RootOutputFile->mkdir("pcal_lw_sec");
+        Pcal_lw_sec->cd();
+        for (auto &&cut : before_after_cut)
+        {
+                int c = cut.first;
+
+                for (short i = 0; i < num_sectors; i++)
+                {
+                        pcal_lw_sec[c][i]->SetXTitle("Pcal lw (cm)");
+                        if (pcal_lw_sec[c][i]->GetEntries())
+                                pcal_lw_sec[c][i]->Write();
                 }
         }
         // ///////////////////////// //////////////////////////
@@ -2325,6 +2371,24 @@ void Histogram::FillHists_electron_cuts(const std::shared_ptr<Branches12> &_d, c
                                 vz_sec[with_one_cut][sec - 1]->Fill(_d->vz(0));
                         else
                                 vz_sec[outside_one_cut][sec - 1]->Fill(_d->vz(0));
+
+                        pcal_lu_sec[before_any_cuts][sec - 1]->Fill(_d->ec_pcal_lu(0));
+                        pcal_lv_sec[before_any_cuts][sec - 1]->Fill(_d->ec_pcal_lv(0));
+                        pcal_lw_sec[before_any_cuts][sec - 1]->Fill(_d->ec_pcal_lw(0));
+
+                        if (_d->ec_pcal_lu(0) > 14.5)
+                                pcal_lu_sec[with_one_cut][sec - 1]->Fill(_d->ec_pcal_lu(0));
+                        else
+                                pcal_lu_sec[outside_one_cut][sec - 1]->Fill(_d->ec_pcal_lu(0));
+                        if (_d->ec_pcal_lv(0) > 14.5)
+                                pcal_lv_sec[with_one_cut][sec - 1]->Fill(_d->ec_pcal_lv(0));
+                        else
+                                pcal_lv_sec[outside_one_cut][sec - 1]->Fill(_d->ec_pcal_lv(0));
+                        if (_d->ec_pcal_lw(0) > 14.5)
+                                pcal_lw_sec[with_one_cut][sec - 1]->Fill(_d->ec_pcal_lw(0));
+                        else
+                                pcal_lw_sec[outside_one_cut][sec - 1]->Fill(_d->ec_pcal_lw(0));
+
                         // ecal vs pcal
                         int momRangeIdx = getMomRange(_d->p(0));
                         // ECAL_VS_PCAL[before_any_cuts][sec - 1][momRangeIdx]->Fill((_d->ec_ecin_energy(0) / _d->p(0)), (_d->ec_pcal_energy(0) / _d->p(0)));
@@ -2373,6 +2437,10 @@ void Histogram::FillHists_electron_with_cuts(const std::shared_ptr<Branches12> &
                         SF_VS_MOM[after_all_cuts][sec - 1]->Fill(_d->p(0), _d->ec_tot_energy(0) / _d->p(0));
 
                         Theta_fd_elec_lab_vs_mom_elec[sec - 1]->Fill(_e->elec_mom(), _e->elec_th());
+
+                        pcal_lu_sec[after_all_cuts][sec - 1]->Fill(_d->ec_pcal_lu(0));
+                        pcal_lv_sec[after_all_cuts][sec - 1]->Fill(_d->ec_pcal_lv(0));
+                        pcal_lw_sec[after_all_cuts][sec - 1]->Fill(_d->ec_pcal_lw(0));
                 }
         }
 }
@@ -2959,6 +3027,18 @@ void Histogram::makeHists_sector()
                                                               Form("vz sec: %d%s", i + 1, type),
                                                               200, -20, 20);
 
+                        pcal_lu_sec[c][i] = std::make_shared<TH1D>(Form("pcal_lu_sec%d%s", i + 1, type),
+                                                                   Form("pcal_lu_sec sec: %d%s", i + 1, type),
+                                                                   200, 0, 250);
+
+                        pcal_lv_sec[c][i] = std::make_shared<TH1D>(Form("pcal_lv_sec%d%s", i + 1, type),
+                                                                   Form("pcal_lv_sec sec: %d%s", i + 1, type),
+                                                                   200, 0, 250);
+
+                        pcal_lw_sec[c][i] = std::make_shared<TH1D>(Form("pcal_lw_sec%d%s", i + 1, type),
+                                                                   Form("pcal_lw_sec sec: %d%s", i + 1, type),
+                                                                   200, 0, 250);
+
                         // for (short j = 0; j < 9; j++) // mom bins
                         // {
                         //         auto mom_bin = ECIN_ECOUT_MOM_NAME[j].c_str();
@@ -3519,7 +3599,8 @@ void Histogram::Fill_Entries_pip(int num_entries)
 
 void Histogram::Fill_all_Combi(const std::shared_ptr<Reaction> &_e)
 {
-        MM2_mPim_all_comb->Fill(_e->MM2_mPim(), _e->weight());
+        // MM2_mPim_all_comb->Fill(_e->MM2_mPim(), _e->weight());
+        MM2_mPim_all_comb->Fill(_e->MM2_mPim());
 }
 void Histogram::Fill_1_Combi(const std::shared_ptr<Reaction> &_e)
 {

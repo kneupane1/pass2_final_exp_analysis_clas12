@@ -399,10 +399,11 @@ bool Pass2_Cuts::EC_hit_position_fiducial_cut_homogeneous(std::string condition)
         // Cut using the natural directions of the scintillator bars/ fibers:
         ///////////////////////////////////////////////////////////////////
         /// inbending:
+        short pcal_sector = (_data->dc_sec(0));
 
         if (condition == "tight")
         {
-                return (_data->ec_pcal_lv(0) > 14 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 14 &&
+                return (_data->ec_pcal_lv(0) > 18 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 18 &&
                         _data->ec_pcal_lw(0) < 400);
         }
 
@@ -413,8 +414,16 @@ bool Pass2_Cuts::EC_hit_position_fiducial_cut_homogeneous(std::string condition)
         }
         else
         {
-                return (_data->ec_pcal_lv(0) > 11.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 11.5 &&
+                // if (pcal_sector != 4)
+                // {
+                //         return (_data->ec_pcal_lv(0) > 13.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 13.5 &&
+                //                 _data->ec_pcal_lw(0) < 400);
+                // }
+                // else
+                // {
+                return (_data->ec_pcal_lv(0) > 13.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 13.5 &&
                         _data->ec_pcal_lw(0) < 400);
+                // }
         }
 }
 
