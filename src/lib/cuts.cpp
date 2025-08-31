@@ -74,7 +74,7 @@ double dt_cut_cd_down[2][3][3] = {{{-0.04974, 0.286, -0.73},
 
 bool Pass2_Cuts::IsPip(int i, std::string condition)
 {
-        float dt_shift = -0.06;
+        float dt_shift = 0.00; ///// -0.06
         int is_mc = 0;
         if (_mc)
         {
@@ -129,7 +129,7 @@ bool Pass2_Cuts::IsPip(int i, std::string condition)
 }
 bool Pass2_Cuts::IsProton(int i, std::string condition)
 {
-        float dt_shift = -0.06;
+        float dt_shift = 0.00; //////-0.06;
         int is_mc = 0;
         if (_mc)
         {
@@ -150,7 +150,7 @@ bool Pass2_Cuts::IsProton(int i, std::string condition)
         {
                 // std::cout << "  particle status at cut level :  " << _data->status(i) << "   dt prot at ftof  " << _dt->dt_P(i) << std::endl;
 
-                _proton &= (_data->p(i) > 0.4);
+                _proton &= (_data->p(i) > 0.5);
                 // _proton &= (_data->p(i) < 4.5);
                 _proton &= (_dt->dt_P(i) < ((dt_cut_fd_up[is_mc][0][0] * pow(_data->p(i), 5) + dt_cut_fd_up[is_mc][0][1] * pow(_data->p(i), 4) +
                                              dt_cut_fd_up[is_mc][0][2] * pow(_data->p(i), 3) + dt_cut_fd_up[is_mc][0][3] * pow(_data->p(i), 2) +
@@ -201,7 +201,7 @@ bool Pass2_Cuts::IsPim(int i, std::string condition)
         // min / max mom cuts
         if (2000 <= abs(_data->status(i)) && abs(_data->status(i)) < 4000)
         {
-                _pim &= (_data->p(i) > 0.4);
+                _pim &= (_data->p(i) > 0.5);
                 // _pim &= (_data->p(i) < 4.5);
                 _pim &= (_dt->dt_Pi(i) < (dt_cut_fd_up[is_mc][2][0] * pow(_data->p(i), 5) + dt_cut_fd_up[is_mc][2][1] * pow(_data->p(i), 4) +
                                           dt_cut_fd_up[is_mc][2][2] * pow(_data->p(i), 3) + dt_cut_fd_up[is_mc][2][3] * pow(_data->p(i), 2) +
@@ -343,8 +343,8 @@ bool Pass2_Cuts::EC_sampling_fraction_cut(std::string condition)
         }
         else
         {
-                // pass_triangle = (_data->ec_ecin_energy(0) / _data->p(0)) > (0.2 - _data->ec_pcal_energy(0) / _data->p(0));
-                pass_triangle = true;
+                pass_triangle = (_data->ec_ecin_energy(0) / _data->p(0)) > (0.2 - _data->ec_pcal_energy(0) / _data->p(0));
+                // pass_triangle = true;
         }
 
         if (pass_band && pass_triangle)
@@ -401,30 +401,30 @@ bool Pass2_Cuts::EC_hit_position_fiducial_cut_homogeneous(std::string condition)
         /// inbending:
         short pcal_sector = (_data->dc_sec(0));
 
-        if (condition == "tight")
-        {
-                return (_data->ec_pcal_lv(0) > 18 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 18 &&
-                        _data->ec_pcal_lw(0) < 400);
-        }
+        // if (condition == "tight")
+        // {
+        return (_data->ec_pcal_lv(0) > 18 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 18 &&
+                _data->ec_pcal_lw(0) < 400);
+        // }
 
-        else if (condition == "loose")
-        {
-                return (_data->ec_pcal_lv(0) > 9 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 9 &&
-                        _data->ec_pcal_lw(0) < 400);
-        }
-        else
-        {
-                // if (pcal_sector != 4)
-                // {
-                //         return (_data->ec_pcal_lv(0) > 13.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 13.5 &&
-                //                 _data->ec_pcal_lw(0) < 400);
-                // }
-                // else
-                // {
-                return (_data->ec_pcal_lv(0) > 13.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 13.5 &&
-                        _data->ec_pcal_lw(0) < 400);
-                // }
-        }
+        // else if (condition == "loose")
+        // {
+        //         return (_data->ec_pcal_lv(0) > 9 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 9 &&
+        //                 _data->ec_pcal_lw(0) < 400);
+        // }
+        // else
+        // {
+        // // if (pcal_sector != 4)
+        // // {
+        // //         return (_data->ec_pcal_lv(0) > 13.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 13.5 &&
+        // //                 _data->ec_pcal_lw(0) < 400);
+        // // }
+        // // else
+        // // {
+        // return (_data->ec_pcal_lv(0) > 13.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 13.5 &&
+        //         _data->ec_pcal_lw(0) < 400);
+        // // }
+        // }
 }
 
 bool Pass2_Cuts::PCAL_Ineff_cut_X_Y()
@@ -476,20 +476,20 @@ bool Pass2_Cuts::PCAL_fiducial_cut_X_Y(std::string condition)
         double min_radious;
         double max_radious;
 
-        if (condition == "mid")
-        {
-                // double minparams_pcal_in_m[6][2] = {{-0.53233, 21.92333}, {-0.53876, 22.35121}, {-0.50470, 21.58152}, {-0.52421, 24.02394}, {-0.52700, 25.79000}, {-0.52324, 21.14879}};
-                // double maxparams_pcal_in_m[6][2] = {{0.51997, -20.34515}, {0.50942, -22.93788}, {0.52876, -25.21121}, {0.53930, -22.61848}, {0.52876, -25.21121}, {0.54148, -22.88758}};
+        // if (condition == "mid")
+        // {
+        //         // double minparams_pcal_in_m[6][2] = {{-0.53233, 21.92333}, {-0.53876, 22.35121}, {-0.50470, 21.58152}, {-0.52421, 24.02394}, {-0.52700, 25.79000}, {-0.52324, 21.14879}};
+        //         // double maxparams_pcal_in_m[6][2] = {{0.51997, -20.34515}, {0.50942, -22.93788}, {0.52876, -25.21121}, {0.53930, -22.61848}, {0.52876, -25.21121}, {0.54148, -22.88758}};
 
-                double minparams_pcal_in_m[6][2] = {{-0.55148, 22.58758}, {-0.55427, 22.51364}, {-0.52912, 23.30939}, {-0.54088, 23.79061}, {-0.54403, 25.97485}, {-0.54233, 21.62333}};
-                double maxparams_pcal_in_m[6][2] = {{0.53815, -20.69424}, {0.52906, -23.67970}, {0.53876, -24.91121}, {0.55912, -23.52939}, {0.54227, -24.87364}, {0.55912, -23.52939}};
+        //         double minparams_pcal_in_m[6][2] = {{-0.55148, 22.58758}, {-0.55427, 22.51364}, {-0.52912, 23.30939}, {-0.54088, 23.79061}, {-0.54403, 25.97485}, {-0.54233, 21.62333}};
+        //         double maxparams_pcal_in_m[6][2] = {{0.53815, -20.69424}, {0.52906, -23.67970}, {0.53876, -24.91121}, {0.55912, -23.52939}, {0.54227, -24.87364}, {0.55912, -23.52939}};
 
-                min_radious = 72;
-                max_radious = 270;
-                std::copy(&minparams_pcal_in_m[0][0], &minparams_pcal_in_m[0][0] + 6 * 2, &minparams_pcal_in[0][0]);
-                std::copy(&maxparams_pcal_in_m[0][0], &maxparams_pcal_in_m[0][0] + 6 * 2, &maxparams_pcal_in[0][0]);
-        }
-        else if (condition == "tight")
+        //         min_radious = 72;
+        //         max_radious = 270;
+        //         std::copy(&minparams_pcal_in_m[0][0], &minparams_pcal_in_m[0][0] + 6 * 2, &minparams_pcal_in[0][0]);
+        //         std::copy(&maxparams_pcal_in_m[0][0], &maxparams_pcal_in_m[0][0] + 6 * 2, &maxparams_pcal_in[0][0]);
+        // }
+        // else if (condition == "tight")
         {
                 // double minparams_pcal_in_t[6][2] = {{-0.50197, 21.60515}, {-0.50633, 21.74333}, {-0.47652, 21.53242}, {-0.48470, 22.18152}, {-0.49209, 24.28455}, {-0.49221, 20.74394}};
                 // double maxparams_pcal_in_t[6][2] = {{0.48403, -19.53485}, {0.48258, -23.14212}, {0.49688, -24.31061}, {0.50961, -22.54697}, {0.49221, -23.46394}, {0.51106, -22.37970}};
@@ -502,20 +502,20 @@ bool Pass2_Cuts::PCAL_fiducial_cut_X_Y(std::string condition)
                 std::copy(&minparams_pcal_in_t[0][0], &minparams_pcal_in_t[0][0] + 6 * 2, &minparams_pcal_in[0][0]);
                 std::copy(&maxparams_pcal_in_t[0][0], &maxparams_pcal_in_t[0][0] + 6 * 2, &maxparams_pcal_in[0][0]);
         }
-        else if (condition == "loose")
-        {
-                double minparams_pcal_in_l[6][2] = {{-0.57476, 22.79121}, {-0.57403, 22.51485}, {-0.54324, 22.54879}, {-0.55803, 23.79485}, {-0.57082, 27.02091}, {-0.56615, 22.25424}};
-                double maxparams_pcal_in_l[6][2] = {{0.55433, -20.38333}, {0.54524, -23.36879}, {0.56615, -25.85424}, {0.58221, -23.72394}, {0.56258, -24.98212}, {0.58494, -24.26030}};
-                min_radious = 69;
-                max_radious = 280;
-                std::copy(&minparams_pcal_in_l[0][0], &minparams_pcal_in_l[0][0] + 6 * 2, &minparams_pcal_in[0][0]);
-                std::copy(&maxparams_pcal_in_l[0][0], &maxparams_pcal_in_l[0][0] + 6 * 2, &maxparams_pcal_in[0][0]);
-        }
-        else
-        {
-                std::cerr << "Invalid condition: " << condition << ". Choose 'loose', 'mid', or 'tight'.\n";
-                return false;
-        }
+        // else if (condition == "loose")
+        // {
+        //         double minparams_pcal_in_l[6][2] = {{-0.57476, 22.79121}, {-0.57403, 22.51485}, {-0.54324, 22.54879}, {-0.55803, 23.79485}, {-0.57082, 27.02091}, {-0.56615, 22.25424}};
+        //         double maxparams_pcal_in_l[6][2] = {{0.55433, -20.38333}, {0.54524, -23.36879}, {0.56615, -25.85424}, {0.58221, -23.72394}, {0.56258, -24.98212}, {0.58494, -24.26030}};
+        //         min_radious = 69;
+        //         max_radious = 280;
+        //         std::copy(&minparams_pcal_in_l[0][0], &minparams_pcal_in_l[0][0] + 6 * 2, &minparams_pcal_in[0][0]);
+        //         std::copy(&maxparams_pcal_in_l[0][0], &maxparams_pcal_in_l[0][0] + 6 * 2, &maxparams_pcal_in[0][0]);
+        // }
+        // else
+        // {
+        //         std::cerr << "Invalid condition: " << condition << ". Choose 'loose', 'mid', or 'tight'.\n";
+        //         return false;
+        // }
 
         short pcal_sector = (_data->ec_pcal_sec(0) - 1);
         double X = _data->ec_pcal_x(0);
@@ -690,22 +690,22 @@ bool Pass2_Cuts::DC_fiducial_cut_XY_E(std::string condition)
         double minparams_in[6][3][2]; // Array to hold selected min cut
         double maxparams_in[6][3][2]; // Array to hold selected max cut
 
-        if (condition == "tight")
+        // if (condition == "tight")
         {
                 std::copy(&minparams_in_t[0][0][0], &minparams_in_t[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
                 std::copy(&maxparams_in_t[0][0][0], &maxparams_in_t[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
         }
-        else if (condition == "loose")
-        {
-                std::copy(&minparams_in_l[0][0][0], &minparams_in_l[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
-                std::copy(&maxparams_in_l[0][0][0], &maxparams_in_l[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
-        }
-        else
-        {
-                // Default to medium
-                std::copy(&minparams_in_m[0][0][0], &minparams_in_m[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
-                std::copy(&maxparams_in_m[0][0][0], &maxparams_in_m[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
-        }
+        // else if (condition == "loose")
+        // {
+        //         std::copy(&minparams_in_l[0][0][0], &minparams_in_l[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+        //         std::copy(&maxparams_in_l[0][0][0], &maxparams_in_l[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        // }
+        // else
+        // {
+        //         // Default to medium
+        //         std::copy(&minparams_in_m[0][0][0], &minparams_in_m[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+        //         std::copy(&maxparams_in_m[0][0][0], &maxparams_in_m[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        // }
 
         short dc_sector = (_data->dc_sec(0) - 1);
 
@@ -843,17 +843,17 @@ bool Pass2_Cuts::DC_fiducial_cut_XY_PIP(int i, int pid, std::string condition)
         double minparams_pip_in[6][3][2]; // Array to hold selected min cut
         double maxparams_pip_in[6][3][2]; // Array to hold selected max cut
 
-        if (condition == "tight")
-        {
-                std::copy(&minparams_in_pip_t[0][0][0], &minparams_in_pip_t[0][0][0] + 6 * 3 * 2, &minparams_pip_in[0][0][0]);
-                std::copy(&maxparams_in_pip_t[0][0][0], &maxparams_in_pip_t[0][0][0] + 6 * 3 * 2, &maxparams_pip_in[0][0][0]);
-        }
-        else if (condition == "loose")
-        {
-                std::copy(&minparams_in_pip_l[0][0][0], &minparams_in_pip_l[0][0][0] + 6 * 3 * 2, &minparams_pip_in[0][0][0]);
-                std::copy(&maxparams_in_pip_l[0][0][0], &maxparams_in_pip_l[0][0][0] + 6 * 3 * 2, &maxparams_pip_in[0][0][0]);
-        }
-        else
+        // if (condition == "tight")
+        // {
+        //         std::copy(&minparams_in_pip_t[0][0][0], &minparams_in_pip_t[0][0][0] + 6 * 3 * 2, &minparams_pip_in[0][0][0]);
+        //         std::copy(&maxparams_in_pip_t[0][0][0], &maxparams_in_pip_t[0][0][0] + 6 * 3 * 2, &maxparams_pip_in[0][0][0]);
+        // }
+        // else if (condition == "loose")
+        // {
+        //         std::copy(&minparams_in_pip_l[0][0][0], &minparams_in_pip_l[0][0][0] + 6 * 3 * 2, &minparams_pip_in[0][0][0]);
+        //         std::copy(&maxparams_in_pip_l[0][0][0], &maxparams_in_pip_l[0][0][0] + 6 * 3 * 2, &maxparams_pip_in[0][0][0]);
+        // }
+        // else
         {
                 // Default to medium
                 std::copy(&minparams_in_pip_m[0][0][0], &minparams_in_pip_m[0][0][0] + 6 * 3 * 2, &minparams_pip_in[0][0][0]);
@@ -1003,17 +1003,17 @@ bool Pass2_Cuts::DC_fiducial_cut_XY_PROT(int i, int pid, std::string condition)
         double minparams_in[6][3][2]; // Array to hold selected min cut
         double maxparams_in[6][3][2]; // Array to hold selected max cut
 
-        if (condition == "tight")
-        {
-                std::copy(&minparams_in_prot_t[0][0][0], &minparams_in_prot_t[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
-                std::copy(&maxparams_in_prot_t[0][0][0], &maxparams_in_prot_t[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
-        }
-        else if (condition == "loose")
-        {
-                std::copy(&minparams_in_prot_l[0][0][0], &minparams_in_prot_l[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
-                std::copy(&maxparams_in_prot_l[0][0][0], &maxparams_in_prot_l[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
-        }
-        else
+        // if (condition == "tight")
+        // {
+        //         std::copy(&minparams_in_prot_t[0][0][0], &minparams_in_prot_t[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+        //         std::copy(&maxparams_in_prot_t[0][0][0], &maxparams_in_prot_t[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        // }
+        // else if (condition == "loose")
+        // {
+        //         std::copy(&minparams_in_prot_l[0][0][0], &minparams_in_prot_l[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
+        //         std::copy(&maxparams_in_prot_l[0][0][0], &maxparams_in_prot_l[0][0][0] + 6 * 3 * 2, &maxparams_in[0][0][0]);
+        // }
+        // else
         {
                 // Default to medium
                 std::copy(&minparams_in_prot_m[0][0][0], &minparams_in_prot_m[0][0][0] + 6 * 3 * 2, &minparams_in[0][0][0]);
@@ -1146,17 +1146,17 @@ bool Pass2_Cuts::DC_fiducial_cut_XY_PIM(int i, std::string condition)
         double minparams_pim_in[6][3][2]; // Array to hold selected min cut
         double maxparams_pim_in[6][3][2]; // Array to hold selected max cut
 
-        if (condition == "tight")
-        {
-                std::copy(&minparams_in_pim_t[0][0][0], &minparams_in_pim_t[0][0][0] + 6 * 3 * 2, &minparams_pim_in[0][0][0]);
-                std::copy(&maxparams_in_pim_t[0][0][0], &maxparams_in_pim_t[0][0][0] + 6 * 3 * 2, &maxparams_pim_in[0][0][0]);
-        }
-        else if (condition == "loose")
-        {
-                std::copy(&minparams_in_pim_l[0][0][0], &minparams_in_pim_l[0][0][0] + 6 * 3 * 2, &minparams_pim_in[0][0][0]);
-                std::copy(&maxparams_in_pim_l[0][0][0], &maxparams_in_pim_l[0][0][0] + 6 * 3 * 2, &maxparams_pim_in[0][0][0]);
-        }
-        else
+        // if (condition == "tight")
+        // {
+        //         std::copy(&minparams_in_pim_t[0][0][0], &minparams_in_pim_t[0][0][0] + 6 * 3 * 2, &minparams_pim_in[0][0][0]);
+        //         std::copy(&maxparams_in_pim_t[0][0][0], &maxparams_in_pim_t[0][0][0] + 6 * 3 * 2, &maxparams_pim_in[0][0][0]);
+        // }
+        // else if (condition == "loose")
+        // {
+        //         std::copy(&minparams_in_pim_l[0][0][0], &minparams_in_pim_l[0][0][0] + 6 * 3 * 2, &minparams_pim_in[0][0][0]);
+        //         std::copy(&maxparams_in_pim_l[0][0][0], &maxparams_in_pim_l[0][0][0] + 6 * 3 * 2, &maxparams_pim_in[0][0][0]);
+        // }
+        // else
         {
                 // Default to medium
                 std::copy(&minparams_in_pim_m[0][0][0], &minparams_in_pim_m[0][0][0] + 6 * 3 * 2, &minparams_pim_in[0][0][0]);
@@ -1227,19 +1227,19 @@ bool Pass2_Cuts::DC_z_vertex_cut(std::string condition)
 {
         float partvz = _data->vz(0);
 
-        if (condition == "tight")
+        // if (condition == "tight")
         {
                 return partvz > -10 && partvz < 5;
         }
 
-        else if (condition == "loose")
-        {
-                return partvz > -12 && partvz < 7;
-        }
-        else
-        {
-                return partvz > -11 && partvz < 6;
-        }
+        // else if (condition == "loose")
+        // {
+        //         return partvz > -12 && partvz < 7;
+        // }
+        // else
+        // {
+        //         return partvz > -11 && partvz < 6;
+        // }
 }
 
 // public class HadronCuts {
@@ -1266,19 +1266,19 @@ bool Pass2_Cuts::Hadron_Delta_vz_cut(int i, std::string condition)
 
         return dvz > -20 && dvz < 20;
 
-        if (condition == "tight")
-        {
-                return dvz > -20 && dvz < 20;
-        }
+        // if (condition == "tight")
+        // {
+        //         return dvz > -20 && dvz < 20;
+        // }
 
-        else if (condition == "loose")
-        {
-                return dvz > -22 && dvz < 22;
-        }
-        else
-        {
-                return dvz > -21 && dvz < 21;
-        }
+        // else if (condition == "loose")
+        // {
+        //         return dvz > -22 && dvz < 22;
+        // }
+        // else
+        // {
+        //         return dvz > -21 && dvz < 21;
+        // }
 }
 
 /** chi2pid cut for hadrons
@@ -1292,16 +1292,16 @@ bool Pass2_Cuts::Hadron_Chi2pid_cut(int i, std::string condition)
         float p = _data->p(i);
         int pid = _data->pid(i);
         int status = abs(_data->status(i));
-        if (condition == "loose")
-        {
-                if (status < 4000)
-                        return abs(chi2pid) < 6.0;
-                else
-                {
-                        return abs(chi2pid) < 8.0;
-                }
-        }
-        if (condition == "tight")
+        // if (condition == "loose")
+        // {
+        //         if (status < 4000)
+        //                 return abs(chi2pid) < 6.0;
+        //         else
+        //         {
+        //                 return abs(chi2pid) < 8.0;
+        //         }
+        // }
+        // if (condition == "tight")
         {
                 if (status < 4000)
                         return abs(chi2pid) < 5.0;
@@ -1310,15 +1310,15 @@ bool Pass2_Cuts::Hadron_Chi2pid_cut(int i, std::string condition)
                         return abs(chi2pid) < 7.0;
                 }
         }
-        else
-        {
-                if (status < 4000)
-                        return abs(chi2pid) < 5.5;
-                else
-                {
-                        return abs(chi2pid) < 7.5;
-                }
-        }
+        // else
+        // {
+        //         if (status < 4000)
+        //                 return abs(chi2pid) < 5.5;
+        //         else
+        //         {
+        //                 return abs(chi2pid) < 7.5;
+        //         }
+        // }
         // double coef;
         // if (pid == 211)
         //         coef = 0.88;
