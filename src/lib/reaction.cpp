@@ -1162,8 +1162,8 @@ float Reaction::weight()
         // if (_mc)
         //         return _data->mc_weight();
         // else
-        return (1 / _eff_corr_fact_mPim);
-        // return 1.0;
+        // return (1 / _eff_corr_fact_mPim);
+        return 1.0;
 };
 
 // // Boost the particles to the center-of-mass system

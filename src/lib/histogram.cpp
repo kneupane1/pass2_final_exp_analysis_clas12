@@ -29,10 +29,10 @@ Histogram::Histogram(const std::string &output_file)
         {
                 const Int_t ndims_5D = 5;
 
-                Int_t bins_5D[ndims_5D] = {22, 22, 10, 6, 10};
+                // Int_t bins_5D[ndims_5D] = {22, 22, 10, 6, 10};
                 // in our expected range
                 // Int_t bins_5D_original[ndims_5D] = {7, 7, 10, 6, 10};
-                // Int_t bins_5D[ndims_5D] = {7, 7, 10, 6, 10};
+                Int_t bins_5D[ndims_5D] = {15, 15, 10, 6, 10};
 
                 // Mlower = mh1 + mh2
                 //  Double_t xmin_5D_original[ndims_5D] = {(0.938272 + 0.13957), (0.13957 + 0.13957), 0., 0., 0.};
@@ -46,9 +46,13 @@ Histogram::Histogram(const std::string &output_file)
                         // Mupper(W) = W − mh3
                         // //50 MeV w bin
 
+                        // // // //adding extra bins in each end of invariant mass hist
+                        // Double_t Bin_size_pPip0 = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 14.0;
+                        // Double_t Bin_size_pipPim0 = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 14.0;
+
                         // // //adding extra bins in each end of invariant mass hist
-                        Double_t Bin_size_pPip0 = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 14.0;
-                        Double_t Bin_size_pipPim0 = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 14.0;
+                        Double_t Bin_size_pPip0 = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 7.0;
+                        Double_t Bin_size_pipPim0 = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 7.0;
 
                         // Double_t xmin_5D[ndims_5D] = {(0.938272 + 0.13957), (0.13957 + 0.13957), 0., 0., 0.};
                         // Double_t xmax_5D[ndims_5D] = {(1.0 + 0.05 * w + 0.025 - MASS_PIM), (1.0 + 0.05 * w + 0.025 - MASS_P), 180, 360, 360};
@@ -1633,21 +1637,21 @@ void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
                 // weight_hist->Fill(_e->weight());
                 weight_hist->Fill(_e->weight());
 
-                // inv_mass_pPip->Fill(_e->inv_Ppip(), _e->weight());
-                // inv_mass_pPim->Fill(_e->inv_Ppim(), _e->weight());
-                // inv_mass_pipPim->Fill(_e->inv_pip_pim(), _e->weight());
+                inv_mass_pPip->Fill(_e->inv_Ppip(), _e->weight());
+                inv_mass_pPim->Fill(_e->inv_Ppim(), _e->weight());
+                inv_mass_pipPim->Fill(_e->inv_pip_pim(), _e->weight());
 
-                // theta_Prot_cm->Fill(_e->prot_theta(), _e->weight());
-                // theta_Pip_cm->Fill(_e->pip_theta(), _e->weight());
-                // theta_Pim_cm->Fill(_e->pim_theta(), _e->weight());
+                theta_Prot_cm->Fill(_e->prot_theta(), _e->weight());
+                theta_Pip_cm->Fill(_e->pip_theta(), _e->weight());
+                theta_Pim_cm->Fill(_e->pim_theta(), _e->weight());
 
-                // phi_Prot_cm->Fill(_e->prot_Phi(), _e->weight());
-                // phi_Pip_cm->Fill(_e->pip_Phi(), _e->weight());
-                // phi_Pim_cm->Fill(_e->pim_Phi(), _e->weight());
+                phi_Prot_cm->Fill(_e->prot_Phi(), _e->weight());
+                phi_Pip_cm->Fill(_e->pip_Phi(), _e->weight());
+                phi_Pim_cm->Fill(_e->pim_Phi(), _e->weight());
 
-                // alpha_Prot_cm->Fill(_e->alpha_pippim_pipf(), _e->weight());
-                // alpha_Pip_cm->Fill(_e->alpha_ppim_pipip(), _e->weight());
-                // alpha_Pim_cm->Fill(_e->alpha_ppip_pipim(), _e->weight());
+                alpha_Prot_cm->Fill(_e->alpha_pippim_pipf(), _e->weight());
+                alpha_Pip_cm->Fill(_e->alpha_ppim_pipip(), _e->weight());
+                alpha_Pim_cm->Fill(_e->alpha_ppip_pipim(), _e->weight());
 
                 // inv_mass_pPip_swapped->Fill(_e->inv_Ppip_swapped(), _e->weight());
                 // inv_mass_pPim_swapped->Fill(_e->inv_Ppim_swapped(), _e->weight());

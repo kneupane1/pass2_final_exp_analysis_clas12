@@ -359,7 +359,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                 double dp_Pip = NAN;
                                 double dtheta_Pip = NAN;
                                 double dphi_Pip = NAN;
-
+                                // --- new: per-species drop sets
+                                std::unordered_set<int> drop_proton_idx;
+                                std::unordered_set<int> drop_pip_idx;
                                 // Loop over particles to check proton and pip
                                 for (int part1 = 0; part1 < data->gpart(); part1++)
                                 {
@@ -425,6 +427,15 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                                 {
                                                                                         proton_cdfd_cut = true;
+                                                                                        // ADD (keep FD, drop CD)
+                                                                                        int idxFD = isFD1 ? part1 : part2; // which of (part1,part2) is FD
+                                                                                        int idxCD = isCD1 ? part1 : part2; // which of (part1,part2) is CD
+                                                                                        // drop_proton_idx.insert(idxCD);     // mark CD proton to skip later
+                                                                                        // (void)idxFD;                       // silence unused warning if compiled with -Wall
+
+                                                                                        drop_proton_idx.insert(idxFD); // mark CD proton to skip later
+                                                                                        (void)idxCD;                   // silence unused warning if compiled with -Wall
+
                                                                                         //  // } else {  // Fill histograms
                                                                                         // h_dp_prot->Fill(dp_Prot, event->weight());
                                                                                         // h_dtheta_prot->Fill(dtheta_Prot, event->weight());
@@ -482,6 +493,15 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 // if (dp_Pip > -0.1 && dp_Pip < 0.0 && dtheta_Pip > -2 && dtheta_Pip < 2 && dphi_Pip > -7.5 && dphi_Pip < 2.5)
                                                                                 {
                                                                                         pip_cdfd_cut = true;
+
+                                                                                        // ADD (keep FD, drop CD)
+                                                                                        int idxFD = isFD1 ? part1 : part2; // which of (part1,part2) is FD
+                                                                                        int idxCD = isCD1 ? part1 : part2; // which of (part1,part2) is CD
+                                                                                        // drop_pip_idx.insert(idxCD);        // mark CD pip to skip later
+                                                                                        // (void)idxFD;
+
+                                                                                        drop_pip_idx.insert(idxFD); // mark FD pip to skip later
+                                                                                        (void)idxCD;
                                                                                         // // } else {  // Fill histograms
                                                                                         // h_dp_pip->Fill(dp_Pip, event->weight());
                                                                                         // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
@@ -498,6 +518,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                 {
                                         for (size_t j = 0; j < num_pips; ++j)
                                         {
+                                                /////// to remove both cdfd tracks when they are detected in both cd and fd tracks
                                                 if (!(proton_cdfd_cut == true || pip_cdfd_cut == true))
                                                 //////                                                        if ((proton_cdfd_cut == true || pip_cdfd_cut == true))
                                                 {
@@ -506,7 +527,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                         {
                                                                 int proton_part_idx = event->GetProtonIndices()[i];
                                                                 int pip_part_idx = event->GetPipIndices()[j];
-
+                                                                /////////////// removing CD tracks from CD FD match
+                                                                // if (drop_proton_idx.count(proton_part_idx) || drop_pip_idx.count(pip_part_idx))
+                                                                //         continue; // ADD to remove cd tracks which also has fd tracks
                                                                 // if ((best_proton_index != event->GetProtonIndices()[i]) || (best_pip_index != event->GetPipIndices()[j]))
                                                                 {
 
@@ -561,7 +584,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                         //     (event->MM2_mpip() < -0.028 || event->MM2_mpip() > 0.071) &&
                                                                         //     (event->MM2_mprot() < 0.763 || event->MM2_mprot() > 1.003))
                                                                         {
-                                                                                // if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
 
                                                                                 //////////////                if (dv2_Prot < 0.01)
                                                                                 {
