@@ -46,7 +46,7 @@ Histogram::Histogram(const std::string &output_file)
                         // Mupper(W) = W − mh3
                         // //50 MeV w bin
 
-                        // // // //adding extra bins in each end of invariant mass hist
+                        // // // // //adding extra bins in each end of invariant mass hist
                         // Double_t Bin_size_pPip0 = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 14.0;
                         // Double_t Bin_size_pipPim0 = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 14.0;
 
@@ -145,6 +145,27 @@ Histogram::Histogram(const std::string &output_file)
                                                                      ndims_5D, bins_5D, xmin_5D, xmax_5D);
                         h_5dim_pim_evt_loose[q2][w] = new THnSparseD(name_evt, name_evt,
                                                                      ndims_5D, bins_5D, xmin_5D, xmax_5D);
+
+                        for (size_t xi = 0; xi < 14; xi++)
+                        {
+                                float xmin_pPip = xmin_5D[0] + Bin_size_pPip0 * xi;
+                                float xmax_pPip = xmin_5D[0] + Bin_size_pPip0 * (xi + 1);
+
+                                float xmin_pipPim = xmin_5D[1] + Bin_size_pipPim0 * xi;
+                                float xmax_pipPim = xmin_5D[1] + Bin_size_pipPim0 * (xi + 1);
+
+                                auto name_mm2_inv_pPip = Form("h_mm2_mPim_inv_pPip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPip<=%.3f GeV",
+                                                              (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
+
+                                auto name_mm2_inv_pPim = Form("h_mm2_mPim_inv_pPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPim<=%.3f GeV",
+                                                              (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
+
+                                auto name_mm2_inv_pipPim = Form("h_mm2_mPim_inv_pipPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pipPi<=%.3f GeV",
+                                                                (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pipPim, xmax_pipPim);
+                                mm2_mPim_hist_inv_pPip[q2][w][xi] = std::make_shared<TH1D>(name_mm2_inv_pPip, name_mm2_inv_pPip, 100, -0.4, 0.4);
+                                mm2_mPim_hist_inv_pPim[q2][w][xi] = std::make_shared<TH1D>(name_mm2_inv_pPim, name_mm2_inv_pPim, 100, -0.4, 0.4);
+                                mm2_mPim_hist_inv_pipPim[q2][w][xi] = std::make_shared<TH1D>(name_mm2_inv_pipPim, name_mm2_inv_pipPim, 100, -0.4, 0.4);
+                        }
                 }
         }
 
@@ -490,6 +511,21 @@ void Histogram::Write()
         /////////////////// PID CHECKS //////////////////////
         /////////////////// PID CHECKS //////////////////////
 
+        TDirectory *Hists1D_mm2_mPim_inv_pPip_folder =
+            RootOutputFile->mkdir("Hists1D_mm2_mPim_inv_pPip_folder");
+        Hists1D_mm2_mPim_inv_pPip_folder->cd();
+        writeHists1D_mm2_mPim_inv_pPip();
+
+        TDirectory *Hists1D_mm2_mPim_inv_pPim_folder =
+            RootOutputFile->mkdir("Hists1D_mm2_mPim_inv_pPim_folder");
+        Hists1D_mm2_mPim_inv_pPim_folder->cd();
+        writeHists1D_mm2_mPim_inv_pPim();
+
+        TDirectory *Hists1D_mm2_mPim_inv_pipPim_folder =
+            RootOutputFile->mkdir("Hists1D_mm2_mPim_inv_pipPim_folder");
+        Hists1D_mm2_mPim_inv_pipPim_folder->cd();
+        writeHists1D_mm2_mPim_inv_pipPim();
+
         std::cerr
             << BOLDBLUE << "WvsQ2()" << DEF << std::endl;
         TDirectory *WvsQ2_folder = RootOutputFile->mkdir("W vs Q2");
@@ -815,6 +851,83 @@ void Histogram::writeMMSQ_mPim_4_or_more_comb()
                 }
         }
 }
+
+//////////////////////////////////////////  mmsq 3-d part   //////////////////////////////////
+//////////////////////////////////////////  mmsq 3-d part   //////////////////////////////////
+//////////////////////////////////////////  mmsq 3-d part   //////////////////////////////////
+//////////////////////////////////////////  mmsq 3-d part   //////////////////////////////////
+
+void Histogram::Fill_hist1D_mm2_mPim_inv_mass(const std::shared_ptr<Reaction> &_e)
+{
+        // inv_mass_pPim->Fill(_e->inv_Ppim(), _e->weight());
+
+        if (_e->W() <= 2.2 && _e->W() >= 1.4)
+        {
+
+                if (_e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+                {
+                        // inv_mass_pipPim->Fill(_e->inv_pip_pim(), _e->weight());
+
+                        int inv_pPip_bin_val = inv_binning(_e->W(), _e->inv_Ppip(), 1);
+                        if (inv_pPip_bin_val != -1)
+                        {
+                                mm2_mPim_hist_inv_pPip[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->MM2_mPim(), _e->weight());
+                        }
+
+                        // int inv_pPim_bin_val = inv_binning(_e->W(), _e->inv_Ppim(), 1);
+                        // if (inv_pPim_bin_val != -1)
+                        // {
+                        //         mm2_mPim_hist_inv_pPim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->MM2_mPim(), _e->weight());
+                        // }
+                        // int inv_pipPim_bin_val = inv_binning(_e->W(), _e->inv_pip_pim(), 0);
+                        // if (inv_pipPim_bin_val != -1)
+                        // {
+                        //         mm2_mPim_hist_inv_pipPim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->MM2_mPim(), _e->weight());
+                        // }
+                }
+        }
+}
+
+void Histogram::writeHists1D_mm2_mPim_inv_pPip()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t xi = 0; xi < 14; xi++)
+                        {
+                                mm2_mPim_hist_inv_pPip[q2][w][xi]->Write();
+                        }
+                }
+        }
+}
+void Histogram::writeHists1D_mm2_mPim_inv_pPim()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t xi = 0; xi < 14; xi++)
+                        {
+                                mm2_mPim_hist_inv_pPim[q2][w][xi]->Write();
+                        }
+                }
+        }
+}
+void Histogram::writeHists1D_mm2_mPim_inv_pipPim()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t xi = 0; xi < 14; xi++)
+                        {
+                                mm2_mPim_hist_inv_pipPim[q2][w][xi]->Write();
+                        }
+                }
+        }
+}
+
 ////// //////////////////////// This section is for THNSPARSE and related ////////////////////////////////
 ////// //////////////////////// This section is for THNSPARSE and related ////////////////////////////////
 ////// //////////////////////// This section is for THNSPARSE and related ////////////////////////////////

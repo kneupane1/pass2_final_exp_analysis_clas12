@@ -595,7 +595,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                         //     (event->MM2_mpip() < -0.028 || event->MM2_mpip() > 0.071) &&
                                                                         //     (event->MM2_mprot() < 0.763 || event->MM2_mprot() > 1.003))
                                                                         {
-                                                                                if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                // if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
 
                                                                                 //////////////                if (dv2_Prot < 0.01)
                                                                                 {
@@ -649,6 +649,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                         // if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
                                                                                         // {
                                                                                         _hists->Fill_MMSQ_mPim(event);
+
+                                                                                        _hists->Fill_hist1D_mm2_mPim_inv_mass(event);
 
                                                                                         _hists->Fill_histSevenD_prot(event);
                                                                                         _hists->Fill_histSevenD_pip(event);
