@@ -146,13 +146,23 @@ Histogram::Histogram(const std::string &output_file)
                         h_5dim_pim_evt_loose[q2][w] = new THnSparseD(name_evt, name_evt,
                                                                      ndims_5D, bins_5D, xmin_5D, xmax_5D);
 
+                        Double_t xmin_5D_BC[5] = {(0.938272 + 0.13957), (0.13957 + 0.13957), 0., 0., 0.};
+                        Double_t xmax_5D_BC[5] = {(1.0 + 0.05 * w + 0.025 - MASS_PIM), (1.0 + 0.05 * w + 0.025 - MASS_P), 180, 360, 360};
+
+                        // // //adding extra bins in each end of invariant mass hist
+                        Double_t Bin_size_pPip = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 14.0;
+                        Double_t Bin_size_pipPim = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 14.0;
+
+                        // Double_t xmin_5D_BC[ndims_5D] = {((0.938272 + 0.13957) - 4 * Bin_size_pPip0), (0.13957 + 0.13957) - 4 * Bin_size_pipPim0, 0., 0.0, 0.};
+                        // Double_t xmax_5D_BC[ndims_5D] = {((1.0 + 0.05 * w + 0.025 - MASS_PIM) + 4 * Bin_size_pPip0), ((1.0 + 0.05 * w + 0.025 - MASS_P) + 4 * Bin_size_pipPim0), 180, 360, 360};
+
                         for (size_t xi = 0; xi < 14; xi++)
                         {
-                                float xmin_pPip = xmin_5D[0] + Bin_size_pPip0 * xi;
-                                float xmax_pPip = xmin_5D[0] + Bin_size_pPip0 * (xi + 1);
+                                float xmin_pPip = xmin_5D_BC[0] + Bin_size_pPip * xi;
+                                float xmax_pPip = xmin_5D_BC[0] + Bin_size_pPip * (xi + 1);
 
-                                float xmin_pipPim = xmin_5D[1] + Bin_size_pipPim0 * xi;
-                                float xmax_pipPim = xmin_5D[1] + Bin_size_pipPim0 * (xi + 1);
+                                float xmin_pipPim = xmin_5D_BC[1] + Bin_size_pipPim * xi;
+                                float xmax_pipPim = xmin_5D_BC[1] + Bin_size_pipPim * (xi + 1);
 
                                 auto name_mm2_inv_pPip = Form("h_mm2_mPim_inv_pPip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPip<=%.3f GeV",
                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
@@ -871,19 +881,19 @@ void Histogram::Fill_hist1D_mm2_mPim_inv_mass(const std::shared_ptr<Reaction> &_
                         int inv_pPip_bin_val = inv_binning(_e->W(), _e->inv_Ppip(), 1);
                         if (inv_pPip_bin_val != -1)
                         {
-                                mm2_mPim_hist_inv_pPip[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->MM2_mPim(), _e->weight());
+                                mm2_mPim_hist_inv_pPip[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->MM2_mPim());
                         }
 
-                        // int inv_pPim_bin_val = inv_binning(_e->W(), _e->inv_Ppim(), 1);
-                        // if (inv_pPim_bin_val != -1)
-                        // {
-                        //         mm2_mPim_hist_inv_pPim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->MM2_mPim(), _e->weight());
-                        // }
-                        // int inv_pipPim_bin_val = inv_binning(_e->W(), _e->inv_pip_pim(), 0);
-                        // if (inv_pipPim_bin_val != -1)
-                        // {
-                        //         mm2_mPim_hist_inv_pipPim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->MM2_mPim(), _e->weight());
-                        // }
+                        int inv_pPim_bin_val = inv_binning(_e->W(), _e->inv_Ppim(), 1);
+                        if (inv_pPim_bin_val != -1)
+                        {
+                                mm2_mPim_hist_inv_pPim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->MM2_mPim());
+                        }
+                        int inv_pipPim_bin_val = inv_binning(_e->W(), _e->inv_pip_pim(), 0);
+                        if (inv_pipPim_bin_val != -1)
+                        {
+                                mm2_mPim_hist_inv_pipPim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->MM2_mPim());
+                        }
                 }
         }
 }

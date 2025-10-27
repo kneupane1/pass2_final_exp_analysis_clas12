@@ -385,7 +385,7 @@ protected:
         }
         int inv_bin_val = -1;
 
-        for (int j = 0; j < 7; ++j)
+        for (int j = 0; j < 14; ++j)
         {
             float lim_value = inv_llim + (j + 1) * (inv_ulim - inv_llim) / 7.0;
             if (inv_mass <= lim_value)
