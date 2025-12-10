@@ -343,8 +343,8 @@ bool Pass2_Cuts::EC_sampling_fraction_cut(std::string condition)
         }
         else
         {
-                pass_triangle = (_data->ec_ecin_energy(0) / _data->p(0)) > (0.2 - _data->ec_pcal_energy(0) / _data->p(0));
-                // pass_triangle = true;
+                // pass_triangle = (_data->ec_ecin_energy(0) / _data->p(0)) > (0.2 - _data->ec_pcal_energy(0) / _data->p(0));
+                pass_triangle = true;
         }
 
         if (pass_band && pass_triangle)
@@ -403,8 +403,8 @@ bool Pass2_Cuts::EC_hit_position_fiducial_cut_homogeneous(std::string condition)
 
         // if (condition == "tight")
         // {
-        return (_data->ec_pcal_lv(0) > 18 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 18 &&
-                _data->ec_pcal_lw(0) < 400);
+        // return (_data->ec_pcal_lv(0) > 18 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 18 &&
+        //         _data->ec_pcal_lw(0) < 400);
         // }
 
         // else if (condition == "loose")
@@ -421,8 +421,8 @@ bool Pass2_Cuts::EC_hit_position_fiducial_cut_homogeneous(std::string condition)
         // // }
         // // else
         // // {
-        // return (_data->ec_pcal_lv(0) > 13.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 13.5 &&
-        //         _data->ec_pcal_lw(0) < 400);
+        return (_data->ec_pcal_lv(0) > 13.5 && _data->ec_pcal_lv(0) < 400 && _data->ec_pcal_lw(0) > 13.5 &&
+                _data->ec_pcal_lw(0) < 400);
         // // }
         // }
 }

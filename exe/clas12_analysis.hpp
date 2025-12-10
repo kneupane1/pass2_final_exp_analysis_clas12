@@ -123,9 +123,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                 auto event = std::make_shared<Reaction>(data, beam_energy);
                 no_of_events++;
-                // if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
-                if (data->charge(0) == -1)
-                        _hists->FillHists_electron_cuts(data, event);
+                if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
+                        if (data->charge(0) == -1)
+                                _hists->FillHists_electron_cuts(data, event);
 
                 ///// auto cuts = std::make_unique<rga_Cuts>(data);
                 auto cuts = std::make_unique<Pass2_Cuts>(data);
@@ -156,8 +156,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                 // if (_qa->OkForAsymmetry(data->getRun(), data->getEvent()))
 
                 // std::cout << "  FC Charge is " << total_charge << std::endl;
-                // if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
-                _hists->FillHists_electron_with_cuts(data, event);
+                if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
+                        _hists->FillHists_electron_with_cuts(data, event);
 
                 // If we pass electron cuts the event is processed
                 elec++;
@@ -549,21 +549,21 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                         two_pion_mPim_events++;
                                                                         entries_in_this_event++;
-                                                                        event->SetSwappedProton(pip_part_idx);
-                                                                        event->SetSwappedPip(proton_part_idx);
-                                                                        // Extract velocity components with energy normalization
-                                                                        double v_original_x_Prot = event->GetProtons()[i]->Px() / event->GetProtons()[i]->E();
-                                                                        double v_original_y_Prot = event->GetProtons()[i]->Py() / event->GetProtons()[i]->E();
-                                                                        double v_original_z_Prot = event->GetProtons()[i]->Pz() / event->GetProtons()[i]->E();
-                                                                        double v_swapped_x_Prot = event->GetProtonsSwapped()->Px() / event->GetProtonsSwapped()->E();
-                                                                        double v_swapped_y_Prot = event->GetProtonsSwapped()->Py() / event->GetProtonsSwapped()->E();
-                                                                        double v_swapped_z_Prot = event->GetProtonsSwapped()->Pz() / event->GetProtonsSwapped()->E();
+                                                                        // event->SetSwappedProton(pip_part_idx);
+                                                                        // event->SetSwappedPip(proton_part_idx);
+                                                                        // // Extract velocity components with energy normalization
+                                                                        // double v_original_x_Prot = event->GetProtons()[i]->Px() / event->GetProtons()[i]->E();
+                                                                        // double v_original_y_Prot = event->GetProtons()[i]->Py() / event->GetProtons()[i]->E();
+                                                                        // double v_original_z_Prot = event->GetProtons()[i]->Pz() / event->GetProtons()[i]->E();
+                                                                        // double v_swapped_x_Prot = event->GetProtonsSwapped()->Px() / event->GetProtonsSwapped()->E();
+                                                                        // double v_swapped_y_Prot = event->GetProtonsSwapped()->Py() / event->GetProtonsSwapped()->E();
+                                                                        // double v_swapped_z_Prot = event->GetProtonsSwapped()->Pz() / event->GetProtonsSwapped()->E();
 
-                                                                        // Calculate delta_V^2
-                                                                        double dv2_Prot = pow(v_swapped_x_Prot - v_original_x_Prot, 2) +
-                                                                                          pow(v_swapped_y_Prot - v_original_y_Prot, 2) +
-                                                                                          pow(v_swapped_z_Prot - v_original_z_Prot, 2);
-                                                                        // std::cout << "Delta V^2: " << dv2 << std::endl;
+                                                                        // // Calculate delta_V^2
+                                                                        // double dv2_Prot = pow(v_swapped_x_Prot - v_original_x_Prot, 2) +
+                                                                        //                   pow(v_swapped_y_Prot - v_original_y_Prot, 2) +
+                                                                        //                   pow(v_swapped_z_Prot - v_original_z_Prot, 2);
+                                                                        // // std::cout << "Delta V^2: " << dv2 << std::endl;
 
                                                                         // // Extract velocity components with energy normalization
                                                                         // double v_original_x_Pip = event->GetPips()[j]->Px() / event->GetPips()[j]->E();
@@ -607,7 +607,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                                         // if (num_combinations == 1)
                                                                                         // {
-                                                                                        _hists->Fill_all_Combi(event);
+                                                                                        // _hists->Fill_all_Combi(event);
 
                                                                                         // // Fill the appropriate histogram based on num_combinations
                                                                                         // if (num_combinations == 1)
@@ -644,46 +644,46 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                         // {
                                                                                         // _hists->Fill_MMSQ_mPim(event);
                                                                                         // if (entries_in_this_event == 1)
-                                                                                        // _hists->Fill_WvsQ2(event);
+                                                                                        _hists->Fill_WvsQ2(event);
 
-                                                                                        // if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                        // {
-                                                                                        _hists->Fill_MMSQ_mPim(event);
+                                                                                        if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                        {
+                                                                                                _hists->Fill_MMSQ_mPim(event);
 
-                                                                                        _hists->Fill_hist1D_mm2_mPim_inv_mass(event);
+                                                                                                _hists->Fill_hist1D_mm2_mPim_inv_mass(event);
 
-                                                                                        _hists->Fill_histSevenD_prot(event);
-                                                                                        _hists->Fill_histSevenD_pip(event);
-                                                                                        _hists->Fill_histSevenD_pim(event);
-                                                                                        _hists->Fill_histSevenD_prot_evt(event);
-                                                                                        _hists->Fill_histSevenD_pip_evt(event);
-                                                                                        _hists->Fill_histSevenD_pim_evt(event);
-                                                                                        // // // // }
-                                                                                        // // // // // if (_hists->MM_cut_tight(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                        // // // // // {
-                                                                                        // // // // //         _hists->Fill_MMSQ_mPim_1_comb(event);
+                                                                                                _hists->Fill_histSevenD_prot(event);
+                                                                                                _hists->Fill_histSevenD_pip(event);
+                                                                                                _hists->Fill_histSevenD_pim(event);
+                                                                                                _hists->Fill_histSevenD_prot_evt(event);
+                                                                                                _hists->Fill_histSevenD_pip_evt(event);
+                                                                                                _hists->Fill_histSevenD_pim_evt(event);
+                                                                                        }
+                                                                                        if (_hists->MM_cut_tight(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                        {
+                                                                                                _hists->Fill_MMSQ_mPim_1_comb(event);
 
-                                                                                        // _hists->Fill_histSevenD_prot_tight(event);
-                                                                                        // _hists->Fill_histSevenD_pip_tight(event);
-                                                                                        // _hists->Fill_histSevenD_pim_tight(event);
-                                                                                        // _hists->Fill_histSevenD_prot_evt_tight(event);
-                                                                                        // _hists->Fill_histSevenD_pip_evt_tight(event);
-                                                                                        // _hists->Fill_histSevenD_pim_evt_tight(event);
-                                                                                        // // // // }
-                                                                                        // // // // if (_hists->MM_cut_loose(event->W(), event->Q2(), event->MM2_mPim()))
-                                                                                        // // // // {
-                                                                                        // // // //         _hists->Fill_MMSQ_mPim_2_comb(event);
+                                                                                                _hists->Fill_histSevenD_prot_tight(event);
+                                                                                                _hists->Fill_histSevenD_pip_tight(event);
+                                                                                                _hists->Fill_histSevenD_pim_tight(event);
+                                                                                                _hists->Fill_histSevenD_prot_evt_tight(event);
+                                                                                                _hists->Fill_histSevenD_pip_evt_tight(event);
+                                                                                                _hists->Fill_histSevenD_pim_evt_tight(event);
+                                                                                        }
+                                                                                        if (_hists->MM_cut_loose(event->W(), event->Q2(), event->MM2_mPim()))
+                                                                                        {
+                                                                                                _hists->Fill_MMSQ_mPim_2_comb(event);
 
-                                                                                        // _hists->Fill_histSevenD_prot_loose(event);
-                                                                                        // _hists->Fill_histSevenD_pip_loose(event);
-                                                                                        // _hists->Fill_histSevenD_pim_loose(event);
-                                                                                        // _hists->Fill_histSevenD_prot_evt_loose(event);
-                                                                                        // _hists->Fill_histSevenD_pip_evt_loose(event);
-                                                                                        // _hists->Fill_histSevenD_pim_evt_loose(event);
-                                                                                        // // }
-                                                                                        // //         }
-                                                                                        // // }
-                                                                                        // //         else if (event->TwoPion_missingPip())
+                                                                                                _hists->Fill_histSevenD_prot_loose(event);
+                                                                                                _hists->Fill_histSevenD_pip_loose(event);
+                                                                                                _hists->Fill_histSevenD_pim_loose(event);
+                                                                                                _hists->Fill_histSevenD_prot_evt_loose(event);
+                                                                                                _hists->Fill_histSevenD_pip_evt_loose(event);
+                                                                                                _hists->Fill_histSevenD_pim_evt_loose(event);
+                                                                                        }
+                                                                                        //         }
+                                                                                        // }
+                                                                                        //         else if (event->TwoPion_missingPip())
                                                                                         // //                 miss_pip++;
                                                                                         // //         else if (event->TwoPion_missingProt())
                                                                                         // //                 miss_prot++;
@@ -712,7 +712,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                         // // _hists->Fill_MMSQ_mPim_3_comb(dv2_Pip, event);
 
                                                                                         ///////////
-                                                                                        _hists->Fill_WvsQ2(event);
+                                                                                        // _hists->Fill_WvsQ2(event);
                                                                                         // // std::cout << " proton velocity : " << event->GetProtons()[i]->Px() << std::endl;
 
                                                                                         // _hists->Fill_4_or_more_Combi(dv2_Prot, event);
