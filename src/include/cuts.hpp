@@ -5,6 +5,7 @@
 #include "constants.hpp"
 #include "deltat.hpp"
 #include "physics.hpp"
+class Histogram;
 
 class Cuts
 {
@@ -46,7 +47,7 @@ public:
     bool IsPim(int i, std::string condition);
     // bool CC_nphe_cut(double nphe);
     bool CC_nphe_cut();
-    bool PCAL_minimum_energy();
+    bool PCAL_minimum_energy(std::string condition);
     bool EC_sampling_fraction_cut(std::string condition);
     bool EC_hit_position_fiducial_cut_homogeneous(std::string condition);
     bool DC_fiducial_cut_XY_PIP(int i, int pid, std::string condition);
@@ -60,13 +61,20 @@ public:
     bool CD_fiducial_had(int i, std::string condition);
 
     /////////////// Inefficient region cuts ////////////
-    bool PCAL_Ineff_cut_X_Y();
+    bool PCAL_Ineff_cut_X_Y(std::string condition);
     bool DC_Ineff_cut_X_Y(int i, int pid, std::string condition);
 
     bool HadronsCuts(int i);
     bool DC_fiducial_cut_theta_phi(int i);
     bool Hadron_Delta_vz_cut(int i, std::string condition);
     bool Hadron_Chi2pid_cut(int i, std::string condition);
+
+    void MarkCDFDOverlaps(const std::shared_ptr<Branches12> &data,
+                          const char *level,
+                          std::unordered_set<int> &drop_proton_idx,
+                          std::unordered_set<int> &drop_pip_idx,
+                          Histogram *hists = nullptr);
+
     // Function to get the momentum range index based on the value of p
 
     int getMomRangeIndex(double p)

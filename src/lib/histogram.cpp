@@ -2433,7 +2433,7 @@ void Histogram::FillHists_electron_cuts(const std::shared_ptr<Branches12> &_d, c
 
                 //// pcal ineff
                 pcal_sec_ineff_cuts[before_any_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
-                if (elec_cuts->PCAL_Ineff_cut_X_Y())
+                if (elec_cuts->PCAL_Ineff_cut_X_Y(condition_of_cut))
                         pcal_sec_ineff_cuts[with_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
                 else
                         pcal_sec_ineff_cuts[outside_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));

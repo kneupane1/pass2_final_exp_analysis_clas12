@@ -76,7 +76,7 @@ int main(int argc, char **argv)
    */
                 {
                         // auto qa = std::make_shared<QA::QADB>();
-                        auto qa = std::make_shared<QA::QADB>("pass1");
+                        auto qa = std::make_shared<QA::QADB>("pass2");
                         // auto qa = std::make_shared<QA::QADB>("pass1");
 
                         // Add every file to the chain
