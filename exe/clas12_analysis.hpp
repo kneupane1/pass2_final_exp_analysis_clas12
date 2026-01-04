@@ -1020,22 +1020,22 @@ static void ProcessRecoCutLevel(
                                 _hists->Fill_histSevenD_pip_evt_loose(event);
                                 _hists->Fill_histSevenD_pim_evt_loose(event);
 
-                                // auto dt_proton = std::make_shared<Delta_T>(data);
-                                // auto dt_pip = std::make_shared<Delta_T>(data);
+                                auto dt_proton = std::make_shared<Delta_T>(data);
+                                auto dt_pip = std::make_shared<Delta_T>(data);
 
-                                // _hists->Fill_WvsQ2(event);
-                                // _hists->FillHists_electron_with_cuts(data, event);
-                                // dt_proton->dt_calc(pidx);
+                                _hists->Fill_WvsQ2(event);
+                                _hists->FillHists_electron_with_cuts(data, event);
+                                dt_proton->dt_calc(pidx);
+                                _hists->Fill_MomVsBeta(data, pidx, event);
+                                _hists->Fill_deltat_prot_after_cut(data, dt_proton, pidx, event);
+                                _hists->FillHists_prot_pid_with_cuts(data, event, pidx, *event->GetProtons()[i]);
+                                // }
+
+                                // std::cout << "   pidx  " << pidx << std::endl;
+                                dt_pip->dt_calc(pidx);
                                 // _hists->Fill_MomVsBeta(data, pidx, event);
-                                // _hists->Fill_deltat_prot_after_cut(data, dt_proton, pidx, event);
-                                // _hists->FillHists_prot_pid_with_cuts(data, event, pidx, *event->GetProtons()[i]);
-                                // // }
-
-                                // // std::cout << "   pidx  " << pidx << std::endl;
-                                // dt_pip->dt_calc(pidx);
-                                // // _hists->Fill_MomVsBeta(data, pidx, event);
-                                // _hists->Fill_deltat_pip_after_cut(data, dt_pip, pidx, event);
-                                // _hists->FillHists_pip_pid_with_cuts(data, event, pidx, *event->GetPips()[j]);
+                                _hists->Fill_deltat_pip_after_cut(data, dt_pip, pidx, event);
+                                _hists->FillHists_pip_pid_with_cuts(data, event, pidx, *event->GetPips()[j]);
                         }
                         else if (level == CutLevel::Mid)
                         {
@@ -1074,22 +1074,22 @@ static void ProcessRecoCutLevel(
                                 _hists->Fill_histSevenD_pip_evt_tight(event);
                                 _hists->Fill_histSevenD_pim_evt_tight(event);
 
-                                auto dt_proton = std::make_shared<Delta_T>(data);
-                                auto dt_pip = std::make_shared<Delta_T>(data);
+                                // auto dt_proton = std::make_shared<Delta_T>(data);
+                                // auto dt_pip = std::make_shared<Delta_T>(data);
 
-                                _hists->Fill_WvsQ2(event);
-                                _hists->FillHists_electron_with_cuts(data, event);
-                                dt_proton->dt_calc(pidx);
-                                _hists->Fill_MomVsBeta(data, pidx, event);
-                                _hists->Fill_deltat_prot_after_cut(data, dt_proton, pidx, event);
-                                _hists->FillHists_prot_pid_with_cuts(data, event, pidx, *event->GetProtons()[i]);
-                                // }
-
-                                // std::cout << "   pidx  " << pidx << std::endl;
-                                dt_pip->dt_calc(pidx);
+                                // _hists->Fill_WvsQ2(event);
+                                // _hists->FillHists_electron_with_cuts(data, event);
+                                // dt_proton->dt_calc(pidx);
                                 // _hists->Fill_MomVsBeta(data, pidx, event);
-                                _hists->Fill_deltat_pip_after_cut(data, dt_pip, pidx, event);
-                                _hists->FillHists_pip_pid_with_cuts(data, event, pidx, *event->GetPips()[j]);
+                                // _hists->Fill_deltat_prot_after_cut(data, dt_proton, pidx, event);
+                                // _hists->FillHists_prot_pid_with_cuts(data, event, pidx, *event->GetProtons()[i]);
+                                // // }
+
+                                // // std::cout << "   pidx  " << pidx << std::endl;
+                                // dt_pip->dt_calc(pidx);
+                                // // _hists->Fill_MomVsBeta(data, pidx, event);
+                                // _hists->Fill_deltat_pip_after_cut(data, dt_pip, pidx, event);
+                                // _hists->FillHists_pip_pid_with_cuts(data, event, pidx, *event->GetPips()[j]);
                         }
                 }
         }
