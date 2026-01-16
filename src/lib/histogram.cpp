@@ -2817,10 +2817,27 @@ void Histogram::FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_
         if (abs(_d->status(i)) >= 4000)
                 Theta_pim_lab_vs_mom_pim_CD->Fill(_e->pim_momentum_measured(pim), _e->pim_theta_lab_measured(pim));
 }
-void Histogram::FillHists_missPim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, const TLorentzVector &prot, const TLorentzVector &pip)
+
+void Histogram::FillHists_missPim_pid_with_cuts(
+    const std::shared_ptr<Branches12> &_d,
+    const std::shared_ptr<Reaction> &_e,
+    const TLorentzVector &prot,
+    const TLorentzVector &pip)
 {
+        if (!_e)
+                return;
+
+        const float p = _e->pim_momentum(prot, pip);
+        const float th = _e->pim_theta_lab(prot, pip);
+
+        if (!std::isfinite(p) || !std::isfinite(th))
+                return;
         if (_e->W() > 1.35 && _e->W() <= 2.15 && _e->Q2() > 1.95 && _e->Q2() <= 9.0)
-                Theta_pim_lab_vs_mom_pim_miss->Fill(_e->pim_momentum(prot, pip), _e->pim_theta_lab(prot, pip));
+        {
+                Theta_pim_lab_vs_mom_pim_miss->Fill(p, th);
+                // pim_theta_miss->Fill(th);
+                // pim_mom_miss->Fill(p);
+        }
 }
 
 void Histogram::Write_Electron_cuts()
@@ -3122,11 +3139,11 @@ void Histogram::Write_Hadrons_cuts()
         if (Theta_pim_lab_vs_mom_pim->GetEntries())
                 Theta_pim_lab_vs_mom_pim->Write("");
 
-        // Theta_pim_lab_vs_mom_pim_miss->SetXTitle("mom_pim miss (GeV)");
-        // Theta_pim_lab_vs_mom_pim_miss->SetYTitle("theta_pim miss (Deg)");
-        // Theta_pim_lab_vs_mom_pim_miss->SetOption("COLZ1");
-        // if (Theta_pim_lab_vs_mom_pim_miss->GetEntries())
-        //         Theta_pim_lab_vs_mom_pim_miss->Write("");
+        Theta_pim_lab_vs_mom_pim_miss->SetXTitle("mom_pim miss (GeV)");
+        Theta_pim_lab_vs_mom_pim_miss->SetYTitle("theta_pim miss (Deg)");
+        Theta_pim_lab_vs_mom_pim_miss->SetOption("COLZ1");
+        if (Theta_pim_lab_vs_mom_pim_miss->GetEntries())
+                Theta_pim_lab_vs_mom_pim_miss->Write("");
 
         Theta_pim_lab_vs_mom_pim_FD->SetXTitle("mom_pim (GeV)");
         Theta_pim_lab_vs_mom_pim_FD->SetYTitle("theta_pim (Deg)");
@@ -3156,6 +3173,10 @@ void Histogram::makeHists_sector()
             Form("Theta_pim_lab_vs_mom_pim"), Form("Theta_fd_pim_lab_vs_mom_pim"), bins,
             0, 5.0, bins, 0, 125);
 
+        Theta_pim_lab_vs_mom_pim_miss = std::make_shared<TH2D>(
+            Form("Theta_pim_lab_vs_mom_pim_miss"), Form("Theta_fd_pim_lab_vs_mom_pim_miss"), bins,
+            0, 5.0, bins, 0, 125);
+
         Theta_elec_lab_vs_mom_elec = std::make_shared<TH2D>(
             Form("Theta_elec_lab_vs_mom_elec"), Form("Theta_elec_lab_vs_mom_elec"), bins,
             3, 10.0, bins, 0, 30);
@@ -3166,7 +3187,7 @@ void Histogram::makeHists_sector()
 
         Theta_pim_lab_vs_mom_pim_CD = std::make_shared<TH2D>(
             Form("Theta_pim_lab_vs_mom_pim_cd"), Form("Theta_fd_pim_lab_vs_mom_pim_cd"), bins,
-            0, 5.0, bins, 35, 125);
+            0, 5.0, bins, 25, 125);
 
         for (short i = 0; i < 3; i++)
         {

@@ -592,6 +592,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                 // if ((best_proton_index != event->GetProtonIndices()[i]) || (best_pip_index != event->GetPipIndices()[j]))
                                                                 {
                                                                         // std::cout << "  matched prot, pip cd id  " << proton_part_idx << "  ,  :" << pip_part_idx << std::endl;
+                                                                        _hists->FillHists_missPim_pid_with_cuts(data, event, *event->GetProtons()[i], *event->GetPips()[j]);
 
                                                                         _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
                                                                         _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
@@ -754,7 +755,6 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                         // _hists->Fill_deltat_pip_after_cut(data, dt_pip, pip_part_idx, event);
                                                                                         // _hists->FillHists_pip_pid_with_cuts(data, event, pip_part_idx, *event->GetPips()[j]);
 
-                                                                                        // _hists->FillHists_missPim_pid_with_cuts(data, event, *event->GetProtons()[i], *event->GetPips()[j]);
                                                                                         // _hists->Fill_2_Combi(event);
                                                                                         // _hists->Fill_MMSQ_mPim_2_comb(event);
 
