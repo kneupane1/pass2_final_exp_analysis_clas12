@@ -957,10 +957,10 @@ float Reaction::pim_E(const TLorentzVector &prot, const TLorentzVector &pip)
 }
 float Reaction::pim_momentum_measured(const TLorentzVector &pim)
 {
-        if (TwoPion_exclusive())
-                return pim.P();
-        else
-                return NAN;
+        // if (TwoPion_exclusive())
+        return pim.P();
+        // else
+        //         return NAN;
 }
 float Reaction::pim_E_measured(const TLorentzVector &pim)
 {
@@ -1030,10 +1030,10 @@ float Reaction::pim_theta_lab(const TLorentzVector &prot, const TLorentzVector &
 float Reaction::pim_theta_lab_measured(const TLorentzVector &pim)
 { /////////////////////////////////////work here
 
-        if (TwoPion_exclusive())
-                return pim.Theta() * 180.0 / PI;
-        else
-                return NAN;
+        // if (TwoPion_exclusive())
+        return pim.Theta() * 180.0 / PI;
+        // else
+        //         return NAN;
 }
 float Reaction::prot_Phi_lab(const TLorentzVector &prot)
 {

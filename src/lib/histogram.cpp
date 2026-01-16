@@ -2369,13 +2369,13 @@ void Histogram::makeHists_electron_cuts()
 
                 Theta_prot_lab_vs_mom_prot_cd[c] = std::make_shared<TH2D>(
                     Form("Theta_cd_prot_lab_vs_mom_prot%s", type), Form("Theta_cd_prot_lab_vs_mom_prot%s", type), bins, zero,
-                    4.0, bins, 30, 150);
+                    4.0, bins, 30, 70);
                 Theta_pip_lab_vs_mom_pip_cd[c] = std::make_shared<TH2D>(
                     Form("Theta_cd_pip_lab_vs_mom_pip%s", type), Form("Theta_cd_pip_lab_vs_mom_pip%s", type), bins, zero, 4.0,
-                    bins, 30, 150);
+                    bins, 30, 125);
                 Theta_pim_lab_vs_mom_pim_cd[c] = std::make_shared<TH2D>(
                     Form("Theta_cd_pim_lab_vs_mom_pim%s", type), Form("Theta_cd_pim_lab_vs_mom_pim%s", type), bins, zero, 4.0,
-                    bins, 30, 150);
+                    bins, 25, 125);
 
                 dcr1_sec_prot[c] =
                     std::make_shared<TH2D>(Form("dcr1_sec_prot%s", type), Form("dcr1_sec_prot%s", type), bins, -180, 180, bins, -180, 180);
@@ -2553,6 +2553,7 @@ void Histogram::FillHists_electron_with_cuts(const std::shared_ptr<Branches12> &
                 ECin_sf_vs_PCAL_sf[after_all_cuts]->Fill(((_d->ec_pcal_energy(0) / _d->p(0))), (_d->ec_ecin_energy(0) / _d->p(0)));
 
                 momentum[after_all_cuts]->Fill(_d->p(0));
+                Theta_elec_lab_vs_mom_elec->Fill(_e->elec_mom(), _e->elec_th());
 
                 if (sec > 0 && sec <= 6)
                 {
@@ -2648,6 +2649,9 @@ void Histogram::FillHists_prot_pid_with_cuts(const std::shared_ptr<Branches12> &
                 int sec = _d->dc_sec(i);
 
                 auto dt = std::make_shared<Delta_T>(_d);
+
+                Theta_prot_lab_vs_mom_prot->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
+
                 if (abs(_d->status(i)) < 4000)
                 // if (dt->isCtof() == false)
                 {
@@ -2659,6 +2663,7 @@ void Histogram::FillHists_prot_pid_with_cuts(const std::shared_ptr<Branches12> &
                         prot_Chi2pid_cut_fd[after_all_cuts]->Fill((_d->chi2pid(i)));
                         theta_prot_fd[after_all_cuts]->Fill(_e->prot_theta_lab(prot));
                         Theta_prot_lab_vs_mom_prot_fd[after_all_cuts]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
+
                         if (sec > 0 && sec <= 6)
                         {
                                 Theta_fd_prot_lab_vs_mom_prot[sec - 1]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
@@ -2754,6 +2759,7 @@ void Histogram::FillHists_pip_pid_with_cuts(const std::shared_ptr<Branches12> &_
         {
                 short sec = _d->dc_sec(i);
                 auto dt = std::make_shared<Delta_T>(_d);
+                Theta_pip_lab_vs_mom_pip->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip));
 
                 if (abs(_d->status(i)) < 4000)
                 // if (dt->isCtof() == false)
@@ -2796,7 +2802,7 @@ void Histogram::FillHists_pim_pid_cuts(const std::shared_ptr<Branches12> &_d, co
         //         theta_pim->Fill(_e->pim_theta_lab_measured());
         //         Theta_pim_lab_vs_mom_pim->Fill(_e->pim_momentum_measured(), _e->pim_theta_lab_measured());
 }
-void Histogram::FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i)
+void Histogram::FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i, const TLorentzVector &pim)
 {
         pim_Delta_vz_cut[after_all_cuts]->Fill((_d->vz(0) - _d->vz(i)));
         pim_Chi2pid_cut[after_all_cuts]->Fill(_d->chi2pid(i));
@@ -2804,7 +2810,19 @@ void Histogram::FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_
         dcr2_sec_pim[after_all_cuts]->Fill(_d->dc_r2_x(i), _d->dc_r2_y(i));
         dcr3_sec_pim[after_all_cuts]->Fill(_d->dc_r3_x(i), _d->dc_r3_y(i));
         // phi_vs_momT_cd_pim[after_all_cuts]->Fill(_e->pim_Phi_lab(pim), _e->pim_momT(pim));
+
+        Theta_pim_lab_vs_mom_pim->Fill(_e->pim_momentum_measured(pim), _e->pim_theta_lab_measured(pim));
+        if (abs(_d->status(i)) < 4000)
+                Theta_pim_lab_vs_mom_pim_FD->Fill(_e->pim_momentum_measured(pim), _e->pim_theta_lab_measured(pim));
+        if (abs(_d->status(i)) >= 4000)
+                Theta_pim_lab_vs_mom_pim_CD->Fill(_e->pim_momentum_measured(pim), _e->pim_theta_lab_measured(pim));
 }
+void Histogram::FillHists_missPim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, const TLorentzVector &prot, const TLorentzVector &pip)
+{
+        if (_e->W() > 1.35 && _e->W() <= 2.15 && _e->Q2() > 1.95 && _e->Q2() <= 9.0)
+                Theta_pim_lab_vs_mom_pim_miss->Fill(_e->pim_momentum(prot, pip), _e->pim_theta_lab(prot, pip));
+}
+
 void Histogram::Write_Electron_cuts()
 {
         for (auto &&cut : before_after_cut)
@@ -2866,6 +2884,12 @@ void Histogram::Write_Electron_cuts()
                 if (momentum[c]->GetEntries())
                         momentum[c]->Write();
         }
+
+        Theta_elec_lab_vs_mom_elec->SetXTitle("mom_elec (GeV)");
+        Theta_elec_lab_vs_mom_elec->SetYTitle("theta_elec (Deg)");
+        Theta_elec_lab_vs_mom_elec->SetOption("COLZ1");
+        // if (Theta_elec_lab_vs_mom_elec->GetEntries())
+        Theta_elec_lab_vs_mom_elec->Write("");
 }
 
 void Histogram::Write_Hadrons_cuts()
@@ -2956,6 +2980,12 @@ void Histogram::Write_Hadrons_cuts()
                         phi_vs_momT_prot_cd[c]->Write();
         }
 
+        Theta_prot_lab_vs_mom_prot->SetXTitle("mom_prot (GeV)");
+        Theta_prot_lab_vs_mom_prot->SetYTitle("theta_prot (Deg)");
+        Theta_prot_lab_vs_mom_prot->SetOption("COLZ1");
+        if (Theta_prot_lab_vs_mom_prot->GetEntries())
+                Theta_prot_lab_vs_mom_prot->Write("");
+
         auto pip_cuts_fd = RootOutputFile->mkdir("pip_cuts_fd");
         pip_cuts_fd->cd();
         for (auto &&cut : before_after_cut)
@@ -2978,8 +3008,8 @@ void Histogram::Write_Hadrons_cuts()
                 if (theta_pip_fd[c]->GetEntries())
                         theta_pip_fd[c]->Write();
 
-                Theta_pip_lab_vs_mom_pip_fd[c]->SetXTitle("mom_prot (GeV)");
-                Theta_pip_lab_vs_mom_pip_fd[c]->SetYTitle("theta_prot (Deg)");
+                Theta_pip_lab_vs_mom_pip_fd[c]->SetXTitle("mom_pip (GeV)");
+                Theta_pip_lab_vs_mom_pip_fd[c]->SetYTitle("theta_pip (Deg)");
                 Theta_pip_lab_vs_mom_pip_fd[c]->SetOption("COLZ1");
                 if (Theta_pip_lab_vs_mom_pip_fd[c]->GetEntries())
                         Theta_pip_lab_vs_mom_pip_fd[c]->Write("");
@@ -3002,12 +3032,19 @@ void Histogram::Write_Hadrons_cuts()
                 if (dcr3_sec_pip[c]->GetEntries())
                         dcr3_sec_pip[c]->Write();
         }
+
+        Theta_pip_lab_vs_mom_pip->SetXTitle("mom_pip (GeV)");
+        Theta_pip_lab_vs_mom_pip->SetYTitle("theta_pip (Deg)");
+        Theta_pip_lab_vs_mom_pip->SetOption("COLZ1");
+        if (Theta_pip_lab_vs_mom_pip->GetEntries())
+                Theta_pip_lab_vs_mom_pip->Write("");
+
         auto pip_th_vs_mom_fd_sec = RootOutputFile->mkdir("pip_th_vs_mom_fd_sec");
         pip_th_vs_mom_fd_sec->cd();
         for (short i = 0; i < num_sectors; i++)
         {
-                Theta_fd_pip_lab_vs_mom_pip[i]->SetXTitle("mom_prot (GeV)");
-                Theta_fd_pip_lab_vs_mom_pip[i]->SetYTitle("theta_prot (Deg)");
+                Theta_fd_pip_lab_vs_mom_pip[i]->SetXTitle("mom_pip (GeV)");
+                Theta_fd_pip_lab_vs_mom_pip[i]->SetYTitle("theta_pip (Deg)");
                 Theta_fd_pip_lab_vs_mom_pip[i]->SetOption("COLZ1");
                 if (Theta_fd_pip_lab_vs_mom_pip[i]->GetEntries())
                         Theta_fd_pip_lab_vs_mom_pip[i]->Write("");
@@ -3034,8 +3071,8 @@ void Histogram::Write_Hadrons_cuts()
                 if (theta_pip_cd[c]->GetEntries())
                         theta_pip_cd[c]->Write();
 
-                Theta_pip_lab_vs_mom_pip_cd[c]->SetXTitle("mom_prot (GeV)");
-                Theta_pip_lab_vs_mom_pip_cd[c]->SetYTitle("theta_prot (Deg)");
+                Theta_pip_lab_vs_mom_pip_cd[c]->SetXTitle("mom_pip (GeV)");
+                Theta_pip_lab_vs_mom_pip_cd[c]->SetYTitle("theta_pip (Deg)");
                 Theta_pip_lab_vs_mom_pip_cd[c]->SetOption("COLZ1");
                 if (Theta_pip_lab_vs_mom_pip_cd[c]->GetEntries())
                         Theta_pip_lab_vs_mom_pip_cd[c]->Write("");
@@ -3078,10 +3115,58 @@ void Histogram::Write_Hadrons_cuts()
                 if (dcr3_sec_pim[c]->GetEntries())
                         dcr3_sec_pim[c]->Write();
         }
+
+        Theta_pim_lab_vs_mom_pim->SetXTitle("mom_pim both (GeV)");
+        Theta_pim_lab_vs_mom_pim->SetYTitle("theta_pim both (Deg)");
+        Theta_pim_lab_vs_mom_pim->SetOption("COLZ1");
+        if (Theta_pim_lab_vs_mom_pim->GetEntries())
+                Theta_pim_lab_vs_mom_pim->Write("");
+
+        // Theta_pim_lab_vs_mom_pim_miss->SetXTitle("mom_pim miss (GeV)");
+        // Theta_pim_lab_vs_mom_pim_miss->SetYTitle("theta_pim miss (Deg)");
+        // Theta_pim_lab_vs_mom_pim_miss->SetOption("COLZ1");
+        // if (Theta_pim_lab_vs_mom_pim_miss->GetEntries())
+        //         Theta_pim_lab_vs_mom_pim_miss->Write("");
+
+        Theta_pim_lab_vs_mom_pim_FD->SetXTitle("mom_pim (GeV)");
+        Theta_pim_lab_vs_mom_pim_FD->SetYTitle("theta_pim (Deg)");
+        Theta_pim_lab_vs_mom_pim_FD->SetOption("COLZ1");
+        if (Theta_pim_lab_vs_mom_pim_FD->GetEntries())
+                Theta_pim_lab_vs_mom_pim_FD->Write("");
+
+        Theta_pim_lab_vs_mom_pim_CD->SetXTitle("mom_pim (GeV)");
+        Theta_pim_lab_vs_mom_pim_CD->SetYTitle("theta_pim (Deg)");
+        Theta_pim_lab_vs_mom_pim_CD->SetOption("COLZ1");
+        if (Theta_pim_lab_vs_mom_pim_CD->GetEntries())
+                Theta_pim_lab_vs_mom_pim_CD->Write("");
 }
 
 void Histogram::makeHists_sector()
 {
+
+        Theta_prot_lab_vs_mom_prot = std::make_shared<TH2D>(
+            Form("Theta_prot_lab_vs_mom_prot"), Form("Theta_fd_prot_lab_vs_mom_prot"), bins,
+            0, 10.0, bins, 0, 70);
+
+        Theta_pip_lab_vs_mom_pip = std::make_shared<TH2D>(
+            Form("Theta_pip_lab_vs_mom_pip"), Form("Theta_fd_pip_lab_vs_mom_pip"), bins,
+            0, 5.0, bins, 0, 125);
+
+        Theta_pim_lab_vs_mom_pim = std::make_shared<TH2D>(
+            Form("Theta_pim_lab_vs_mom_pim"), Form("Theta_fd_pim_lab_vs_mom_pim"), bins,
+            0, 5.0, bins, 0, 125);
+
+        Theta_elec_lab_vs_mom_elec = std::make_shared<TH2D>(
+            Form("Theta_elec_lab_vs_mom_elec"), Form("Theta_elec_lab_vs_mom_elec"), bins,
+            3, 10.0, bins, 0, 30);
+
+        Theta_pim_lab_vs_mom_pim_FD = std::make_shared<TH2D>(
+            Form("Theta_pim_lab_vs_mom_pim_fd"), Form("Theta_fd_pim_lab_vs_mom_pim_fd"), bins,
+            0, 5.0, bins, 0, 60);
+
+        Theta_pim_lab_vs_mom_pim_CD = std::make_shared<TH2D>(
+            Form("Theta_pim_lab_vs_mom_pim_cd"), Form("Theta_fd_pim_lab_vs_mom_pim_cd"), bins,
+            0, 5.0, bins, 35, 125);
 
         for (short i = 0; i < 3; i++)
         {

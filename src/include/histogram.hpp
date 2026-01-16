@@ -678,6 +678,15 @@ protected:
     TH2D_ptr Theta_pip_lab_vs_mom_pip_fd[CUTS];
     TH2D_ptr Theta_pim_lab_vs_mom_pim_fd[CUTS];
 
+    TH2D_ptr Theta_elec_lab_vs_mom_elec;
+    TH2D_ptr Theta_pim_lab_vs_mom_pim_FD;
+    TH2D_ptr Theta_pim_lab_vs_mom_pim_CD;
+
+    TH2D_ptr Theta_prot_lab_vs_mom_prot;
+    TH2D_ptr Theta_pip_lab_vs_mom_pip;
+    TH2D_ptr Theta_pim_lab_vs_mom_pim;
+    TH2D_ptr Theta_pim_lab_vs_mom_pim_miss;
+
     TH2D_ptr phi_vs_momT_prot_cd[CUTS];
     TH2D_ptr phi_vs_momT_pip_cd[CUTS];
     TH2D_ptr phi_vs_momT_pim_cd[CUTS];
@@ -1069,7 +1078,8 @@ public:
     void FillHists_pip_pid_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i);
     void FillHists_pip_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i, const TLorentzVector &pip);
     void FillHists_pim_pid_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i);
-    void FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i);
+    void FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i, const TLorentzVector &pim);
+    void FillHists_missPim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, const TLorentzVector &prot, const TLorentzVector &pip);
 
     void Write_Electron_cuts();
     void Write_Hadrons_cuts();
