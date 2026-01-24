@@ -1476,8 +1476,8 @@ void Pass2_Cuts::MarkCDFDOverlaps(const std::shared_ptr<Branches12> &data,
                 dp_max = 0.2;
                 dth_min = -7.5;
                 dth_max = 7.5;
-                dphi_min = -22.5;
-                dphi_max = 17.5;
+                dphi_min = -17.5;
+                dphi_max = 12.5;
         }
         else if (std::strcmp(level, "mid") == 0)
         {

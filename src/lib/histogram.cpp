@@ -2294,8 +2294,15 @@ void Histogram::makeHists_electron_cuts()
                 pcal_sec_ineff_cuts[c] =
                     std::make_shared<TH2D>(Form("pcal_sec_ineff_cut%s", type), Form("pcal_sec_ineff_cut%s", type), bins, -420, 420, bins, -420, 420);
 
+                ecin_x_y_sec[c] =
+                    std::make_shared<TH2D>(Form("ecin_x_y_sec%s", type), Form("ecin_x_y_sec%s", type), bins, -420, 420, bins, -420, 420);
+
+                ecout_x_y_sec[c] =
+                    std::make_shared<TH2D>(Form("ecout_x_y_sec%s", type), Form("ecout_x_y_sec%s", type), bins, -420, 420, bins, -420, 420);
+
                 pcal_hx_hy_sec[c] =
                     std::make_shared<TH2D>(Form("pcal_hx_hy_sec%s", type), Form("pcal_hx_hy_sec%s", type), bins, -420, 420, bins, -420, 420);
+
                 dcr1_sec[c] =
                     std::make_shared<TH2D>(Form("dcr1_sec%s", type), Form("dcr1_sec%s", type), bins, -180, 180, bins, -180, 180);
                 dcr2_sec[c] =
@@ -2431,6 +2438,21 @@ void Histogram::FillHists_electron_cuts(const std::shared_ptr<Branches12> &_d, c
                 else
                         pcal_hx_hy_sec[outside_one_cut]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
 
+                //// ecin x vs y
+                ecin_x_y_sec[before_any_cuts]
+                    ->Fill(_d->ec_ecin_x(0), _d->ec_ecin_y(0));
+                if (elec_cuts->PCAL_fiducial_cut_X_Y(condition_of_cut))
+                        ecin_x_y_sec[with_one_cut]->Fill(_d->ec_ecin_x(0), _d->ec_ecin_y(0));
+                else
+                        ecin_x_y_sec[outside_one_cut]->Fill(_d->ec_ecin_x(0), _d->ec_ecin_y(0));
+
+                //// ecin x vs y
+                ecout_x_y_sec[before_any_cuts]->Fill(_d->ec_ecout_x(0), _d->ec_ecout_y(0));
+                if (elec_cuts->PCAL_fiducial_cut_X_Y(condition_of_cut))
+                        ecout_x_y_sec[with_one_cut]->Fill(_d->ec_ecout_x(0), _d->ec_ecout_y(0));
+                else
+                        ecout_x_y_sec[outside_one_cut]->Fill(_d->ec_ecout_x(0), _d->ec_ecout_y(0));
+
                 //// pcal ineff
                 pcal_sec_ineff_cuts[before_any_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
                 if (elec_cuts->PCAL_Ineff_cut_X_Y(condition_of_cut))
@@ -2544,6 +2566,9 @@ void Histogram::FillHists_electron_with_cuts(const std::shared_ptr<Branches12> &
                 vz_position[after_all_cuts]->Fill(_d->vz(0));
                 pcal_sec[after_all_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
                 pcal_hx_hy_sec[after_all_cuts]->Fill(_d->ec_pcal_hx(0), _d->ec_pcal_hy(0));
+                ecin_x_y_sec[after_all_cuts]->Fill(_d->ec_ecin_x(0), _d->ec_ecin_y(0));
+                ecout_x_y_sec[after_all_cuts]->Fill(_d->ec_ecout_x(0), _d->ec_ecout_y(0));
+
                 pcal_sec_ineff_cuts[after_all_cuts]->Fill(_d->ec_pcal_x(0), _d->ec_pcal_y(0));
 
                 dcr1_sec[after_all_cuts]->Fill(_d->dc_r1_x(0), _d->dc_r1_y(0));
@@ -2866,6 +2891,18 @@ void Histogram::Write_Electron_cuts()
                 pcal_hx_hy_sec[c]->SetOption("COLZ1");
                 if (pcal_hx_hy_sec[c]->GetEntries())
                         pcal_hx_hy_sec[c]->Write();
+
+                ecin_x_y_sec[c]->SetXTitle("x (cm)");
+                ecin_x_y_sec[c]->SetYTitle("y (cm)");
+                ecin_x_y_sec[c]->SetOption("COLZ1");
+                if (ecin_x_y_sec[c]->GetEntries())
+                        ecin_x_y_sec[c]->Write();
+
+                ecout_x_y_sec[c]->SetXTitle("x (cm)");
+                ecout_x_y_sec[c]->SetYTitle("y (cm)");
+                ecout_x_y_sec[c]->SetOption("COLZ1");
+                if (ecout_x_y_sec[c]->GetEntries())
+                        ecout_x_y_sec[c]->Write();
 
                 dcr1_sec[c]->SetXTitle("x (cm)");
                 dcr1_sec[c]->SetYTitle("y (cm)");

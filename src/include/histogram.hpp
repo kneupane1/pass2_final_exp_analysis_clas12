@@ -637,6 +637,9 @@ protected:
     TH2D_ptr pcal_sec_ineff_cuts[CUTS];
 
     TH2D_ptr pcal_hx_hy_sec[CUTS];
+    TH2D_ptr ecin_x_y_sec[CUTS];
+    TH2D_ptr ecout_x_y_sec[CUTS];
+
     TH2D_ptr dcr1_sec[CUTS];
     TH2D_ptr dcr2_sec[CUTS];
     TH2D_ptr dcr3_sec[CUTS];
