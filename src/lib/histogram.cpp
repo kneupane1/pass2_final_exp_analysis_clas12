@@ -184,7 +184,21 @@ Histogram::Histogram(const std::string &output_file)
         //////////////////////// DONE THNSPARSE and related ////////////////////////////////
         mc_pid_at_zero = std::make_shared<TH1D>("mc_pid_at_zero", "mc pid at zero", 1000, -2500, 2500);
         pid_at_zero = std::make_shared<TH1D>("pid_at_zero", "pid at zero", 1000, -2500, 2500);
-        weight_hist = std::make_shared<TH1D>("weight", "weight", bins, 0.9, 2.2);
+        weight_hist = std::make_shared<TH1D>("weight", "weight", 100, 0.9, 2.2);
+        weight_hist_fd_prot_fd_pip = std::make_shared<TH1D>("weight_fd_fd", "weight_fd_fd", 100, 0.9, 2.2);
+        weight_hist_fd_prot_cd_pip = std::make_shared<TH1D>("weight_fd_cd", "weight_fd_cd", 100, 0.9, 2.2);
+        weight_hist_cd_prot_fd_pip = std::make_shared<TH1D>("weight_cd_fd", "weight_cd_fd", 100, 0.9, 2.2);
+        weight_hist_cd_prot_cd_pip = std::make_shared<TH1D>("weight_cd_cd", "weight_cd_cd", 100, 0.9, 2.2);
+
+        th_prot_fd_prot_fd_pip = std::make_shared<TH1D>("th_prot_fd_fd", "th_prot_fd_fd", 100, 0, 50);
+        th_prot_cd_prot_fd_pip = std::make_shared<TH1D>("th_prot_cd_fd", "th_prot_cd_fd", 100, 30, 60);
+        th_prot_fd_prot_cd_pip = std::make_shared<TH1D>("th_prot_fd_cd", "th_prot_fd_cd", 100, 0, 50);
+        th_prot_cd_prot_cd_pip = std::make_shared<TH1D>("th_prot_cd_cd", "th_prot_cd_cd", 100, 30, 60);
+
+        th_pip_fd_prot_fd_pip = std::make_shared<TH1D>("th_pip_fd_fd", "th_pip_fd_fd", 100, 0, 50);
+        th_pip_cd_prot_fd_pip = std::make_shared<TH1D>("th_pip_cd_fd", "th_pip_cd_fd", 100, 0, 50);
+        th_pip_fd_prot_cd_pip = std::make_shared<TH1D>("th_pip_fd_cd", "th_pip_fd_cd", 100, 30, 130);
+        th_pip_cd_prot_cd_pip = std::make_shared<TH1D>("th_pip_cd_cd", "th_pip_cd_cd", 100, 30, 130);
 
         dp_prot_cdfd_hist = std::make_shared<TH1D>("P_fd-P_cd_Prot", "P_fd-P_cd_Prot", 200, -1, 1);
         dp_pip_cdfd_hist = std::make_shared<TH1D>("P_fd-P_cd_Pip", "P_fd-P_cd_Pip", 200, -1, 1);
@@ -1758,7 +1772,7 @@ void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
                 W_hist->Fill(_e->W());
                 Q2_hist->Fill(_e->Q2());
                 // weight_hist->Fill(_e->weight());
-                weight_hist->Fill(_e->weight());
+                // weight_hist->Fill(_e->weight());
 
                 inv_mass_pPip->Fill(_e->inv_Ppip(), _e->weight());
                 inv_mass_pPim->Fill(_e->inv_Ppim(), _e->weight());
@@ -1904,8 +1918,8 @@ void Histogram::Write_WvsQ2()
         if (W_vs_Q2_thrown->GetEntries())
                 W_vs_Q2_thrown->Write();
 
-        weight_hist->SetXTitle("weight");
-        weight_hist->Write();
+        // weight_hist->SetXTitle("weight");
+        // weight_hist->Write();
         // mc_pid_at_zero->SetXTitle("mc pid at zero");
         // mc_pid_at_zero->Write();
 
@@ -2446,7 +2460,7 @@ void Histogram::FillHists_electron_cuts(const std::shared_ptr<Branches12> &_d, c
                 else
                         ecin_x_y_sec[outside_one_cut]->Fill(_d->ec_ecin_x(0), _d->ec_ecin_y(0));
 
-                //// ecin x vs y
+                //// ecout x vs y
                 ecout_x_y_sec[before_any_cuts]->Fill(_d->ec_ecout_x(0), _d->ec_ecout_y(0));
                 if (elec_cuts->PCAL_fiducial_cut_X_Y(condition_of_cut))
                         ecout_x_y_sec[with_one_cut]->Fill(_d->ec_ecout_x(0), _d->ec_ecout_y(0));
@@ -2560,7 +2574,7 @@ void Histogram::FillHists_electron_with_cuts(const std::shared_ptr<Branches12> &
         int sec = _e->sec();
         int momRangeIdx1 = getMomRange(_d->p(0));
 
-        if (_e->W() > 1.35 && _e->W() <= 2.15 && _e->Q2() > 1.95 && _e->Q2() <= 9.0)
+        // if (_e->W() > 1.35 && _e->W() <= 2.15 && _e->Q2() > 1.95 && _e->Q2() <= 9.0)
         {
 
                 vz_position[after_all_cuts]->Fill(_d->vz(0));
@@ -2846,14 +2860,17 @@ void Histogram::FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_
 void Histogram::FillHists_missPim_pid_with_cuts(
     const std::shared_ptr<Branches12> &_d,
     const std::shared_ptr<Reaction> &_e,
-    const TLorentzVector &prot,
-    const TLorentzVector &pip)
+    const TLorentzVector &prot, int prot_status,
+    const TLorentzVector &pip, int pip_status)
 {
         if (!_e)
                 return;
 
         const float p = _e->pim_momentum(prot, pip);
         const float th = _e->pim_theta_lab(prot, pip);
+
+        const float th_prot = _e->prot_theta_lab(prot);
+        const float th_pip = _e->pip_theta_lab(pip);
 
         if (!std::isfinite(p) || !std::isfinite(th))
                 return;
@@ -2862,6 +2879,34 @@ void Histogram::FillHists_missPim_pid_with_cuts(
                 Theta_pim_lab_vs_mom_pim_miss->Fill(p, th);
                 // pim_theta_miss->Fill(th);
                 // pim_mom_miss->Fill(p);
+
+                ////////
+                weight_hist->Fill(_e->weight());
+
+                if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                {
+                        weight_hist_fd_prot_fd_pip->Fill(_e->weight());
+                        th_prot_fd_prot_fd_pip->Fill(th_prot);
+                        th_pip_fd_prot_fd_pip->Fill(th_pip);
+                }
+                else if (abs(pip_status) >= 4000 && abs(prot_status) >= 4000)
+                {
+                        weight_hist_cd_prot_cd_pip->Fill(_e->weight());
+                        th_prot_cd_prot_cd_pip->Fill(th_prot);
+                        th_pip_cd_prot_cd_pip->Fill(th_pip);
+                }
+                else if (abs(prot_status) < 4000 && abs(pip_status) >= 4000)
+                {
+                        weight_hist_fd_prot_cd_pip->Fill(_e->weight());
+                        th_prot_fd_prot_cd_pip->Fill(th_prot);
+                        th_pip_fd_prot_cd_pip->Fill(th_pip);
+                }
+                else if (abs(prot_status) >= 4000 && abs(pip_status) < 4000)
+                {
+                        weight_hist_cd_prot_fd_pip->Fill(_e->weight());
+                        th_prot_cd_prot_fd_pip->Fill(th_prot);
+                        th_pip_cd_prot_fd_pip->Fill(th_pip);
+                }
         }
 }
 
@@ -2995,6 +3040,13 @@ void Histogram::Write_Hadrons_cuts()
                 if (dcr3_sec_prot[c]->GetEntries())
                         dcr3_sec_prot[c]->Write();
         }
+
+        Theta_prot_lab_vs_mom_prot->SetXTitle("mom_prot (GeV)");
+        Theta_prot_lab_vs_mom_prot->SetYTitle("theta_prot (Deg)");
+        Theta_prot_lab_vs_mom_prot->SetOption("COLZ1");
+        if (Theta_prot_lab_vs_mom_prot->GetEntries())
+                Theta_prot_lab_vs_mom_prot->Write("");
+
         auto proton_theta_vs_mom_fd_sec = RootOutputFile->mkdir("proton_theta_vs_mom_fd_sec");
         proton_theta_vs_mom_fd_sec->cd();
         for (short i = 0; i < num_sectors; i++)
@@ -3033,12 +3085,6 @@ void Histogram::Write_Hadrons_cuts()
                 if (phi_vs_momT_prot_cd[c]->GetEntries())
                         phi_vs_momT_prot_cd[c]->Write();
         }
-
-        Theta_prot_lab_vs_mom_prot->SetXTitle("mom_prot (GeV)");
-        Theta_prot_lab_vs_mom_prot->SetYTitle("theta_prot (Deg)");
-        Theta_prot_lab_vs_mom_prot->SetOption("COLZ1");
-        if (Theta_prot_lab_vs_mom_prot->GetEntries())
-                Theta_prot_lab_vs_mom_prot->Write("");
 
         auto pip_cuts_fd = RootOutputFile->mkdir("pip_cuts_fd");
         pip_cuts_fd->cd();
@@ -3193,6 +3239,38 @@ void Histogram::Write_Hadrons_cuts()
         Theta_pim_lab_vs_mom_pim_CD->SetOption("COLZ1");
         if (Theta_pim_lab_vs_mom_pim_CD->GetEntries())
                 Theta_pim_lab_vs_mom_pim_CD->Write("");
+
+        weight_hist->SetXTitle("weight");
+        weight_hist->Write();
+
+        weight_hist_fd_prot_fd_pip->SetXTitle("weight FD Proton FD Pip");
+        weight_hist_fd_prot_fd_pip->Write();
+
+        weight_hist_cd_prot_fd_pip->SetXTitle("weight CD Proton FD Pip");
+        weight_hist_cd_prot_fd_pip->Write();
+
+        weight_hist_fd_prot_cd_pip->SetXTitle("weight FD Proton CD Pip");
+        weight_hist_fd_prot_cd_pip->Write();
+
+        weight_hist_cd_prot_cd_pip->SetXTitle("weight CD Proton CD Pip");
+        weight_hist_cd_prot_cd_pip->Write();
+
+        th_prot_fd_prot_fd_pip->SetXTitle("theta_prot FD Proton FD Pip");
+        th_prot_fd_prot_fd_pip->Write();
+        th_prot_cd_prot_fd_pip->SetXTitle("theta_prot CD Proton FD Pip");
+        th_prot_cd_prot_fd_pip->Write();
+        th_prot_fd_prot_cd_pip->SetXTitle("theta_prot FD Proton CD Pip");
+        th_prot_fd_prot_cd_pip->Write();
+        th_prot_cd_prot_cd_pip->SetXTitle("theta_prot CD Proton CD Pip");
+        th_prot_cd_prot_cd_pip->Write();
+        th_pip_fd_prot_fd_pip->SetXTitle("theta_pip FD Proton FD Pip");
+        th_pip_fd_prot_fd_pip->Write();
+        th_pip_cd_prot_fd_pip->SetXTitle("theta_pip CD Proton FD Pip");
+        th_pip_cd_prot_fd_pip->Write();
+        th_pip_fd_prot_cd_pip->SetXTitle("theta_pip FD Proton CD Pip");
+        th_pip_fd_prot_cd_pip->Write();
+        th_pip_cd_prot_cd_pip->SetXTitle("theta_pip CD Proton CD Pip");
+        th_pip_cd_prot_cd_pip->Write("");
 }
 
 void Histogram::makeHists_sector()

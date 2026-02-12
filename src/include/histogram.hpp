@@ -551,6 +551,21 @@ protected:
     TH2D_ptr prot_theta_measured_vs_mom[EFF_CONDITIONS_NUM_ALL];
 
     TH1D_ptr weight_hist;
+    TH1D_ptr weight_hist_fd_prot_fd_pip;
+    TH1D_ptr weight_hist_cd_prot_fd_pip;
+    TH1D_ptr weight_hist_fd_prot_cd_pip;
+    TH1D_ptr weight_hist_cd_prot_cd_pip;
+
+    TH1D_ptr th_prot_fd_prot_fd_pip;
+    TH1D_ptr th_prot_cd_prot_fd_pip;
+    TH1D_ptr th_prot_fd_prot_cd_pip;
+    TH1D_ptr th_prot_cd_prot_cd_pip;
+
+    TH1D_ptr th_pip_fd_prot_fd_pip;
+    TH1D_ptr th_pip_cd_prot_fd_pip;
+    TH1D_ptr th_pip_fd_prot_cd_pip;
+    TH1D_ptr th_pip_cd_prot_cd_pip;
+
     TH1D_ptr pid_at_zero;
     TH1D_ptr mc_pid_at_zero;
     TH1D_ptr inv_mass_pPip;
@@ -1082,7 +1097,7 @@ public:
     void FillHists_pip_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i, const TLorentzVector &pip);
     void FillHists_pim_pid_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i);
     void FillHists_pim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, int i, const TLorentzVector &pim);
-    void FillHists_missPim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, const TLorentzVector &prot, const TLorentzVector &pip);
+    void FillHists_missPim_pid_with_cuts(const std::shared_ptr<Branches12> &_d, const std::shared_ptr<Reaction> &_e, const TLorentzVector &prot, int prot_status, const TLorentzVector &pip, int pip_status);
 
     void Write_Electron_cuts();
     void Write_Hadrons_cuts();

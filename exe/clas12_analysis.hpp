@@ -203,7 +203,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                 // // // std::cout << "  FC Charge is " << total_charge << std::endl;
                 // if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
-                //         _hists->FillHists_electron_with_cuts(data, event);
+                _hists->FillHists_electron_with_cuts(data, event);
 
                 // If we pass electron cuts the event is processed
                 elec++;
@@ -282,7 +282,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                         // event->SetPip(part);
                                                         prot_idx++;
 
-                                                        statusProt = abs(data->status(part));
+                                                        // statusProt = abs(data->status(part));
                                                         sectorProt = data->dc_sec(part);
 
                                                         // _hists->Fill_deltat_prot_after_cut(data, dt, part, event);
@@ -297,7 +297,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                 // event->SetProton(part);
                                                                 pip_idx++;
 
-                                                                statusPip = abs(data->status(part));
+                                                                // statusPip = abs(data->status(part));
                                                                 sectorPip = data->dc_sec(part);
 
                                                                 // _hists->Fill_deltat_pip_after_cut(data, dt, part, event);
@@ -586,15 +586,14 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                         {
                                                                 int proton_part_idx = event->GetProtonIndices()[i];
                                                                 int pip_part_idx = event->GetPipIndices()[j];
+                                                                statusProt = abs(data->status(proton_part_idx));
+                                                                statusPip = abs(data->status(pip_part_idx));
                                                                 /////////////// removing CD tracks from CD FD match
                                                                 if (drop_proton_idx.count(proton_part_idx) || drop_pip_idx.count(pip_part_idx))
                                                                         continue; // ADD to remove cd tracks which also has fd tracks
                                                                 // if ((best_proton_index != event->GetProtonIndices()[i]) || (best_pip_index != event->GetPipIndices()[j]))
                                                                 {
                                                                         // std::cout << "  matched prot, pip cd id  " << proton_part_idx << "  ,  :" << pip_part_idx << std::endl;
-
-                                                                        _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
-                                                                        _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
 
                                                                         entries_in_this_event++;
                                                                         // event->SetSwappedProton(pip_part_idx);
@@ -695,8 +694,11 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                                         if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
                                                                                         {
+                                                                                                _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
+                                                                                                _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
+
                                                                                                 _hists->Fill_WvsQ2(event);
-                                                                                                _hists->FillHists_electron_with_cuts(data, event);
+                                                                                                // _hists->FillHists_electron_with_cuts(data, event);
 
                                                                                                 two_pion_mPim_events++;
 
@@ -723,7 +725,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                                 // _hists->Fill_MomVsBeta(data, pip_part_idx, event);
                                                                                                 _hists->Fill_deltat_pip_after_cut(data, dt_pip, pip_part_idx, event);
                                                                                                 _hists->FillHists_pip_pid_with_cuts(data, event, pip_part_idx, *event->GetPips()[j]);
-                                                                                                _hists->FillHists_missPim_pid_with_cuts(data, event, *event->GetProtons()[i], *event->GetPips()[j]);
+
+                                                                                                _hists->FillHists_missPim_pid_with_cuts(data, event, *event->GetProtons()[i], statusProt, *event->GetPips()[j], statusPip);
                                                                                         }
                                                                                         if (_hists->MM_cut_tight(event->W(), event->Q2(), event->MM2_mPim()))
                                                                                         {
