@@ -727,6 +727,10 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                                 _hists->FillHists_pip_pid_with_cuts(data, event, pip_part_idx, *event->GetPips()[j]);
 
                                                                                                 _hists->FillHists_missPim_pid_with_cuts(data, event, *event->GetProtons()[i], statusProt, *event->GetPips()[j], statusPip);
+                                                                                                _hists->Fill_hist1D_eff_fact_inv_mass(event, statusProt, statusPip);
+                                                                                                _hists->Fill_hist1D_eff_fact_theta(event, statusProt, statusPip);
+                                                                                                _hists->Fill_hist1D_eff_fact_alpha(event, statusProt, statusPip);
+                                                                                                _hists->Fill_hist1D_eff_fact_int(event, statusProt, statusPip);
                                                                                         }
                                                                                         if (_hists->MM_cut_tight(event->W(), event->Q2(), event->MM2_mPim()))
                                                                                         {

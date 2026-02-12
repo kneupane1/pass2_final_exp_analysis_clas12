@@ -446,46 +446,77 @@ protected:
     THnSparse *h_5dim_pip_evt_loose[q2_bin][w_bin];
     THnSparse *h_5dim_pim_evt_loose[q2_bin][w_bin];
 
-    TH1D_ptr w_gen_hist[q2_bin][w_bin];
-    TH1D_ptr q2_gen_hist[q2_bin][w_bin];
+    static const short invM_bin = 14;
+    static const short thetaCM_bin = 10;
+    static const short alphaCM_bin = 10;
 
-    TH1D_ptr w_gen_hist_inv_pPip[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_inv_pPip[q2_bin][w_bin][11];
+    TH1D_ptr weight_1d_int_all[q2_bin][w_bin];
+    TH1D_ptr weight_1d_int_fd_fd[q2_bin][w_bin];
+    TH1D_ptr weight_1d_int_fd_cd[q2_bin][w_bin];
 
-    TH1D_ptr w_gen_hist_inv_pPim[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_inv_pPim[q2_bin][w_bin][11];
+    TH1D_ptr weight_inv_pPip[q2_bin][w_bin][invM_bin];
+    TH1D_ptr weight_inv_pPip_fd[q2_bin][w_bin][invM_bin];
+    TH1D_ptr weight_inv_pPip_cd[q2_bin][w_bin][invM_bin];
 
-    TH1D_ptr w_gen_hist_inv_pipPim[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_inv_pipPim[q2_bin][w_bin][11];
+    TH1D_ptr weight_inv_pPim[q2_bin][w_bin][invM_bin];
+    TH1D_ptr weight_inv_pPim_fd[q2_bin][w_bin][invM_bin];
+    TH1D_ptr weight_inv_pPim_cd[q2_bin][w_bin][invM_bin];
+
+    TH1D_ptr weight_inv_pipPim[q2_bin][w_bin][invM_bin];
+    TH1D_ptr weight_inv_pipPim_fd[q2_bin][w_bin][invM_bin];
+    TH1D_ptr weight_inv_pipPim_cd[q2_bin][w_bin][invM_bin];
+
+    TH1D_ptr weight_prot_theta[q2_bin][w_bin][thetaCM_bin];
+    TH1D_ptr weight_pip_theta[q2_bin][w_bin][thetaCM_bin];
+    TH1D_ptr weight_pim_theta[q2_bin][w_bin][thetaCM_bin];
+
+    TH1D_ptr weight_prot_theta_fd[q2_bin][w_bin][thetaCM_bin];
+    TH1D_ptr weight_pip_theta_fd[q2_bin][w_bin][thetaCM_bin];
+    TH1D_ptr weight_pim_theta_fd[q2_bin][w_bin][thetaCM_bin];
+
+    TH1D_ptr weight_prot_theta_cd[q2_bin][w_bin][thetaCM_bin];
+    TH1D_ptr weight_pip_theta_cd[q2_bin][w_bin][thetaCM_bin];
+    TH1D_ptr weight_pim_theta_cd[q2_bin][w_bin][thetaCM_bin];
+
+    TH1D_ptr weight_prot_alpha[q2_bin][w_bin][alphaCM_bin];
+    TH1D_ptr weight_pip_alpha[q2_bin][w_bin][alphaCM_bin];
+    TH1D_ptr weight_pim_alpha[q2_bin][w_bin][alphaCM_bin];
+
+    TH1D_ptr weight_prot_alpha_fd[q2_bin][w_bin][alphaCM_bin];
+    TH1D_ptr weight_pip_alpha_fd[q2_bin][w_bin][alphaCM_bin];
+    TH1D_ptr weight_pim_alpha_fd[q2_bin][w_bin][alphaCM_bin];
+
+    TH1D_ptr weight_prot_alpha_cd[q2_bin][w_bin][alphaCM_bin];
+    TH1D_ptr weight_pip_alpha_cd[q2_bin][w_bin][alphaCM_bin];
+    TH1D_ptr weight_pim_alpha_cd[q2_bin][w_bin][alphaCM_bin];
 
     TH1D_ptr inv_pPip_hist[q2_bin][w_bin][11];
     TH1D_ptr inv_pPim_hist[q2_bin][w_bin][11];
     TH1D_ptr inv_pipPim_hist[q2_bin][w_bin][11];
     // TH1D *histogram = new TH1D("histogram", "Title", 100, 0, 100);
 
-    TH1D_ptr w_gen_hist_th_prot[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_th_prot[q2_bin][w_bin][11];
-    TH1D_ptr w_gen_hist_th_pip[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_th_pip[q2_bin][w_bin][11];
-    TH1D_ptr w_gen_hist_th_pim[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_th_pim[q2_bin][w_bin][11];
+    // TH1D_ptr w_gen_hist_th_prot[q2_bin][w_bin][11];
+    // TH1D_ptr q2_gen_hist_th_prot[q2_bin][w_bin][11];
+    // TH1D_ptr w_gen_hist_th_pip[q2_bin][w_bin][11];
+    // TH1D_ptr q2_gen_hist_th_pip[q2_bin][w_bin][11];
+    // TH1D_ptr w_gen_hist_th_pim[q2_bin][w_bin][11];
+    // TH1D_ptr q2_gen_hist_th_pim[q2_bin][w_bin][11];
 
     TH1D_ptr prot_theta_hist[q2_bin][w_bin][11];
     TH1D_ptr pip_theta_hist[q2_bin][w_bin][11];
     TH1D_ptr pim_theta_hist[q2_bin][w_bin][11];
 
-    TH1D_ptr w_gen_hist_al_prot[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_al_prot[q2_bin][w_bin][11];
-    TH1D_ptr w_gen_hist_al_pip[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_al_pip[q2_bin][w_bin][11];
-    TH1D_ptr w_gen_hist_al_pim[q2_bin][w_bin][11];
-    TH1D_ptr q2_gen_hist_al_pim[q2_bin][w_bin][11];
+    // TH1D_ptr w_gen_hist_al_prot[q2_bin][w_bin][11];
+    // TH1D_ptr q2_gen_hist_al_prot[q2_bin][w_bin][11];
+    // TH1D_ptr w_gen_hist_al_pip[q2_bin][w_bin][11];
+    // TH1D_ptr q2_gen_hist_al_pip[q2_bin][w_bin][11];
+    // TH1D_ptr w_gen_hist_al_pim[q2_bin][w_bin][11];
+    // TH1D_ptr q2_gen_hist_al_pim[q2_bin][w_bin][11];
 
     TH1D_ptr prot_alpha_hist[q2_bin][w_bin][11];
     TH1D_ptr pip_alpha_hist[q2_bin][w_bin][11];
     TH1D_ptr pim_alpha_hist[q2_bin][w_bin][11];
 
-    static const short invM_bin = 14;
     TH1D_ptr mm2_mPim_hist_inv_pPip[q2_bin][w_bin][invM_bin];
     TH1D_ptr mm2_mPim_hist_inv_pPim[q2_bin][w_bin][invM_bin];
     TH1D_ptr mm2_mPim_hist_inv_pipPim[q2_bin][w_bin][invM_bin];
@@ -1161,6 +1192,33 @@ public:
     void writeHists1D_mm2_mPim_inv_pPip();
     void writeHists1D_mm2_mPim_inv_pPim();
     void writeHists1D_mm2_mPim_inv_pipPim();
+    void Fill_hist1D_weight_mPim_inv_mass(const std::shared_ptr<Reaction> &_e);
+
+    ////////////// eff fact wt ////////
+
+    void Fill_hist1D_eff_fact_int(const std::shared_ptr<Reaction> &_e, int prot_status, int pip_status);
+
+    void writeHists1D_eff_fact_int();
+
+    void Fill_hist1D_eff_fact_inv_mass(const std::shared_ptr<Reaction> &_e, int prot_status, int pip_status);
+
+    void writeHists1D_eff_fact_mPim_inv_pPip();
+    void writeHists1D_eff_fact_mPim_inv_pPim();
+    void writeHists1D_eff_fact_mPim_inv_pipPim();
+
+    //////////////////////
+    void Fill_hist1D_eff_fact_theta(const std::shared_ptr<Reaction> &_e, int prot_status, int pip_status);
+
+    void writeHists1D_eff_fact_mPim_theta_prot();
+    void writeHists1D_eff_fact_mPim_theta_pip();
+    void writeHists1D_eff_fact_mPim_theta_pim();
+
+    /////////////////
+    void Fill_hist1D_eff_fact_alpha(const std::shared_ptr<Reaction> &_e, int prot_status, int pip_status);
+
+    void writeHists1D_eff_fact_mPim_alpha_prot();
+    void writeHists1D_eff_fact_mPim_alpha_pip();
+    void writeHists1D_eff_fact_mPim_alpha_pim();
 
     void Write();
 

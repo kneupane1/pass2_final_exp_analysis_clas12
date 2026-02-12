@@ -182,6 +182,187 @@ Histogram::Histogram(const std::string &output_file)
         ////////////////////////////// Done THNSPARSE and related ////////////////////////////////
         ////////////////////////////// Done THNSPARSE and related //////////////////////////////////////
         //////////////////////// DONE THNSPARSE and related ////////////////////////////////
+
+        // ///////////////////////////////////// Eff uncertanity part ///////////////////////////////
+        // ///////////////////////////////////// Eff uncertanity part ///////////////////////////////
+        // ///////////////////////////////////// Eff uncertanity part ///////////////////////////////
+        // ///////////////////////////////////// Eff uncertanity part ///////////////////////////////
+        // for (short q2 = 3; q2 < 4; q2++)
+        for (short q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                float q2_lower_lim = q2_low_values[q2];
+                float q2_upper_lim = q2_up_values[q2];
+
+                // for (short w = w_lower_bin; w < w_higher_bin; w++)
+                for (short w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        // Mupper(W) = W − mh3
+                        // //50 MeV w bin
+
+                        // //adding extra bins in each end of invariant mass hist
+                        Double_t Bin_size_pPip = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 14.0;
+                        Double_t Bin_size_pipPim = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 14.0;
+
+                        Double_t xmin_5D_BC[5] = {(0.938272 + 0.13957), (0.13957 + 0.13957), 0., 0., 0.};
+                        Double_t xmax_5D_BC[5] = {(1.0 + 0.05 * w + 0.025 - MASS_PIM), (1.0 + 0.05 * w + 0.025 - MASS_P), 180, 360, 360};
+
+                        auto name_all = Form("h_wt_1d_int_all_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
+                        auto name_fd_fd = Form("h_qwt_1d_int_fd_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
+                        auto name_fd_cd = Form("h_qwt_1d_int_fd_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
+                        auto name_cd_fd = Form("h_qwt_1d_int_cd_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
+                        auto name_cd_cd = Form("h_qwt_1d_int_cd_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
+
+                        weight_1d_int_all[q2][w] = std::make_shared<TH1D>(name_all, name_all, 50, 0.0, 2.50);
+                        weight_1d_int_fd_fd[q2][w] = std::make_shared<TH1D>(name_fd_fd, name_fd_fd, 50, 0.0, 2.50);
+                        weight_1d_int_fd_cd[q2][w] = std::make_shared<TH1D>(name_fd_cd, name_fd_cd, 50, 0.0, 2.50);
+
+                        for (size_t xi = 0; xi < 14; xi++)
+                        {
+                                float xmin_pPip = xmin_5D_BC[0] + Bin_size_pPip * xi;
+                                float xmax_pPip = xmin_5D_BC[0] + Bin_size_pPip * (xi + 1);
+
+                                float xmin_pipPim = xmin_5D_BC[1] + Bin_size_pipPim * xi;
+                                float xmax_pipPim = xmin_5D_BC[1] + Bin_size_pipPim * (xi + 1);
+
+                                auto name_weight_inv_pPip = Form("h_weight_mPim_inv_pPip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPip<=%.3f GeV",
+                                                                 (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
+
+                                auto name_weight_inv_pPim = Form("h_weight_mPim_inv_pPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPim<=%.3f GeV",
+                                                                 (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
+
+                                auto name_weight_inv_pipPim = Form("h_weight_mPim_inv_pipPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pipPi<=%.3f GeV",
+                                                                   (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pipPim, xmax_pipPim);
+                                weight_inv_pPip[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPip, name_weight_inv_pPip, 100, -0.4, 0.4);
+                                weight_inv_pPim[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPim, name_weight_inv_pPim, 100, -0.4, 0.4);
+                                weight_inv_pipPim[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pipPim, name_weight_inv_pipPim, 100, -0.4, 0.4);
+
+                                //////////// fd fd
+
+                                auto name_weight_inv_pPip_fd = Form("h_weight_mPim_inv_pPip_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPip<=%.3f GeV",
+                                                                    (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
+
+                                auto name_weight_inv_pPim_fd = Form("h_weight_mPim_inv_pPim_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPim<=%.3f GeV",
+                                                                    (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
+
+                                auto name_weight_inv_pipPim_fd = Form("h_weight_mPim_inv_pipPim_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pipPi<=%.3f GeV",
+                                                                      (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pipPim, xmax_pipPim);
+                                weight_inv_pPip_fd[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPip_fd, name_weight_inv_pPip_fd, 50, 0, 2.5);
+                                weight_inv_pPim_fd[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPim_fd, name_weight_inv_pPim_fd, 50, 0, 2.5);
+                                weight_inv_pipPim_fd[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pipPim_fd, name_weight_inv_pipPim_fd, 50, 0, 2.5);
+
+                                //////////// at least one cd
+
+                                auto name_weight_inv_pPip_cd = Form("h_weight_mPim_inv_pPip_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPip<=%.3f GeV",
+                                                                    (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
+
+                                auto name_weight_inv_pPim_cd = Form("h_weight_mPim_inv_pPim_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pPim<=%.3f GeV",
+                                                                    (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pPip, xmax_pPip);
+
+                                auto name_weight_inv_pipPim_cd = Form("h_weight_mPim_inv_pipPim_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pipPi<=%.3f GeV",
+                                                                      (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pipPim, xmax_pipPim);
+                                weight_inv_pPip_cd[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPip_cd, name_weight_inv_pPip_cd, 50, 0, 2.5);
+                                weight_inv_pPim_cd[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPim_cd, name_weight_inv_pPim_cd, 50, 0, 2.5);
+                                weight_inv_pipPim_cd[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pipPim_cd, name_weight_inv_pipPim_cd, 50, 0, 2.5);
+                        }
+
+                        for (int ti = 0; ti < 10; ti++)
+                        {
+
+                                float xmin_th = 18.0 * ti;
+                                float xmax_th = 18.0 * (ti + 1);
+
+                                auto name_weight_prot = Form("h_weight_prot_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_prot<=%.1f deg",
+                                                             (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                auto name_weight_pip = Form("h_weight_pip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pip<=%.1f deg",
+                                                            (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                auto name_weight_pim = Form("h_weight_pim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pim<=%.1f deg",
+                                                            (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                weight_prot_theta[q2][w][ti] = std::make_shared<TH1D>(name_weight_prot, name_weight_prot, 50, 0, 2.5);
+                                weight_pip_theta[q2][w][ti] = std::make_shared<TH1D>(name_weight_pip, name_weight_pip, 50, 0, 2.5);
+                                weight_pim_theta[q2][w][ti] = std::make_shared<TH1D>(name_weight_pim, name_weight_pim, 50, 0, 2.5);
+
+                                ///// fd fd
+                                auto name_weight_prot_fd = Form("h_weight_prot_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_prot<=%.1f deg",
+                                                                (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                auto name_weight_pip_fd = Form("h_weight_pip_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pip<=%.1f deg",
+                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                auto name_weight_pim_fd = Form("h_weight_pim_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pim<=%.1f deg",
+                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                weight_prot_theta_fd[q2][w][ti] = std::make_shared<TH1D>(name_weight_prot_fd, name_weight_prot_fd, 50, 0, 2.5);
+                                weight_pip_theta_fd[q2][w][ti] = std::make_shared<TH1D>(name_weight_pip_fd, name_weight_pip_fd, 50, 0, 2.5);
+                                weight_pim_theta_fd[q2][w][ti] = std::make_shared<TH1D>(name_weight_pim_fd, name_weight_pim_fd, 50, 0, 2.5);
+
+                                ///// at least 1 cd
+                                auto name_weight_prot_cd = Form("h_weight_prot_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_prot<=%.1f deg",
+                                                                (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                auto name_weight_pip_cd = Form("h_weight_pip_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pip<=%.1f deg",
+                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                auto name_weight_pim_cd = Form("h_weight_pim_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=th_pim<=%.1f deg",
+                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_th, xmax_th);
+
+                                weight_prot_theta_cd[q2][w][ti] = std::make_shared<TH1D>(name_weight_prot_cd, name_weight_prot_cd, 50, 0, 2.5);
+                                weight_pip_theta_cd[q2][w][ti] = std::make_shared<TH1D>(name_weight_pip_cd, name_weight_pip_cd, 50, 0, 2.5);
+                                weight_pim_theta_cd[q2][w][ti] = std::make_shared<TH1D>(name_weight_pim_cd, name_weight_pim_cd, 50, 0, 2.5);
+                        }
+                        for (int ai = 0; ai < 10; ai++)
+                        {
+
+                                ///////////////// alpha angle
+
+                                float xmin_alpha;
+                                xmin_alpha = 36.0 * ai;
+                                float xmax_alpha;
+                                xmax_alpha = 36.0 * (ai + 1);
+
+                                auto name_weight_prot = Form("h_weight_prot_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_prot<=%.1f deg",
+                                                             (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+                                auto name_weight_pip = Form("h_weight_pip_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pip<=%.1f deg",
+                                                            (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+                                auto name_weight_pim = Form("h_weight_pim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pim<=%.1f deg",
+                                                            (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+
+                                weight_prot_alpha[q2][w][ai] = std::make_shared<TH1D>(name_weight_prot, name_weight_prot, 50, 0, 2.5);
+                                weight_pip_alpha[q2][w][ai] = std::make_shared<TH1D>(name_weight_pip, name_weight_pip, 50, 0, 2.5);
+                                weight_pim_alpha[q2][w][ai] = std::make_shared<TH1D>(name_weight_pim, name_weight_pim, 50, 0, 2.5);
+
+                                /////////////////// fd fd
+                                auto name_weight_prot_fd = Form("h_weight_prot_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_prot<=%.1f deg",
+                                                                (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+                                auto name_weight_pip_fd = Form("h_weight_pip_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pip<=%.1f deg",
+                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+                                auto name_weight_pim_fd = Form("h_weight_pim_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pim<=%.1f deg",
+                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+
+                                weight_prot_alpha_fd[q2][w][ai] = std::make_shared<TH1D>(name_weight_prot_fd, name_weight_prot_fd, 50, 0, 2.5);
+                                weight_pip_alpha_fd[q2][w][ai] = std::make_shared<TH1D>(name_weight_pip_fd, name_weight_pip_fd, 50, 0, 2.5);
+                                weight_pim_alpha_fd[q2][w][ai] = std::make_shared<TH1D>(name_weight_pim_fd, name_weight_pim_fd, 50, 0, 2.5);
+
+                                /////////////////// at least 1 cd
+                                auto name_weight_prot_cd = Form("h_weight_prot_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_prot<=%.1f deg",
+                                                                (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+                                auto name_weight_pip_cd = Form("h_weight_pip_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pip<=%.1f deg",
+                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+                                auto name_weight_pim_cd = Form("h_weight_pim_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.1f<=al_pim<=%.1f deg",
+                                                               (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_alpha, xmax_alpha);
+
+                                weight_prot_alpha_cd[q2][w][ai] = std::make_shared<TH1D>(name_weight_prot_cd, name_weight_prot_cd, 50, 0, 2.5);
+                                weight_pip_alpha_cd[q2][w][ai] = std::make_shared<TH1D>(name_weight_pip_cd, name_weight_pip_cd, 50, 0, 2.5);
+                                weight_pim_alpha_cd[q2][w][ai] = std::make_shared<TH1D>(name_weight_pim_cd, name_weight_pim_cd, 50, 0, 2.5);
+                        }
+                }
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////// Done eff uncertainty part  ///////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////// Done eff uncertainty part  ///////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////// Done eff uncertainty part  ///////////////////////////////
+
         mc_pid_at_zero = std::make_shared<TH1D>("mc_pid_at_zero", "mc pid at zero", 1000, -2500, 2500);
         pid_at_zero = std::make_shared<TH1D>("pid_at_zero", "pid at zero", 1000, -2500, 2500);
         weight_hist = std::make_shared<TH1D>("weight", "weight", 100, 0.9, 2.2);
@@ -550,6 +731,60 @@ void Histogram::Write()
         Hists1D_mm2_mPim_inv_pipPim_folder->cd();
         writeHists1D_mm2_mPim_inv_pipPim();
 
+        ////////////////////////////////////////////////////////
+
+        TDirectory *Hists1D_eff_fact_int_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_int_folder");
+        Hists1D_eff_fact_int_folder->cd();
+        writeHists1D_eff_fact_int();
+
+        TDirectory *Hists1D_eff_fact_mPim_inv_pPip_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_inv_pPip_folder");
+        Hists1D_eff_fact_mPim_inv_pPip_folder->cd();
+        writeHists1D_eff_fact_mPim_inv_pPip();
+
+        TDirectory *Hists1D_eff_fact_mPim_inv_pPim_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_inv_pPim_folder");
+        Hists1D_eff_fact_mPim_inv_pPim_folder->cd();
+        writeHists1D_eff_fact_mPim_inv_pPim();
+
+        TDirectory *Hists1D_eff_fact_mPim_inv_pipPim_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_inv_pipPim_folder");
+        Hists1D_eff_fact_mPim_inv_pipPim_folder->cd();
+        writeHists1D_eff_fact_mPim_inv_pipPim();
+
+        ////////////////////////////////////////////////////////
+        TDirectory *Hists1D_eff_fact_mPim_theta_prot_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_theta_prot_folder");
+        Hists1D_eff_fact_mPim_theta_prot_folder->cd();
+        writeHists1D_eff_fact_mPim_theta_prot();
+
+        TDirectory *Hists1D_eff_fact_mPim_theta_pip_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_theta_pip_folder");
+        Hists1D_eff_fact_mPim_theta_pip_folder->cd();
+        writeHists1D_eff_fact_mPim_theta_pip();
+
+        TDirectory *Hists1D_eff_fact_mPim_theta_pim_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_theta_pim_folder");
+        Hists1D_eff_fact_mPim_theta_pim_folder->cd();
+        writeHists1D_eff_fact_mPim_theta_pim();
+
+        ////////////////////////////////////////////////////////
+        TDirectory *Hists1D_eff_fact_mPim_alpha_prot_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_alpha_prot_folder");
+        Hists1D_eff_fact_mPim_alpha_prot_folder->cd();
+        writeHists1D_eff_fact_mPim_alpha_prot();
+
+        TDirectory *Hists1D_eff_fact_mPim_alpha_pip_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_alpha_pip_folder");
+        Hists1D_eff_fact_mPim_alpha_pip_folder->cd();
+        writeHists1D_eff_fact_mPim_alpha_pip();
+        TDirectory *Hists1D_eff_fact_mPim_alpha_pim_folder =
+            RootOutputFile->mkdir("Hists1D_eff_fact_mPim_alpha_pim_folder");
+        Hists1D_eff_fact_mPim_alpha_pim_folder->cd();
+        writeHists1D_eff_fact_mPim_alpha_pim();
+
+        //////////////////////////////////////////////////////////
         std::cerr
             << BOLDBLUE << "WvsQ2()" << DEF << std::endl;
         TDirectory *WvsQ2_folder = RootOutputFile->mkdir("W vs Q2");
@@ -872,6 +1107,339 @@ void Histogram::writeMMSQ_mPim_4_or_more_comb()
                         MMSQ_mPim_hist_4_or_more_comb[q2][w]->SetXTitle("MMSQ(GeV2/c2)");
                         if (MMSQ_mPim_hist_4_or_more_comb[q2][w]->GetEntries())
                                 MMSQ_mPim_hist_4_or_more_comb[q2][w]->Write();
+                }
+        }
+}
+
+/////////////////////////////////// eff weight part ////////////////////////////////////
+/////////////////////////////////// eff weight part ////////////////////////////////////
+
+void Histogram::Fill_hist1D_eff_fact_int(const std::shared_ptr<Reaction> &_e, int prot_status, int pip_status)
+{
+        if (_e->W() <= 2.2 && _e->W() >= 1.4 && _e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+        {
+                weight_1d_int_all[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(_e->weight());
+
+                if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                {
+                        weight_1d_int_fd_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(_e->weight());
+                }
+                else
+                {
+                        weight_1d_int_fd_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)]->Fill(_e->weight());
+                }
+        }
+}
+
+void Histogram::writeHists1D_eff_fact_int()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+
+                for (size_t w = 0; w < 15; w++)
+                {
+                        weight_1d_int_all[q2][w]->SetXTitle("weight");
+                        weight_1d_int_all[q2][w]->Write();
+
+                        weight_1d_int_fd_fd[q2][w]->SetXTitle("weight");
+                        weight_1d_int_fd_fd[q2][w]->Write();
+
+                        weight_1d_int_fd_cd[q2][w]->SetXTitle("weight");
+                        weight_1d_int_fd_cd[q2][w]->Write();
+                }
+        }
+}
+
+void Histogram::Fill_hist1D_eff_fact_inv_mass(const std::shared_ptr<Reaction> &_e, int prot_status, int pip_status)
+{
+        // inv_mass_pPim->Fill(_e->inv_Ppim(), _e->weight());
+
+        if (_e->W() <= 2.2 && _e->W() >= 1.4)
+        {
+
+                if (_e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+                {
+                        // inv_mass_pipPim->Fill(_e->inv_pip_pim(), _e->weight());
+
+                        int inv_pPip_bin_val = inv_binning(_e->W(), _e->inv_Ppip(), 1);
+                        if (inv_pPip_bin_val != -1)
+                        {
+                                weight_inv_pPip[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->weight());
+
+                                if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                                {
+                                        weight_inv_pPip_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->weight());
+                                }
+                                else
+                                {
+                                        weight_inv_pPip_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPip_bin_val]->Fill(_e->weight());
+                                }
+                        }
+
+                        int inv_pPim_bin_val = inv_binning(_e->W(), _e->inv_Ppim(), 1);
+                        if (inv_pPim_bin_val != -1)
+                        {
+                                weight_inv_pPim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->weight());
+                                if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                                {
+                                        weight_inv_pPim_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->weight());
+                                }
+                                else
+                                {
+                                        weight_inv_pPim_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pPim_bin_val]->Fill(_e->weight());
+                                }
+                        }
+                        int inv_pipPim_bin_val = inv_binning(_e->W(), _e->inv_pip_pim(), 0);
+                        if (inv_pipPim_bin_val != -1)
+                        {
+                                weight_inv_pipPim[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->weight());
+                                if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                                {
+                                        weight_inv_pipPim_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->weight());
+                                }
+                                else
+                                {
+                                        weight_inv_pipPim_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][inv_pipPim_bin_val]->Fill(_e->weight());
+                                }
+                        }
+                }
+        }
+}
+
+void Histogram::writeHists1D_eff_fact_mPim_inv_pPip()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t xi = 0; xi < 14; xi++)
+                        {
+                                weight_inv_pPip[q2][w][xi]->Write();
+                                weight_inv_pPip_fd[q2][w][xi]->Write();
+                                weight_inv_pPip_cd[q2][w][xi]->Write();
+                        }
+                }
+        }
+}
+void Histogram::writeHists1D_eff_fact_mPim_inv_pPim()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t xi = 0; xi < 14; xi++)
+                        {
+                                weight_inv_pPim[q2][w][xi]->Write();
+                                weight_inv_pPim_fd[q2][w][xi]->Write();
+                                weight_inv_pPim_cd[q2][w][xi]->Write();
+                        }
+                }
+        }
+}
+void Histogram::writeHists1D_eff_fact_mPim_inv_pipPim()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t xi = 0; xi < 14; xi++)
+                        {
+                                weight_inv_pipPim[q2][w][xi]->Write();
+                                weight_inv_pipPim_fd[q2][w][xi]->Write();
+                                weight_inv_pipPim_cd[q2][w][xi]->Write();
+                        }
+                }
+        }
+}
+
+////////////////////////////
+
+void Histogram::Fill_hist1D_eff_fact_theta(const std::shared_ptr<Reaction> &_e, int prot_status, int pip_status)
+{
+        // inv_mass_pPim->Fill(_e->inv_Ppim(), _e->weight());
+
+        if (_e->W() <= 2.2 && _e->W() >= 1.4)
+        {
+
+                if (_e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+                {
+                        weight_prot_theta[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->prot_theta() / 18.0)]->Fill(_e->weight());
+
+                        if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                        {
+                                weight_prot_theta_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->prot_theta() / 18.0)]->Fill(_e->weight());
+                        }
+                        else
+                        {
+                                weight_prot_theta_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->prot_theta() / 18.0)]->Fill(_e->weight());
+                        }
+                        ///////
+
+                        weight_pip_theta[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->pip_theta() / 18.0)]->Fill(_e->weight());
+                        if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                        {
+                                weight_pip_theta_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->pip_theta() / 18.0)]->Fill(_e->weight());
+                        }
+                        else
+                        {
+                                weight_pip_theta_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->pip_theta() / 18.0)]->Fill(_e->weight());
+                        }
+                        ////////////
+
+                        weight_pim_theta[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->pim_theta() / 18.0)]->Fill(_e->weight());
+                        if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                        {
+                                weight_pim_theta_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->prot_theta() / 18.0)]->Fill(_e->weight());
+                        }
+                        else
+                        {
+                                weight_pim_theta_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][int(_e->pim_theta() / 18.0)]->Fill(_e->weight());
+                        }
+                }
+        }
+}
+
+void Histogram::writeHists1D_eff_fact_mPim_theta_prot()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t ti = 0; ti < 10; ti++)
+                        {
+                                weight_prot_theta[q2][w][ti]->Write();
+                                weight_prot_theta_fd[q2][w][ti]->Write();
+                                weight_prot_theta_cd[q2][w][ti]->Write();
+                        }
+                }
+        }
+}
+
+void Histogram::writeHists1D_eff_fact_mPim_theta_pip()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t ti = 0; ti < 10; ti++)
+                        {
+                                weight_pip_theta[q2][w][ti]->Write();
+                                weight_pip_theta_fd[q2][w][ti]->Write();
+                                weight_pip_theta_cd[q2][w][ti]->Write();
+                        }
+                }
+        }
+}
+
+void Histogram::writeHists1D_eff_fact_mPim_theta_pim()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t ti = 0; ti < 10; ti++)
+                        {
+                                weight_pim_theta[q2][w][ti]->Write();
+                                weight_pim_theta_fd[q2][w][ti]->Write();
+                                weight_pim_theta_cd[q2][w][ti]->Write();
+                        }
+                }
+        }
+}
+
+////////////////////////////
+
+////////////////////////////
+
+void Histogram::Fill_hist1D_eff_fact_alpha(const std::shared_ptr<Reaction> &_e, int prot_status, int pip_status)
+{
+        // inv_mass_pPim->Fill(_e->inv_Ppim(), _e->weight());
+
+        if (_e->W() <= 2.2 && _e->W() >= 1.4)
+        {
+
+                if (_e->Q2() >= 2.0 && _e->Q2() <= 9.0)
+                {
+                        weight_prot_alpha[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_pippim_pipf())]->Fill(_e->weight());
+
+                        if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                        {
+                                weight_prot_alpha_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_pippim_pipf())]->Fill(_e->weight());
+                        }
+                        else
+                        {
+                                weight_prot_alpha_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_pippim_pipf())]->Fill(_e->weight());
+                        }
+                        ///////
+
+                        weight_pip_alpha[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_ppim_pipip())]->Fill(_e->weight());
+                        if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                        {
+                                weight_pip_alpha_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_ppim_pipip())]->Fill(_e->weight());
+                        }
+                        else
+                        {
+                                weight_pip_alpha_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_ppim_pipip())]->Fill(_e->weight());
+                        }
+                        ////////////
+
+                        weight_pim_alpha[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_ppip_pipim())]->Fill(_e->weight());
+                        if (abs(pip_status) < 4000 && abs(prot_status) < 4000)
+                        {
+                                weight_pim_alpha_fd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_ppip_pipim())]->Fill(_e->weight());
+                        }
+                        else
+                        {
+                                weight_pim_alpha_cd[q2_bining(_e->Q2())][int((_e->W() - 1.0) / 0.05)][alpha_bining(_e->alpha_ppip_pipim())]->Fill(_e->weight());
+                        }
+                }
+        }
+}
+
+void Histogram::writeHists1D_eff_fact_mPim_alpha_prot()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t ai = 0; ai < 10; ai++)
+                        {
+                                weight_prot_alpha[q2][w][ai]->Write();
+                                weight_prot_alpha_fd[q2][w][ai]->Write();
+                                weight_prot_alpha_cd[q2][w][ai]->Write();
+                        }
+                }
+        }
+}
+
+void Histogram::writeHists1D_eff_fact_mPim_alpha_pip()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t ai = 0; ai < 10; ai++)
+                        {
+                                weight_pip_alpha[q2][w][ai]->Write();
+                                weight_pip_alpha_fd[q2][w][ai]->Write();
+                                weight_pip_alpha_cd[q2][w][ai]->Write();
+                        }
+                }
+        }
+}
+
+void Histogram::writeHists1D_eff_fact_mPim_alpha_pim()
+{
+        for (size_t q2 = 1; q2 < q2_bin_size; q2++)
+        {
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
+                {
+                        for (size_t ai = 0; ai < 10; ai++)
+                        {
+                                weight_pim_alpha[q2][w][ai]->Write();
+                                weight_pim_alpha_fd[q2][w][ai]->Write();
+                                weight_pim_alpha_cd[q2][w][ai]->Write();
+                        }
                 }
         }
 }
