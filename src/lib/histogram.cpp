@@ -207,8 +207,8 @@ Histogram::Histogram(const std::string &output_file)
                         Double_t xmax_5D_BC[5] = {(1.0 + 0.05 * w + 0.025 - MASS_PIM), (1.0 + 0.05 * w + 0.025 - MASS_P), 180, 360, 360};
 
                         auto name_all = Form("h_wt_1d_int_all_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                        auto name_fd_fd = Form("h_qwt_1d_int_fd_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                        auto name_fd_cd = Form("h_qwt_1d_int_fd_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
+                        auto name_fd_fd = Form("h_wt_1d_int_fd_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
+                        auto name_fd_cd = Form("h_wt_1d_int_fd_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
 
                         weight_1d_int_all[q2][w] = std::make_shared<TH1D>(name_all, name_all, 50, 0.0, 2.50);
 
@@ -231,9 +231,9 @@ Histogram::Histogram(const std::string &output_file)
 
                                 auto name_weight_inv_pipPim = Form("h_weight_mPim_inv_pipPim_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV_%.3f<=M_pipPi<=%.3f GeV",
                                                                    (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05), xmin_pipPim, xmax_pipPim);
-                                weight_inv_pPip[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPip, name_weight_inv_pPip, 100, -0.4, 0.4);
-                                weight_inv_pPim[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPim, name_weight_inv_pPim, 100, -0.4, 0.4);
-                                weight_inv_pipPim[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pipPim, name_weight_inv_pipPim, 100, -0.4, 0.4);
+                                weight_inv_pPip[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPip, name_weight_inv_pPip, 50, 0, 2.5);
+                                weight_inv_pPim[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pPim, name_weight_inv_pPim, 50, 0, 2.5);
+                                weight_inv_pipPim[q2][w][xi] = std::make_shared<TH1D>(name_weight_inv_pipPim, name_weight_inv_pipPim, 50, 0, 2.5);
 
                                 //////////// fd fd
 
