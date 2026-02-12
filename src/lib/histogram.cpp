@@ -209,10 +209,9 @@ Histogram::Histogram(const std::string &output_file)
                         auto name_all = Form("h_wt_1d_int_all_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
                         auto name_fd_fd = Form("h_qwt_1d_int_fd_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
                         auto name_fd_cd = Form("h_qwt_1d_int_fd_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                        auto name_cd_fd = Form("h_qwt_1d_int_cd_fd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
-                        auto name_cd_cd = Form("h_qwt_1d_int_cd_cd_%.1f<=Q2<=%.1f GeV2_%.2f<=W<=%.2f GeV", (q2_lower_lim), (q2_upper_lim), (1.0 + 0.05 * w), (1.0 + 0.05 * w + 0.05));
 
                         weight_1d_int_all[q2][w] = std::make_shared<TH1D>(name_all, name_all, 50, 0.0, 2.50);
+
                         weight_1d_int_fd_fd[q2][w] = std::make_shared<TH1D>(name_fd_fd, name_fd_fd, 50, 0.0, 2.50);
                         weight_1d_int_fd_cd[q2][w] = std::make_shared<TH1D>(name_fd_cd, name_fd_cd, 50, 0.0, 2.50);
 
@@ -1136,15 +1135,15 @@ void Histogram::writeHists1D_eff_fact_int()
         for (size_t q2 = 1; q2 < q2_bin_size; q2++)
         {
 
-                for (size_t w = 0; w < 15; w++)
+                for (size_t w = w_lower_bin; w < w_higher_bin; w++)
                 {
-                        weight_1d_int_all[q2][w]->SetXTitle("weight");
+                        weight_1d_int_all[q2][w]->SetXTitle("efficiency weight");
                         weight_1d_int_all[q2][w]->Write();
 
-                        weight_1d_int_fd_fd[q2][w]->SetXTitle("weight");
+                        weight_1d_int_fd_fd[q2][w]->SetXTitle("all fd events weight");
                         weight_1d_int_fd_fd[q2][w]->Write();
 
-                        weight_1d_int_fd_cd[q2][w]->SetXTitle("weight");
+                        weight_1d_int_fd_cd[q2][w]->SetXTitle("at least one cd event weight");
                         weight_1d_int_fd_cd[q2][w]->Write();
                 }
         }
