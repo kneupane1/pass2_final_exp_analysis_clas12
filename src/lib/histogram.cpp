@@ -29,10 +29,11 @@ Histogram::Histogram(const std::string &output_file)
         {
                 const Int_t ndims_5D = 5;
 
-                // Int_t bins_5D[ndims_5D] = {22, 22, 10, 6, 10};
+                Int_t bins_5D[ndims_5D] = {22, 22, 10, 6, 10};
                 // in our expected range
                 // Int_t bins_5D_original[ndims_5D] = {7, 7, 10, 6, 10};
-                Int_t bins_5D[ndims_5D] = {15, 15, 10, 6, 10};
+
+                // Int_t bins_5D[ndims_5D] = {15, 15, 10, 6, 10};  /////// used in analysis note
 
                 // Mlower = mh1 + mh2
                 //  Double_t xmin_5D_original[ndims_5D] = {(0.938272 + 0.13957), (0.13957 + 0.13957), 0., 0., 0.};
@@ -47,12 +48,12 @@ Histogram::Histogram(const std::string &output_file)
                         // //50 MeV w bin
 
                         // // // // //adding extra bins in each end of invariant mass hist
-                        // Double_t Bin_size_pPip0 = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 14.0;
-                        // Double_t Bin_size_pipPim0 = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 14.0;
+                        Double_t Bin_size_pPip0 = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 14.0;
+                        Double_t Bin_size_pipPim0 = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 14.0;
 
-                        // // //adding extra bins in each end of invariant mass hist
-                        Double_t Bin_size_pPip0 = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 7.0;
-                        Double_t Bin_size_pipPim0 = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 7.0;
+                        // // // //adding extra bins in each end of invariant mass hist USED IN ANALYSI NOTE
+                        // Double_t Bin_size_pPip0 = ((1.0 + 0.05 * w + 0.025 - MASS_PIM) - (0.938272 + 0.13957)) / 7.0;
+                        // Double_t Bin_size_pipPim0 = ((1.0 + 0.05 * w + 0.025 - MASS_P) - (0.13957 + 0.13957)) / 7.0;
 
                         // Double_t xmin_5D[ndims_5D] = {(0.938272 + 0.13957), (0.13957 + 0.13957), 0., 0., 0.};
                         // Double_t xmax_5D[ndims_5D] = {(1.0 + 0.05 * w + 0.025 - MASS_PIM), (1.0 + 0.05 * w + 0.025 - MASS_P), 180, 360, 360};
