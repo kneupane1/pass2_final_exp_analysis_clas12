@@ -83,19 +83,19 @@ float EffCorr::PIP_EFF_CORR_FACT(float mom_mes, float theta_mes, float phi_mes)
             {
                 float mom = mom_mes / ((FDPipMap[p][0]) * pow(mom_mes, 2) + (FDPipMap[p][1]) * mom_mes + (FDPipMap[p][2]));
 
-                if (mom < 1.6)
+                if (mom < 4.0)
                 {
                     return (FDPipCoef[p][0]) * pow(mom, 2) + (FDPipCoef[p][1]) * pow(mom, 1) + (FDPipCoef[p][2]);
                     // std::cout << " fd sec is : " << p + 1 << " FD pip eff corr val =  "
                     //           << (FDPipCoef[p][0]) * pow(mom, 2) + (FDPipCoef[p][1]) * pow(mom, 1) + (FDPipCoef[p][2]) << std::endl;
                 }
 
-                else if (mom >= 1.6)
-                {
-                    return (FDPipCoef1[p][0]) * pow(mom, 1) + (FDPipCoef1[p][1]);
-                    // std::cout << " fd sec is : " << p + 1 << " FD pip  eff corr val =  "
-                    //           << (FDPipCoef1[p][0]) * pow(mom, 1) + (FDPipCoef1[p][1]) << std::endl;
-                }
+                // else if (mom >= 2.0)
+                // {
+                //     return (FDPipCoef1[p][0]) * pow(mom, 1) + (FDPipCoef1[p][1]);
+                //     // std::cout << " fd sec is : " << p + 1 << " FD pip  eff corr val =  "
+                //     //           << (FDPipCoef1[p][0]) * pow(mom, 1) + (FDPipCoef1[p][1]) << std::endl;
+                // }
             }
         }
     }
