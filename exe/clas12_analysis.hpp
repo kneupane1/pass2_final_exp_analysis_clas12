@@ -965,39 +965,41 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
         std::cout << "Total CDFD matched prot = " << total_cdfd_prot
                   << " (" << 100.0 * total_cdfd_prot / total_protons_all << " %)\n";
 
-        std::cout << "Pass dp = " << prot_pass_dp << " ->" << 100.0 * prot_pass_dp / total_cdfd_prot << " %\n";
-        std::cout << "Pass dtheta = " << prot_pass_dtheta << " ->" << 100.0 * prot_pass_dtheta / total_cdfd_prot << " %\n";
-        std::cout << "Pass dphi = " << prot_pass_dphi << " ->" << 100.0 * prot_pass_dphi / total_cdfd_prot << " %\n";
+        std::cout << "Pass dp = " << prot_pass_dp << " ->" << 100.0 * prot_pass_dp / total_protons_all << " %\n";
+        std::cout << "Pass dtheta = " << prot_pass_dtheta << " ->" << 100.0 * prot_pass_dtheta / total_protons_all << " %\n";
+        std::cout << "Pass dphi = " << prot_pass_dphi << " ->" << 100.0 * prot_pass_dphi / total_protons_all << " %\n";
 
-        std::cout << "failed dp = " << failed_prot_dp << " ->" << 100.0 * failed_prot_dp / total_cdfd_prot << " %\n";
-        std::cout << "failed dtheta = " << failed_prot_dth << " ->" << 100.0 * failed_prot_dth / total_cdfd_prot << " %\n";
-        std::cout << "failed dphi = " << failed_prot_dphi << " ->" << 100.0 * failed_prot_dphi / total_cdfd_prot << " %\n";
+        std::cout << "failed dp = " << failed_prot_dp << " ->" << 100.0 * failed_prot_dp / total_protons_all << " %\n";
+        std::cout << "failed dtheta = " << failed_prot_dth << " ->" << 100.0 * failed_prot_dth / total_protons_all << " %\n";
+        std::cout << "failed dphi = " << failed_prot_dphi << " ->" << 100.0 * failed_prot_dphi / total_protons_all << " %\n";
 
         std::cout << "\n--- Relative to CDFD only ---\n";
-        std::cout << "All 3 cuts = " << prot_pass_all3 << " ->" << 100.0 * prot_pass_all3 / total_cdfd_prot << " %\n";
-        std::cout << " 2 or more cuts = " << prot_pass_2 << " ->" << 100.0 * prot_pass_2 / total_cdfd_prot << " %\n";
-        std::cout << " 1 or more cut = " << prot_pass_1 << " ->" << 100.0 * prot_pass_1 / total_cdfd_prot << " %\n";
-        std::cout << "Fail all = " << prot_pass_0 << " ->" << 100.0 * prot_pass_0 / total_cdfd_prot << " %\n";
-        std::cout << "final failed prot = " << final_failed_prot << " ->" << 100.0 * final_failed_prot / total_cdfd_prot << " %\n";
+        std::cout << "All 3 cuts = " << prot_pass_all3 << " ->" << 100.0 * prot_pass_all3 / total_protons_all << " %\n";
+        std::cout << " 2 or more cuts = " << prot_pass_2 << " ->" << 100.0 * prot_pass_2 / total_protons_all << " %\n";
+        std::cout << " 1 or more cut = " << prot_pass_1 << " ->" << 100.0 * prot_pass_1 / total_protons_all << " %\n";
+        std::cout << "Fail all = " << prot_pass_0 << " ->" << 100.0 * prot_pass_0 / total_protons_all << " %\n";
+        std::cout << "final failed prot = " << final_failed_prot << " ->" << 100.0 * final_failed_prot / before_cdfd_in_twopion << " %\n";
 
         std::cout << "Total pip (all) = " << total_pips_all << "\n";
         std::cout << "Total CDFD matched pip = " << total_cdfd_pip
                   << " (" << 100.0 * total_cdfd_pip / total_pips_all << " %)\n";
 
-        std::cout << "Pass dp pip = " << pip_pass_dp << " ->" << 100.0 * pip_pass_dp / total_cdfd_pip << " %\n";
-        std::cout << "Pass dtheta pip = " << pip_pass_dtheta << " ->" << 100.0 * pip_pass_dtheta / total_cdfd_pip << " %\n";
-        std::cout << "Pass dphi = " << pip_pass_dphi << " ->" << 100.0 * pip_pass_dphi / total_cdfd_pip << " %\n";
+        std::cout << "Pass dp pip = " << pip_pass_dp << " ->" << 100.0 * pip_pass_dp / total_pips_all << " %\n";
+        std::cout << "Pass dtheta pip = " << pip_pass_dtheta << " ->" << 100.0 * pip_pass_dtheta / total_pips_all << " %\n";
+        std::cout << "Pass dphi = " << pip_pass_dphi << " ->" << 100.0 * pip_pass_dphi / total_pips_all << " %\n";
 
-        std::cout << "failed dp = " << failed_pip_dp << " ->" << 100.0 * failed_pip_dp / total_cdfd_pip << " %\n";
-        std::cout << "failed dtheta = " << failed_pip_dth << " ->" << 100.0 * failed_pip_dth / total_cdfd_pip << " %\n";
-        std::cout << "failed dphi = " << failed_pip_dphi << " ->" << 100.0 * failed_pip_dphi / total_cdfd_pip << " %\n";
+        std::cout << "failed dp = " << failed_pip_dp << " ->" << 100.0 * failed_pip_dp / total_pips_all << " %\n";
+        std::cout << "failed dtheta = " << failed_pip_dth << " ->" << 100.0 * failed_pip_dth / total_pips_all << " %\n";
+        std::cout << "failed dphi = " << failed_pip_dphi << " ->" << 100.0 * failed_pip_dphi / total_pips_all << " %\n";
 
         std::cout << "\n--- Relative to CDFD only ---\n";
-        std::cout << "All 3 cuts pip = " << pip_pass_all3 << " ->" << 100.0 * pip_pass_all3 / total_cdfd_pip << " %\n";
-        std::cout << " 2 or more cuts pip = " << pip_pass_2 << " ->" << 100.0 * pip_pass_2 / total_cdfd_pip << " %\n";
-        std::cout << " 1 or more cut pip = " << pip_pass_1 << " ->" << 100.0 * pip_pass_1 / total_cdfd_pip << " %\n";
-        std::cout << "Fail all pip = " << pip_pass_0 << " ->" << 100.0 * pip_pass_0 / total_cdfd_pip << " %\n";
-        std::cout << "final failed pip = " << final_failed_pip << " ->" << 100.0 * final_failed_pip / total_cdfd_pip << " %\n";
+        std::cout << "All 3 cuts pip = " << pip_pass_all3 << " ->" << 100.0 * pip_pass_all3 / total_pips_all << " %\n";
+        std::cout << " 2 or more cuts pip = " << pip_pass_2 << " ->" << 100.0 * pip_pass_2 / total_pips_all << " %\n";
+        std::cout << " 1 or more cut pip = " << pip_pass_1 << " ->" << 100.0 * pip_pass_1 / total_pips_all << " %\n";
+        std::cout << "Fail all pip = " << pip_pass_0 << " ->" << 100.0 * pip_pass_0 / total_pips_all << " %\n";
+        std::cout << "final failed pip = " << final_failed_pip << " ->" << 100.0 * final_failed_pip / before_cdfd_in_twopion << " %\n";
+
+        std::cout << " no of rejected combinations :  " << before_cdfd_in_twopion - cdfd_survive_in_twopion << "  ->  " << abs(cdfd_survive_in_twopion - before_cdfd_in_twopion) / float(before_cdfd_in_twopion) * 100 << " %\n";
 
         // //}
         // // std::cout.precision(3);
