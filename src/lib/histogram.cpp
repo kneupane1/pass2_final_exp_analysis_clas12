@@ -390,6 +390,32 @@ Histogram::Histogram(const std::string &output_file)
         dphi_prot_cdfd_hist = std::make_shared<TH1D>("phi_fd-P_cd_Prot", "phi_fd-phi_cd_Prot", 200, -100, 100);
         dphi_pip_cdfd_hist = std::make_shared<TH1D>("phi_fd-P_cd_Pip", "phi_fd-phi_cd_Pip", 200, -100, 100);
 
+
+
+
+        fdp_prot_cdfd_hist = std::make_shared<TH1D>("P_fd_Prot", "P_fd_Prot", 200, 0, 5);
+        fdp_pip_cdfd_hist = std::make_shared<TH1D>("P_fd_Pip", "P_fd_Pip", 200, 0, 5);
+
+        fdth_prot_cdfd_hist = std::make_shared<TH1D>("th_fd_Prot", "th_fd_Prot", 200, 0, 45);
+        fdth_pip_cdfd_hist = std::make_shared<TH1D>("th_fd_Pip", "th_fd_Pip", 200, 0, 45);
+
+        fdphi_prot_cdfd_hist = std::make_shared<TH1D>("phi_fd_Prot", "phi_fd_Prot", 200, -180, 180);
+        fdphi_pip_cdfd_hist = std::make_shared<TH1D>("phi_fd_Pip", "phi_fd_Pip", 200, -180, 180);
+
+
+
+        cdp_prot_cdfd_hist = std::make_shared<TH1D>("P_cd_Prot", "P_cd_Prot", 200, 0, 2.5);
+        cdp_pip_cdfd_hist = std::make_shared<TH1D>("P_cd_Pip", "P_cd_Pip", 200, 0, 2.5);
+
+        cdth_prot_cdfd_hist = std::make_shared<TH1D>("th_cd_Prot", "th_cd_Prot", 200, 30, 75);
+        cdth_pip_cdfd_hist = std::make_shared<TH1D>("th_cd_Pip", "th_cd_Pip", 200, 30, 125);
+
+        cdphi_prot_cdfd_hist = std::make_shared<TH1D>("phi_cd_Prot", "phi_cd_Prot", 200, -180, 180);
+        cdphi_pip_cdfd_hist = std::make_shared<TH1D>("phi_cd_Pip", "phi_cd_Pip", 200, -180, 180);
+
+
+
+
         inv_mass_pPip = std::make_shared<TH1D>("pPip_mass", "Prot-Pip mass", bins, 1.0, 2.25);
         inv_mass_pPim = std::make_shared<TH1D>("pPim_mass", "Prot-Pim mass", bins, 0.75, 2.25);
         inv_mass_pipPim = std::make_shared<TH1D>("pipPim_mass", "Pip-Pim mass", bins, 0.0, 1.5);
@@ -2317,18 +2343,38 @@ void Histogram::writeHists7D_pim_evt_loose()
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
 ///////////////////////////////////////////  w-q2 and fundamental part //////////////////////////////////////////////////
-void Histogram::Fill_cdfd_prot(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
+void Histogram::Fill_cdfd_prot(float fdp, float fdth, float fdphi, float cdp, float cdth, float cdphi, float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
 {
         dp_prot_cdfd_hist->Fill(dp);
         dth_prot_cdfd_hist->Fill(dth);
         dphi_prot_cdfd_hist->Fill(dphi);
+
+        fdp_prot_cdfd_hist->Fill(fdp);
+        fdth_prot_cdfd_hist->Fill(fdth);
+        fdphi_prot_cdfd_hist->Fill(fdphi);
+
+        cdp_prot_cdfd_hist->Fill(cdp);
+        cdth_prot_cdfd_hist->Fill(cdth);
+        cdphi_prot_cdfd_hist->Fill(cdphi);
+
 }
 
-void Histogram::Fill_cdfd_pip(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
+void Histogram::Fill_cdfd_pip(float fdp, float fdth, float fdphi, float cdp, float cdth, float cdphi, float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
 {
         dp_pip_cdfd_hist->Fill(dp);
         dth_pip_cdfd_hist->Fill(dth);
         dphi_pip_cdfd_hist->Fill(dphi);
+
+        fdp_pip_cdfd_hist->Fill(fdp);
+        fdth_pip_cdfd_hist->Fill(fdth);
+        fdphi_pip_cdfd_hist->Fill(fdphi);
+
+        cdp_pip_cdfd_hist->Fill(cdp);
+        cdth_pip_cdfd_hist->Fill(cdth);
+        cdphi_pip_cdfd_hist->Fill(cdphi);
+
+
+
 }
 void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
 {
@@ -2499,15 +2545,50 @@ void Histogram::Write_WvsQ2()
         dp_pip_cdfd_hist->SetXTitle("dp");
         dp_pip_cdfd_hist->Write();
 
-        dth_prot_cdfd_hist->SetXTitle("dp");
+        dth_prot_cdfd_hist->SetXTitle("dtheta");
         dth_prot_cdfd_hist->Write();
-        dth_pip_cdfd_hist->SetXTitle("dp");
+        dth_pip_cdfd_hist->SetXTitle("dtheta");
         dth_pip_cdfd_hist->Write();
 
-        dphi_prot_cdfd_hist->SetXTitle("dp");
+        dphi_prot_cdfd_hist->SetXTitle("dphi");
         dphi_prot_cdfd_hist->Write();
-        dphi_pip_cdfd_hist->SetXTitle("dp");
+        dphi_pip_cdfd_hist->SetXTitle("dphi");
         dphi_pip_cdfd_hist->Write();
+
+
+
+        fdp_prot_cdfd_hist->SetXTitle("p");
+        fdp_prot_cdfd_hist->Write();
+        fdp_pip_cdfd_hist->SetXTitle("p");
+        fdp_pip_cdfd_hist->Write();
+
+        fdth_prot_cdfd_hist->SetXTitle("theta");
+        fdth_prot_cdfd_hist->Write();
+        fdth_pip_cdfd_hist->SetXTitle("theta");
+        fdth_pip_cdfd_hist->Write();
+
+        fdphi_prot_cdfd_hist->SetXTitle("phi");
+        fdphi_prot_cdfd_hist->Write();
+        fdphi_pip_cdfd_hist->SetXTitle("phi");
+        fdphi_pip_cdfd_hist->Write();
+
+
+        cdp_prot_cdfd_hist->SetXTitle("p");
+        cdp_prot_cdfd_hist->Write();
+        cdp_pip_cdfd_hist->SetXTitle("p");
+        cdp_pip_cdfd_hist->Write();
+
+        cdth_prot_cdfd_hist->SetXTitle("theta");
+        cdth_prot_cdfd_hist->Write();
+        cdth_pip_cdfd_hist->SetXTitle("theta");
+        cdth_pip_cdfd_hist->Write();
+
+        cdphi_prot_cdfd_hist->SetXTitle("phi");
+        cdphi_prot_cdfd_hist->Write();
+        cdphi_pip_cdfd_hist->SetXTitle("phi");
+        cdphi_pip_cdfd_hist->Write();
+
+
 
         inv_mass_pPip->SetXTitle("Mass (GeV)");
         inv_mass_pPip->Write();

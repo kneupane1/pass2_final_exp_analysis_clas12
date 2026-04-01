@@ -72,6 +72,47 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
         double dp_pim1 = NAN;
         double dp_pim2 = NAN;
         double dp_pim3 = NAN;
+
+        // ===== CDFD counters =====
+        int total_protons_all = 0;
+        int total_pips_all = 0;
+
+        int total_cdfd_prot = 0;
+        int prot_pass_dp = 0;
+        int prot_pass_dtheta = 0;
+        int prot_pass_dphi = 0;
+
+        int failed_prot_dp = 0;
+        int failed_prot_dth = 0;
+        int failed_prot_dphi = 0;
+
+        int prot_pass_all3 = 0;
+        int prot_pass_2 = 0;
+        int prot_pass_1 = 0;
+        int prot_pass_0 = 0;
+        int final_failed_prot = 0;
+
+        // same for pip
+        int total_cdfd_pip = 0;
+        int pip_pass_dp = 0;
+        int pip_pass_dtheta = 0;
+        int pip_pass_dphi = 0;
+
+        int failed_pip_dp = 0;
+        int failed_pip_dth = 0;
+        int failed_pip_dphi = 0;
+
+        int pip_pass_all3 = 0;
+        int pip_pass_2 = 0;
+        int pip_pass_1 = 0;
+        int pip_pass_0 = 0;
+        int final_failed_pip = 0;
+
+        // ===== final impact =====
+        int before_cdfd_in_twopion = 0;
+        int cdfd_survive_in_twopion = 0;
+        int cdfd_survive_final = 0;
+
         // For each event
 
         double total_charge = 0;
@@ -364,6 +405,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                         if (event->TwoPion_missingPim())
                         { // // Retrieve the number of protons and pions in the event
 
+                                two_pion_mPim_events++;
+
                                 int num_protons = event->GetProtons().size();
                                 int num_pips = event->GetPips().size();
                                 int num_combinations = 0;
@@ -421,6 +464,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                         // Proton Block
                                         if (cuts->IsProton(part1, "mid"))
                                         {
+
+                                                total_protons_all++;
+
                                                 bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
                                                 bool isCD1 = (data->status(part1) > 4000);
                                                 // if (isFD1)
@@ -461,7 +507,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 dp_Prot = (trackFD.P() - trackCD.P());
                                                                                 dtheta_Prot = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
                                                                                 dphi_Prot = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
-                                                                                // _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
+                                                                                _hists->Fill_cdfd_prot(trackFD.P(), trackFD.Theta() * 180 / PI, trackFD.Phi() * 180 / PI, trackCD.P(), trackCD.Theta() * 180 / PI, trackCD.Phi() * 180 / PI, dp_Prot, dtheta_Prot, dphi_Prot, event);
                                                                                 // Apply proton cuts
                                                                                 /// first try // if (dp_Prot > -0.6 && dp_Prot < 0.2 && dtheta_Prot > -7 && dphi_Prot > -20 && dphi_Prot < 5)
                                                                                 ///////mostly used
@@ -474,27 +520,71 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 //// loose
                                                                                 // if (dp_Prot > -0.2 && dp_Prot < -0.02 && dtheta_Prot > -2 && dtheta_Prot < 2 && dphi_Prot > -7.5 && dphi_Prot < 2.5)
 
-                                                                                ///////// wider cuts /////////
-                                                                                if ((dp_Prot > -0.4 && dp_Prot < 0.3) && (dtheta_Prot > -10 && dtheta_Prot < 10) && (dphi_Prot > -22.5 && dphi_Prot < 17.5))
+                                                                                total_cdfd_prot++;
+                                                                                // if ((dp_Prot > -0.4 && dp_Prot < 0.3) && (dtheta_Prot > -10 && dtheta_Prot < 10) && (dphi_Prot > -22.5 && dphi_Prot < 17.5))
 
+                                                                                // individual cuts
+                                                                                bool pass_dp = (dp_Prot > -0.4 && dp_Prot < 0.3);
+                                                                                bool pass_dtheta = (dtheta_Prot > -10 && dtheta_Prot < 10);
+                                                                                bool pass_dphi = (dphi_Prot > -22.5 && dphi_Prot < 17.5);
+
+                                                                                // count individual
+                                                                                if (pass_dp)
+                                                                                        prot_pass_dp++;
+                                                                                else
+                                                                                        failed_prot_dp++;
+                                                                                if (pass_dtheta)
+                                                                                        prot_pass_dtheta++;
+                                                                                else
+                                                                                        failed_prot_dth++;
+                                                                                if (pass_dphi)
+                                                                                        prot_pass_dphi++;
+                                                                                else
+                                                                                        failed_prot_dphi++;
+
+                                                                                // count combinations
+                                                                                int n_pass = pass_dp + pass_dtheta + pass_dphi;
+
+                                                                                if (n_pass == 3)
+                                                                                        prot_pass_all3++;
+                                                                                if (n_pass >= 2)
+                                                                                        prot_pass_2++;
+                                                                                if (n_pass >= 1)
+                                                                                        prot_pass_1++;
+                                                                                if (n_pass == 0)
+                                                                                        prot_pass_0++;
+
+                                                                                // your original logic
+                                                                                if (pass_dp && pass_dtheta && pass_dphi)
                                                                                 {
                                                                                         proton_cdfd_cut = true;
-                                                                                        // ADD (keep FD, drop CD)
-                                                                                        int idxFD = isFD1 ? part1 : part2; // which of (part1,part2) is FD
-                                                                                        int idxCD = isCD1 ? part1 : part2; // which of (part1,part2) is CD
-                                                                                        drop_proton_idx.insert(idxCD);     // mark CD proton to skip later
-                                                                                        // std::cout << "  prot cd id  " << idxCD << std::endl;
-                                                                                        // drop_proton_idx.insert(idxFD);
-                                                                                        // (void)idxFD; // silence unused warning if compiled with -Wall
+                                                                                        final_failed_prot++;
 
-                                                                                        // drop_proton_idx.insert(idxFD); // mark FD proton to skip later
-                                                                                        // (void)idxCD;                   // silence unused warning if compiled with -Wall
-
-                                                                                        //  // } else {  // Fill histograms
-                                                                                        // h_dp_prot->Fill(dp_Prot, event->weight());
-                                                                                        // h_dtheta_prot->Fill(dtheta_Prot, event->weight());
-                                                                                        // h_dphi_prot->Fill(dphi_Prot, event->weight());
+                                                                                        int idxFD = isFD1 ? part1 : part2;
+                                                                                        int idxCD = isCD1 ? part1 : part2;
+                                                                                        drop_proton_idx.insert(idxCD);
                                                                                 }
+
+                                                                                // ///////// wider cuts /////////
+                                                                                // if ((dp_Prot > -0.4 && dp_Prot < 0.3) && (dtheta_Prot > -10 && dtheta_Prot < 10) && (dphi_Prot > -22.5 && dphi_Prot < 17.5))
+                                                                                // {
+                                                                                //         proton_cdfd_cut = true;
+                                                                                //         // ADD (keep FD, drop CD)
+                                                                                //         int idxFD = isFD1 ? part1 : part2; // which of (part1,part2) is FD
+                                                                                //         int idxCD = isCD1 ? part1 : part2; // which of (part1,part2) is CD
+                                                                                //         drop_proton_idx.insert(idxCD);     // mark CD proton to skip later
+                                                                                //         // std::cout << "  prot cd id  " << idxCD << std::endl;
+                                                                                //         // drop_proton_idx.insert(idxFD);
+                                                                                //         // (void)idxFD; // silence unused warning if compiled with -Wall
+
+                                                                                //         // drop_proton_idx.insert(idxFD); // mark FD proton to skip later
+                                                                                //         // (void)idxCD;                   // silence unused warning if compiled with -Wall
+
+                                                                                //         //  // } else {  // Fill histograms
+                                                                                //         // h_dp_prot->Fill(dp_Prot, event->weight());
+                                                                                //         // h_dtheta_prot->Fill(dtheta_Prot, event->weight());
+                                                                                //         // h_dphi_prot->Fill(dphi_Prot, event->weight());
+                                                                                // }
                                                                         }
                                                                 }
                                                         }
@@ -505,6 +595,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                         // Pip Block
                                         if (cuts->IsPip(part1, "mid"))
                                         {
+                                                total_pips_all++;
                                                 bool isFD1 = ((data->status(part1) > 2000) && (data->status(part1) < 4000));
                                                 bool isCD1 = (data->status(part1) > 4000);
 
@@ -531,7 +622,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 dp_Pip = (trackFD.P() - trackCD.P());
                                                                                 dtheta_Pip = (trackFD.Theta() - trackCD.Theta()) * 180 / PI;
                                                                                 dphi_Pip = (trackFD.Phi() - trackCD.Phi()) * 180 / PI;
-                                                                                // _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
+                                                                                _hists->Fill_cdfd_pip(trackFD.P(), trackFD.Theta() * 180 / PI, trackFD.Phi() * 180 / PI, trackCD.P(), trackCD.Theta() * 180 / PI, trackCD.Phi() * 180 / PI, dp_Pip, dtheta_Pip, dphi_Pip, event);
 
                                                                                 // Apply pip cuts
                                                                                 /// initially used // if (dp_Pip > -0.4 && dp_Pip < 0.2 && dtheta_Pip > -10 && dtheta_Pip < 10 && dphi_Pip > -20 &&
@@ -547,25 +638,66 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                                 // if (dp_Pip > -0.1 && dp_Pip < 0.0 && dtheta_Pip > -2 && dtheta_Pip < 2 && dphi_Pip > -7.5 && dphi_Pip < 2.5)
 
                                                                                 ////////wide cuts
-                                                                                if ((dp_Pip > -0.4 && dp_Pip < 0.3) && (dtheta_Pip > -10 && dtheta_Pip < 10) && (dphi_Pip > -22.5 && dphi_Pip < 17.5))
+
+                                                                                total_cdfd_pip++;
+
+                                                                                bool pass_dp = (dp_Pip > -0.4 && dp_Pip < 0.3);
+                                                                                bool pass_dtheta = (dtheta_Pip > -10 && dtheta_Pip < 10);
+                                                                                bool pass_dphi = (dphi_Pip > -22.5 && dphi_Pip < 17.5);
+
+                                                                                if (pass_dp)
+                                                                                        pip_pass_dp++;
+                                                                                else
+                                                                                        failed_pip_dp++;
+                                                                                if (pass_dtheta)
+                                                                                        pip_pass_dtheta++;
+                                                                                else
+                                                                                        failed_pip_dth++;
+                                                                                if (pass_dphi)
+                                                                                        pip_pass_dphi++;
+                                                                                else
+                                                                                        failed_pip_dphi++;
+                                                                                int n_pass = pass_dp + pass_dtheta + pass_dphi;
+
+                                                                                if (n_pass == 3)
+                                                                                        pip_pass_all3++;
+                                                                                if (n_pass >= 2)
+                                                                                        pip_pass_2++;
+                                                                                if (n_pass >= 1)
+                                                                                        pip_pass_1++;
+                                                                                if (n_pass == 0)
+                                                                                        pip_pass_0++;
+
+                                                                                if (pass_dp && pass_dtheta && pass_dphi)
                                                                                 {
                                                                                         pip_cdfd_cut = true;
+                                                                                        final_failed_pip++;
 
-                                                                                        // ADD (keep FD, drop CD)
-                                                                                        int idxFD = isFD1 ? part1 : part2; // which of (part1,part2) is FD
-                                                                                        int idxCD = isCD1 ? part1 : part2; // which of (part1,part2) is CD
-                                                                                        drop_pip_idx.insert(idxCD);        // mark CD pip to skip later
-                                                                                        // drop_pip_idx.insert(idxFD);        // mark CD pip to skip later
-                                                                                        // (void)idxFD;
-                                                                                        // std::cout << "  pip cd id  " << idxCD << std::endl;
-
-                                                                                        // drop_pip_idx.insert(idxFD); // mark FD pip to skip later
-                                                                                        // (void)idxCD;
-                                                                                        // // } else {  // Fill histograms
-                                                                                        // h_dp_pip->Fill(dp_Pip, event->weight());
-                                                                                        // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
-                                                                                        // h_dphi_pip->Fill(dphi_Pip, event->weight());
+                                                                                        int idxFD = isFD1 ? part1 : part2;
+                                                                                        int idxCD = isCD1 ? part1 : part2;
+                                                                                        drop_pip_idx.insert(idxCD);
                                                                                 }
+
+                                                                                // if (dp_Pip > -0.4 && dp_Pip < 0.3){
+                                                                                //  if (dtheta_Pip > -10 && dtheta_Pip < 10){
+                                                                                //         if(dphi_Pip > -22.5 && dphi_Pip < 17.5){
+                                                                                //         pip_cdfd_cut = true;
+
+                                                                                //         // ADD (keep FD, drop CD)
+                                                                                //         int idxFD = isFD1 ? part1 : part2; // which of (part1,part2) is FD
+                                                                                //         int idxCD = isCD1 ? part1 : part2; // which of (part1,part2) is CD
+                                                                                //         drop_pip_idx.insert(idxCD);        // mark CD pip to skip later
+                                                                                //         // drop_pip_idx.insert(idxFD);        // mark CD pip to skip later
+                                                                                //         // (void)idxFD;
+                                                                                //         // std::cout << "  pip cd id  " << idxCD << std::endl;
+
+                                                                                //         // drop_pip_idx.insert(idxFD); // mark FD pip to skip later
+                                                                                //         // (void)idxCD;
+                                                                                //         // // } else {  // Fill histograms
+                                                                                //         // h_dp_pip->Fill(dp_Pip, event->weight());
+                                                                                //         // h_dtheta_pip->Fill(dtheta_Pip, event->weight());
+                                                                                //         // h_dphi_pip->Fill(dphi_Pip, event->weight());
+                                                                                // }}}
                                                                         }
                                                                 }
                                                         }
@@ -581,6 +713,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                 // if (!(proton_cdfd_cut == true || pip_cdfd_cut == true))
                                                 //////                                                        if ((proton_cdfd_cut == true || pip_cdfd_cut == true))
                                                 {
+
                                                         // Exclude the case where the same particle is assigned as both proton and pip
                                                         if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
                                                         {
@@ -589,10 +722,14 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                                                                 statusProt = abs(data->status(proton_part_idx));
                                                                 statusPip = abs(data->status(pip_part_idx));
                                                                 /////////////// removing CD tracks from CD FD match
+
+                                                                before_cdfd_in_twopion++;
+
                                                                 if (drop_proton_idx.count(proton_part_idx) || drop_pip_idx.count(pip_part_idx))
                                                                         continue; // ADD to remove cd tracks which also has fd tracks
                                                                 // if ((best_proton_index != event->GetProtonIndices()[i]) || (best_pip_index != event->GetPipIndices()[j]))
                                                                 {
+                                                                        cdfd_survive_in_twopion++;
                                                                         // std::cout << "  matched prot, pip cd id  " << proton_part_idx << "  ,  :" << pip_part_idx << std::endl;
 
                                                                         entries_in_this_event++;
@@ -687,20 +824,19 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                                         // _hists->FillHists_electron_with_cuts(data, event);
 
-                                                                                        // two_pion_mPim_events++;
                                                                                         // {
                                                                                         // _hists->Fill_MMSQ_mPim(event);
                                                                                         // if (entries_in_this_event == 1)
 
                                                                                         if (_hists->MM_cut(event->W(), event->Q2(), event->MM2_mPim()))
                                                                                         {
-                                                                                                _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
-                                                                                                _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
+                                                                                                cdfd_survive_final++;
+
+                                                                                                // _hists->Fill_cdfd_pip(dp_Pip, dtheta_Pip, dphi_Pip, event);
+                                                                                                // _hists->Fill_cdfd_prot(dp_Prot, dtheta_Prot, dphi_Prot, event);
 
                                                                                                 _hists->Fill_WvsQ2(event);
                                                                                                 // _hists->FillHists_electron_with_cuts(data, event);
-
-                                                                                                two_pion_mPim_events++;
 
                                                                                                 _hists->Fill_MMSQ_mPim(event);
 
@@ -815,27 +951,75 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                         }
                 }
         }
-        //}
-        // std::cout.precision(3);
-        // print charge
-        cout << "\ntotal accumulated charge analyzed: " << endl;
-        // if (!_qa->Golden(data->getRun(), data->getEvent()))
 
-        cout << "run = " << data->getRun() << "  charge = " << _qa->GetAccumulatedCharge() << " nC" << endl;
-        std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
-        // std::cout << "  FC Charge is " << total_charge << "   no of total events  " << num_of_events << std::endl;
-        // std::cout << " elec " << elec << "  electron as pid(0)  " << pid_zero_elec << " prot " << prot << " pip " << pip << " pim " << pim << '\n';
-        // std::cout << "   nonzero wt events   " << events_with_non_zero_wt << " , " << events_with_non_zero_wt / (float)num_of_events * 100 << std::endl;
-        // std::cout << "   zero wt events " << events_with_zero_wt << "  ,  " << events_with_zero_wt / (float)num_of_events * 100 << std::endl;
-        std::cout << "   events passing electron cuts  " << elec << ",  " << elec / (float)(no_of_events) * 100 << std::endl;
-        std::cout << "   events passing w-q2 cuts " << events_passes_w_q2_cuts << "  ,  " << events_passes_w_q2_cuts / (float)(no_of_events) * 100 << std::endl;
-        std::cout << "   no of twoPion final mmsq selected events (mPim topo ) = " << two_pion_mPim_events << "  ; " << float(two_pion_mPim_events) / float(num_of_events) * 100 << std::endl;
-        // // std::cout << "  first entry only " << first_entries << "  % is : " << (first_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-        // // std::cout << "  second entry only " << second_entries << "  % is : " << (second_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-        // // std::cout << "  third entry only " << third_entries << "  % is : " << (third_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
-        // // std::cout << "  four or more entries only " << four_or_more_entries << "  % is : " << (four_or_more_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+        // std::cout << "\n===== CDFD PROTON =====\n";
+        // std::cout << "Total = " << total_cdfd_prot << "\n";
+        std::cout << "events passing W-Q2 cuts = " << events_passes_w_q2_cuts << " \n";
+        std::cout << "events with mPim topo = " << two_pion_mPim_events << " \n";
+        std::cout << " twopions before cdfd cuts = " << before_cdfd_in_twopion << " \n";
+        std::cout << "twopions after cdfd cuts = " << cdfd_survive_in_twopion << " \n";
 
-        // // Return the total number of events
+        std::cout << "\n===== PROTON CDFD STUDY =====\n";
+
+        std::cout << "Total protons (all) = " << total_protons_all << "\n";
+        std::cout << "Total CDFD matched prot = " << total_cdfd_prot
+                  << " (" << 100.0 * total_cdfd_prot / total_protons_all << " %)\n";
+
+        std::cout << "Pass dp = " << prot_pass_dp << " ->" << 100.0 * prot_pass_dp / total_cdfd_prot << " %\n";
+        std::cout << "Pass dtheta = " << prot_pass_dtheta << " ->" << 100.0 * prot_pass_dtheta / total_cdfd_prot << " %\n";
+        std::cout << "Pass dphi = " << prot_pass_dphi << " ->" << 100.0 * prot_pass_dphi / total_cdfd_prot << " %\n";
+
+        std::cout << "failed dp = " << failed_prot_dp << " ->" << 100.0 * failed_prot_dp / total_cdfd_prot << " %\n";
+        std::cout << "failed dtheta = " << failed_prot_dth << " ->" << 100.0 * failed_prot_dth / total_cdfd_prot << " %\n";
+        std::cout << "failed dphi = " << failed_prot_dphi << " ->" << 100.0 * failed_prot_dphi / total_cdfd_prot << " %\n";
+
+        std::cout << "\n--- Relative to CDFD only ---\n";
+        std::cout << "All 3 cuts = " << prot_pass_all3 << " ->" << 100.0 * prot_pass_all3 / total_cdfd_prot << " %\n";
+        std::cout << " 2 or more cuts = " << prot_pass_2 << " ->" << 100.0 * prot_pass_2 / total_cdfd_prot << " %\n";
+        std::cout << " 1 or more cut = " << prot_pass_1 << " ->" << 100.0 * prot_pass_1 / total_cdfd_prot << " %\n";
+        std::cout << "Fail all = " << prot_pass_0 << " ->" << 100.0 * prot_pass_0 / total_cdfd_prot << " %\n";
+        std::cout << "final failed prot = " << final_failed_prot << " ->" << 100.0 * final_failed_prot / total_cdfd_prot << " %\n";
+
+        std::cout << "Total pip (all) = " << total_pips_all << "\n";
+        std::cout << "Total CDFD matched pip = " << total_cdfd_pip
+                  << " (" << 100.0 * total_cdfd_pip / total_pips_all << " %)\n";
+
+        std::cout << "Pass dp pip = " << pip_pass_dp << " ->" << 100.0 * pip_pass_dp / total_cdfd_pip << " %\n";
+        std::cout << "Pass dtheta pip = " << pip_pass_dtheta << " ->" << 100.0 * pip_pass_dtheta / total_cdfd_pip << " %\n";
+        std::cout << "Pass dphi = " << pip_pass_dphi << " ->" << 100.0 * pip_pass_dphi / total_cdfd_pip << " %\n";
+
+        std::cout << "failed dp = " << failed_pip_dp << " ->" << 100.0 * failed_pip_dp / total_cdfd_pip << " %\n";
+        std::cout << "failed dtheta = " << failed_pip_dth << " ->" << 100.0 * failed_pip_dth / total_cdfd_pip << " %\n";
+        std::cout << "failed dphi = " << failed_pip_dphi << " ->" << 100.0 * failed_pip_dphi / total_cdfd_pip << " %\n";
+
+        std::cout << "\n--- Relative to CDFD only ---\n";
+        std::cout << "All 3 cuts pip = " << pip_pass_all3 << " ->" << 100.0 * pip_pass_all3 / total_cdfd_pip << " %\n";
+        std::cout << " 2 or more cuts pip = " << pip_pass_2 << " ->" << 100.0 * pip_pass_2 / total_cdfd_pip << " %\n";
+        std::cout << " 1 or more cut pip = " << pip_pass_1 << " ->" << 100.0 * pip_pass_1 / total_cdfd_pip << " %\n";
+        std::cout << "Fail all pip = " << pip_pass_0 << " ->" << 100.0 * pip_pass_0 / total_cdfd_pip << " %\n";
+        std::cout << "final failed pip = " << final_failed_pip << " ->" << 100.0 * final_failed_pip / total_cdfd_pip << " %\n";
+
+        // //}
+        // // std::cout.precision(3);
+        // // print charge
+        // cout << "\ntotal accumulated charge analyzed: " << endl;
+        // // if (!_qa->Golden(data->getRun(), data->getEvent()))
+
+        // cout << "run = " << data->getRun() << "  charge = " << _qa->GetAccumulatedCharge() << " nC" << endl;
+        // std::cout << "Percent = " << 100.0 * total / num_of_events << std::endl;
+        // // std::cout << "  FC Charge is " << total_charge << "   no of total events  " << num_of_events << std::endl;
+        // // std::cout << " elec " << elec << "  electron as pid(0)  " << pid_zero_elec << " prot " << prot << " pip " << pip << " pim " << pim << '\n';
+        // // std::cout << "   nonzero wt events   " << events_with_non_zero_wt << " , " << events_with_non_zero_wt / (float)num_of_events * 100 << std::endl;
+        // // std::cout << "   zero wt events " << events_with_zero_wt << "  ,  " << events_with_zero_wt / (float)num_of_events * 100 << std::endl;
+        // std::cout << "   events passing electron cuts  " << elec << ",  " << elec / (float)(no_of_events) * 100 << std::endl;
+        // std::cout << "   events passing w-q2 cuts " << events_passes_w_q2_cuts << "  ,  " << events_passes_w_q2_cuts / (float)(no_of_events) * 100 << std::endl;
+        // std::cout << "   no of twoPion final mmsq selected events (mPim topo ) = " << two_pion_mPim_events << "  ; " << float(two_pion_mPim_events) / float(num_of_events) * 100 << std::endl;
+        // // // std::cout << "  first entry only " << first_entries << "  % is : " << (first_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+        // // // std::cout << "  second entry only " << second_entries << "  % is : " << (second_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+        // // // std::cout << "  third entry only " << third_entries << "  % is : " << (third_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+        // // // std::cout << "  four or more entries only " << four_or_more_entries << "  % is : " << (four_or_more_entries) / (float)(two_pion_mPim_events) * 100 << std::endl;
+
+        // // // Return the total number of events
         return num_of_events;
 }
 #endif

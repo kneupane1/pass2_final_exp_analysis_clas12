@@ -1461,124 +1461,124 @@ bool Pass2_Cuts::CD_fiducial_had(int i, std::string condition)
         return pass_fiducial;
 }
 
-void Pass2_Cuts::MarkCDFDOverlaps(const std::shared_ptr<Branches12> &data,
-                                  const char *level,
-                                  std::unordered_set<int> &drop_proton_idx,
-                                  std::unordered_set<int> &drop_pip_idx,
-                                  Histogram *hists)
-{
-        // ////std:cout << "Inside MarkCDFDOverlaps level is   " << level << std::endl;
-        double dp_min, dp_max, dth_min, dth_max, dphi_min, dphi_max;
+// void Pass2_Cuts::MarkCDFDOverlaps(const std::shared_ptr<Branches12> &data,
+//                                   const char *level,
+//                                   std::unordered_set<int> &drop_proton_idx,
+//                                   std::unordered_set<int> &drop_pip_idx,
+//                                   Histogram *hists)
+// {
+//         // ////std:cout << "Inside MarkCDFDOverlaps level is   " << level << std::endl;
+//         double dp_min, dp_max, dth_min, dth_max, dphi_min, dphi_max;
 
-        if (std::strcmp(level, "loose") == 0)
-        {
-                dp_min = -0.3;
-                dp_max = 0.2;
-                dth_min = -7.5;
-                dth_max = 7.5;
-                dphi_min = -17.5;
-                dphi_max = 12.5;
-        }
-        else if (std::strcmp(level, "mid") == 0)
-        {
-                dp_min = -0.4;
-                dp_max = 0.3;
-                dth_min = -10.0;
-                dth_max = 10.0;
-                dphi_min = -22.5;
-                dphi_max = 17.5;
-        }
-        else if (std::strcmp(level, "tight") == 0)
-        {
-                dp_min = -0.5;
-                dp_max = 0.4;
-                dth_min = -12.5;
-                dth_max = 12.5;
-                dphi_min = -27.5;
-                dphi_max = 22.5;
-        }
+//         if (std::strcmp(level, "loose") == 0)
+//         {
+//                 dp_min = -0.3;
+//                 dp_max = 0.2;
+//                 dth_min = -7.5;
+//                 dth_max = 7.5;
+//                 dphi_min = -17.5;
+//                 dphi_max = 12.5;
+//         }
+//         else if (std::strcmp(level, "mid") == 0)
+//         {
+//                 dp_min = -0.4;
+//                 dp_max = 0.3;
+//                 dth_min = -10.0;
+//                 dth_max = 10.0;
+//                 dphi_min = -22.5;
+//                 dphi_max = 17.5;
+//         }
+//         else if (std::strcmp(level, "tight") == 0)
+//         {
+//                 dp_min = -0.5;
+//                 dp_max = 0.4;
+//                 dth_min = -12.5;
+//                 dth_max = 12.5;
+//                 dphi_min = -27.5;
+//                 dphi_max = 22.5;
+//         }
 
-        for (int i = 1; i < data->gpart(); ++i)
-        {
-                if (IsProton(i, level))
-                {
-                        const int st1 = std::abs(data->status(i));
-                        bool isFD1 = (st1 > 2000 && st1 < 4000);
-                        bool isCD1 = (st1 > 4000);
+//         for (int i = 1; i < data->gpart(); ++i)
+//         {
+//                 if (IsProton(i, level))
+//                 {
+//                         const int st1 = std::abs(data->status(i));
+//                         bool isFD1 = (st1 > 2000 && st1 < 4000);
+//                         bool isCD1 = (st1 > 4000);
 
-                        for (int j = i + 1; j < data->gpart(); ++j)
-                        {
-                                if (!IsProton(j, level))
-                                        continue;
+//                         for (int j = i + 1; j < data->gpart(); ++j)
+//                         {
+//                                 if (!IsProton(j, level))
+//                                         continue;
 
-                                const int st2 = std::abs(data->status(j));
-                                bool isFD2 = (st2 > 2000 && st2 < 4000);
-                                bool isCD2 = (st2 > 4000);
+//                                 const int st2 = std::abs(data->status(j));
+//                                 bool isFD2 = (st2 > 2000 && st2 < 4000);
+//                                 bool isCD2 = (st2 > 4000);
 
-                                if (!((isFD1 && isCD2) || (isCD1 && isFD2)))
-                                        continue;
+//                                 if (!((isFD1 && isCD2) || (isCD1 && isFD2)))
+//                                         continue;
 
-                                TLorentzVector t1, t2;
-                                t1.SetXYZM(data->px(i), data->py(i), data->pz(i), MASS_P);
-                                t2.SetXYZM(data->px(j), data->py(j), data->pz(j), MASS_P);
+//                                 TLorentzVector t1, t2;
+//                                 t1.SetXYZM(data->px(i), data->py(i), data->pz(i), MASS_P);
+//                                 t2.SetXYZM(data->px(j), data->py(j), data->pz(j), MASS_P);
 
-                                TLorentzVector fd = isFD1 ? t1 : t2;
-                                TLorentzVector cd = isCD1 ? t1 : t2;
+//                                 TLorentzVector fd = isFD1 ? t1 : t2;
+//                                 TLorentzVector cd = isCD1 ? t1 : t2;
 
-                                double dp = fd.P() - cd.P();
-                                double dtheta = (fd.Theta() - cd.Theta()) * 180.0 / PI;
-                                double dphi = (fd.Phi() - cd.Phi()) * 180.0 / PI;
+//                                 double dp = fd.P() - cd.P();
+//                                 double dtheta = (fd.Theta() - cd.Theta()) * 180.0 / PI;
+//                                 double dphi = (fd.Phi() - cd.Phi()) * 180.0 / PI;
 
-                                if (hists)
-                                        hists->Fill_cdfd_prot(dp, dtheta, dphi, nullptr);
+//                                 if (hists)
+//                                         hists->Fill_cdfd_prot(dp, dtheta, dphi, nullptr);
 
-                                if (dp > dp_min && dp < dp_max &&
-                                    dtheta > dth_min && dtheta < dth_max &&
-                                    dphi > dphi_min && dphi < dphi_max)
-                                {
-                                        int idxCD = isCD1 ? i : j;
-                                        drop_proton_idx.insert(idxCD); ///// Drop CD
-                                }
-                        }
-                }
-                if (IsPip(i, level))
-                {
-                        const int st1 = std::abs(data->status(i));
-                        bool isFD1 = (st1 > 2000 && st1 < 4000);
-                        bool isCD1 = (st1 > 4000);
-                        for (int j = i + 1; j < data->gpart(); ++j)
-                        {
-                                if (!IsPip(j, level))
-                                        continue;
+//                                 if (dp > dp_min && dp < dp_max &&
+//                                     dtheta > dth_min && dtheta < dth_max &&
+//                                     dphi > dphi_min && dphi < dphi_max)
+//                                 {
+//                                         int idxCD = isCD1 ? i : j;
+//                                         drop_proton_idx.insert(idxCD); ///// Drop CD
+//                                 }
+//                         }
+//                 }
+//                 if (IsPip(i, level))
+//                 {
+//                         const int st1 = std::abs(data->status(i));
+//                         bool isFD1 = (st1 > 2000 && st1 < 4000);
+//                         bool isCD1 = (st1 > 4000);
+//                         for (int j = i + 1; j < data->gpart(); ++j)
+//                         {
+//                                 if (!IsPip(j, level))
+//                                         continue;
 
-                                const int st2 = std::abs(data->status(j));
-                                bool isFD2 = (st2 > 2000 && st2 < 4000);
-                                bool isCD2 = (st2 > 4000);
+//                                 const int st2 = std::abs(data->status(j));
+//                                 bool isFD2 = (st2 > 2000 && st2 < 4000);
+//                                 bool isCD2 = (st2 > 4000);
 
-                                if (!((isFD1 && isCD2) || (isCD1 && isFD2)))
-                                        continue;
+//                                 if (!((isFD1 && isCD2) || (isCD1 && isFD2)))
+//                                         continue;
 
-                                TLorentzVector t1, t2;
-                                t1.SetXYZM(data->px(i), data->py(i), data->pz(i), MASS_PIP);
-                                t2.SetXYZM(data->px(j), data->py(j), data->pz(j), MASS_PIP);
+//                                 TLorentzVector t1, t2;
+//                                 t1.SetXYZM(data->px(i), data->py(i), data->pz(i), MASS_PIP);
+//                                 t2.SetXYZM(data->px(j), data->py(j), data->pz(j), MASS_PIP);
 
-                                TLorentzVector fd = isFD1 ? t1 : t2;
-                                TLorentzVector cd = isCD1 ? t1 : t2;
+//                                 TLorentzVector fd = isFD1 ? t1 : t2;
+//                                 TLorentzVector cd = isCD1 ? t1 : t2;
 
-                                double dp = fd.P() - cd.P();
-                                double dtheta = (fd.Theta() - cd.Theta()) * 180.0 / PI;
-                                double dphi = (fd.Phi() - cd.Phi()) * 180.0 / PI;
+//                                 double dp = fd.P() - cd.P();
+//                                 double dtheta = (fd.Theta() - cd.Theta()) * 180.0 / PI;
+//                                 double dphi = (fd.Phi() - cd.Phi()) * 180.0 / PI;
 
-                                if (hists)
-                                        hists->Fill_cdfd_pip(dp, dtheta, dphi, nullptr);
-                                if (dp > dp_min && dp < dp_max &&
-                                    dtheta > dth_min && dtheta < dth_max &&
-                                    dphi > dphi_min && dphi < dphi_max)
-                                {
-                                        int idxCD = isCD1 ? i : j;
-                                        drop_pip_idx.insert(idxCD); ///// Drop CD
-                                }
-                        }
-                }
-        }
-}
+//                                 if (hists)
+//                                         hists->Fill_cdfd_pip(dp, dtheta, dphi, nullptr);
+//                                 if (dp > dp_min && dp < dp_max &&
+//                                     dtheta > dth_min && dtheta < dth_max &&
+//                                     dphi > dphi_min && dphi < dphi_max)
+//                                 {
+//                                         int idxCD = isCD1 ? i : j;
+//                                         drop_pip_idx.insert(idxCD); ///// Drop CD
+//                                 }
+//                         }
+//                 }
+//         }
+// }

@@ -619,6 +619,27 @@ protected:
     TH1D_ptr dphi_prot_cdfd_hist;
     TH1D_ptr dphi_pip_cdfd_hist;
 
+
+
+    TH1D_ptr fdp_prot_cdfd_hist;
+    TH1D_ptr fdp_pip_cdfd_hist;
+    TH1D_ptr fdth_prot_cdfd_hist;
+    TH1D_ptr fdth_pip_cdfd_hist;
+    TH1D_ptr fdphi_prot_cdfd_hist;
+    TH1D_ptr fdphi_pip_cdfd_hist;
+
+
+    TH1D_ptr cdp_prot_cdfd_hist;
+    TH1D_ptr cdp_pip_cdfd_hist;
+    TH1D_ptr cdth_prot_cdfd_hist;
+    TH1D_ptr cdth_pip_cdfd_hist;
+    TH1D_ptr cdphi_prot_cdfd_hist;
+    TH1D_ptr cdphi_pip_cdfd_hist;
+
+
+
+
+
     TH1D_ptr inv_mass_pPip_swapped;
     TH1D_ptr inv_mass_pPim_swapped;
     TH1D_ptr inv_mass_pipPim_swapped;
@@ -1112,8 +1133,8 @@ public:
     void writeMMSQ_mPim_4_or_more_comb();
 
     void write_Inv_Mass_hist();
-    void Fill_cdfd_prot(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e);
-    void Fill_cdfd_pip(float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e);
+    void Fill_cdfd_prot(float fdp, float fdth, float fdphi, float cdp, float cdth, float cdphi, float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e);
+    void Fill_cdfd_pip(float fdp, float fdth, float fdphi, float cdp, float cdth, float cdphi, float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e);
 
     // P and E
     // ecectron cuts
