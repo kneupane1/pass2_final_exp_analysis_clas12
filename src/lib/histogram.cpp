@@ -3323,7 +3323,7 @@ void Histogram::FillHists_prot_pid_with_cuts(const std::shared_ptr<Branches12> &
 
                 double p_lab = _d->p(i);
                 double theta_lab = _e->prot_theta_lab(prot);
-                Theta_prot_lab_vs_mom_prot->Fill(p_lab, theta_lab, _e->weight());
+                Theta_prot_lab_vs_mom_prot->Fill(p_lab, theta_lab);
                 // Theta_prot_lab_vs_mom_prot->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
 
                 if (abs(_d->status(i)) < 4000)
@@ -3350,7 +3350,7 @@ void Histogram::FillHists_prot_pid_with_cuts(const std::shared_ptr<Branches12> &
                         double py = _d->py(i);
                         double momT = sqrt(px * px + py * py);
                         double phi = atan2(py, px) * 180.0 / PI;
-                        phi_vs_momT_prot_cd[after_all_cuts]->Fill(phi, momT, _e->weight());
+                        phi_vs_momT_prot_cd[after_all_cuts]->Fill(phi, momT);
                         // std::cout << "  status of ctof particle :  " << _d->status(i) << "  prot lab angle theta " << _e->prot_theta_lab(prot) << std::endl;
 
                         prot_Delta_vz_cut_cd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)));
@@ -3441,7 +3441,7 @@ void Histogram::FillHists_pip_pid_with_cuts(const std::shared_ptr<Branches12> &_
 
                 double p_lab = _d->p(i);
                 double theta_lab = _e->pip_theta_lab(pip);
-                Theta_pip_lab_vs_mom_pip->Fill(p_lab, theta_lab, _e->weight());
+                Theta_pip_lab_vs_mom_pip->Fill(p_lab, theta_lab);
 
                 // Theta_pip_lab_vs_mom_pip->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip));
 
@@ -3471,7 +3471,7 @@ void Histogram::FillHists_pip_pid_with_cuts(const std::shared_ptr<Branches12> &_
 
                         double momT = sqrt(px * px + py * py);
                         double phi = atan2(py, px) * 180.0 / PI;
-                        phi_vs_momT_pip_cd[after_all_cuts]->Fill(phi, momT, _e->weight());
+                        phi_vs_momT_pip_cd[after_all_cuts]->Fill(phi, momT);
 
                         pip_Delta_vz_cut_cd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)));
                         pip_Chi2pid_cut_cd[after_all_cuts]->Fill(_d->chi2pid(i));
