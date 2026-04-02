@@ -390,9 +390,6 @@ Histogram::Histogram(const std::string &output_file)
         dphi_prot_cdfd_hist = std::make_shared<TH1D>("phi_fd-P_cd_Prot", "phi_fd-phi_cd_Prot", 200, -100, 100);
         dphi_pip_cdfd_hist = std::make_shared<TH1D>("phi_fd-P_cd_Pip", "phi_fd-phi_cd_Pip", 200, -100, 100);
 
-
-
-
         fdp_prot_cdfd_hist = std::make_shared<TH1D>("P_fd_Prot", "P_fd_Prot", 200, 0, 5);
         fdp_pip_cdfd_hist = std::make_shared<TH1D>("P_fd_Pip", "P_fd_Pip", 200, 0, 5);
 
@@ -402,8 +399,6 @@ Histogram::Histogram(const std::string &output_file)
         fdphi_prot_cdfd_hist = std::make_shared<TH1D>("phi_fd_Prot", "phi_fd_Prot", 200, -180, 180);
         fdphi_pip_cdfd_hist = std::make_shared<TH1D>("phi_fd_Pip", "phi_fd_Pip", 200, -180, 180);
 
-
-
         cdp_prot_cdfd_hist = std::make_shared<TH1D>("P_cd_Prot", "P_cd_Prot", 200, 0, 2.5);
         cdp_pip_cdfd_hist = std::make_shared<TH1D>("P_cd_Pip", "P_cd_Pip", 200, 0, 2.5);
 
@@ -412,9 +407,6 @@ Histogram::Histogram(const std::string &output_file)
 
         cdphi_prot_cdfd_hist = std::make_shared<TH1D>("phi_cd_Prot", "phi_cd_Prot", 200, -180, 180);
         cdphi_pip_cdfd_hist = std::make_shared<TH1D>("phi_cd_Pip", "phi_cd_Pip", 200, -180, 180);
-
-
-
 
         inv_mass_pPip = std::make_shared<TH1D>("pPip_mass", "Prot-Pip mass", bins, 1.0, 2.25);
         inv_mass_pPim = std::make_shared<TH1D>("pPim_mass", "Prot-Pim mass", bins, 0.75, 2.25);
@@ -2356,7 +2348,6 @@ void Histogram::Fill_cdfd_prot(float fdp, float fdth, float fdphi, float cdp, fl
         cdp_prot_cdfd_hist->Fill(cdp);
         cdth_prot_cdfd_hist->Fill(cdth);
         cdphi_prot_cdfd_hist->Fill(cdphi);
-
 }
 
 void Histogram::Fill_cdfd_pip(float fdp, float fdth, float fdphi, float cdp, float cdth, float cdphi, float dp, float dth, float dphi, const std::shared_ptr<Reaction> &_e)
@@ -2372,9 +2363,6 @@ void Histogram::Fill_cdfd_pip(float fdp, float fdth, float fdphi, float cdp, flo
         cdp_pip_cdfd_hist->Fill(cdp);
         cdth_pip_cdfd_hist->Fill(cdth);
         cdphi_pip_cdfd_hist->Fill(cdphi);
-
-
-
 }
 void Histogram::Fill_WvsQ2(const std::shared_ptr<Reaction> &_e)
 {
@@ -2555,8 +2543,6 @@ void Histogram::Write_WvsQ2()
         dphi_pip_cdfd_hist->SetXTitle("dphi");
         dphi_pip_cdfd_hist->Write();
 
-
-
         fdp_prot_cdfd_hist->SetXTitle("p");
         fdp_prot_cdfd_hist->Write();
         fdp_pip_cdfd_hist->SetXTitle("p");
@@ -2572,7 +2558,6 @@ void Histogram::Write_WvsQ2()
         fdphi_pip_cdfd_hist->SetXTitle("phi");
         fdphi_pip_cdfd_hist->Write();
 
-
         cdp_prot_cdfd_hist->SetXTitle("p");
         cdp_prot_cdfd_hist->Write();
         cdp_pip_cdfd_hist->SetXTitle("p");
@@ -2587,8 +2572,6 @@ void Histogram::Write_WvsQ2()
         cdphi_prot_cdfd_hist->Write();
         cdphi_pip_cdfd_hist->SetXTitle("phi");
         cdphi_pip_cdfd_hist->Write();
-
-
 
         inv_mass_pPip->SetXTitle("Mass (GeV)");
         inv_mass_pPip->Write();
@@ -3338,7 +3321,10 @@ void Histogram::FillHists_prot_pid_with_cuts(const std::shared_ptr<Branches12> &
 
                 auto dt = std::make_shared<Delta_T>(_d);
 
-                Theta_prot_lab_vs_mom_prot->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
+                double p_lab = _d->p(i);
+                double theta_lab = _e->prot_theta_lab(prot);
+                Theta_prot_lab_vs_mom_prot->Fill(p_lab, theta_lab, _e->weight());
+                // Theta_prot_lab_vs_mom_prot->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
 
                 if (abs(_d->status(i)) < 4000)
                 // if (dt->isCtof() == false)
@@ -3360,11 +3346,16 @@ void Histogram::FillHists_prot_pid_with_cuts(const std::shared_ptr<Branches12> &
                 else if (abs(_d->status(i)) > 4000)
                 // else if (dt->isCtof() == true)
                 {
+                        double px = _d->px(i);
+                        double py = _d->py(i);
+                        double momT = sqrt(px * px + py * py);
+                        double phi = atan2(py, px) * 180.0 / PI;
+                        phi_vs_momT_prot_cd[after_all_cuts]->Fill(phi, momT, _e->weight());
                         // std::cout << "  status of ctof particle :  " << _d->status(i) << "  prot lab angle theta " << _e->prot_theta_lab(prot) << std::endl;
 
                         prot_Delta_vz_cut_cd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)));
                         prot_Chi2pid_cut_cd[after_all_cuts]->Fill(_d->chi2pid(i));
-                        phi_vs_momT_prot_cd[after_all_cuts]->Fill(_e->prot_Phi_lab(prot), _e->prot_momT(prot));
+                        // phi_vs_momT_prot_cd[after_all_cuts]->Fill(_e->prot_Phi_lab(prot), _e->prot_momT(prot));
                         theta_prot_cd[after_all_cuts]->Fill(_e->prot_theta_lab(prot));
                         Theta_prot_lab_vs_mom_prot_cd[after_all_cuts]->Fill(_e->prot_momentum(prot), _e->prot_theta_lab(prot));
                 }
@@ -3447,7 +3438,12 @@ void Histogram::FillHists_pip_pid_with_cuts(const std::shared_ptr<Branches12> &_
         {
                 short sec = _d->dc_sec(i);
                 auto dt = std::make_shared<Delta_T>(_d);
-                Theta_pip_lab_vs_mom_pip->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip));
+
+                double p_lab = _d->p(i);
+                double theta_lab = _e->pip_theta_lab(pip);
+                Theta_pip_lab_vs_mom_pip->Fill(p_lab, theta_lab, _e->weight());
+
+                // Theta_pip_lab_vs_mom_pip->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip));
 
                 if (abs(_d->status(i)) < 4000)
                 // if (dt->isCtof() == false)
@@ -3469,9 +3465,17 @@ void Histogram::FillHists_pip_pid_with_cuts(const std::shared_ptr<Branches12> &_
                 else if (abs(_d->status(i)) > 4000)
                 // else if (dt->isCtof() == true)
                 {
+
+                        double px = _d->px(i);
+                        double py = _d->py(i);
+
+                        double momT = sqrt(px * px + py * py);
+                        double phi = atan2(py, px) * 180.0 / PI;
+                        phi_vs_momT_pip_cd[after_all_cuts]->Fill(phi, momT, _e->weight());
+
                         pip_Delta_vz_cut_cd[after_all_cuts]->Fill((_d->vz(i) - _d->vz(0)));
                         pip_Chi2pid_cut_cd[after_all_cuts]->Fill(_d->chi2pid(i));
-                        phi_vs_momT_pip_cd[after_all_cuts]->Fill(_e->pip_Phi_lab(pip), _e->pip_momT(pip));
+                        // phi_vs_momT_pip_cd[after_all_cuts]->Fill(_e->pip_Phi_lab(pip), _e->pip_momT(pip));
                         theta_pip_cd[after_all_cuts]->Fill(_e->pip_theta_lab(pip));
                         Theta_pip_lab_vs_mom_pip_cd[after_all_cuts]->Fill(_e->pip_momentum(pip), _e->pip_theta_lab(pip));
                 }
