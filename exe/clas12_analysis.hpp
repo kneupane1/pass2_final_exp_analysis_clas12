@@ -54,7 +54,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
         size_t total = 0;
         float no_of_events = 0, miss_prot = 0, miss_pim = 0, miss_pip = 0, other = 0, excl_events = 0,
               twopi = 0;
-        int two_pion_mPim_events = 0, two_pion_Excl_events = 0;
+        int two_pion_mPim_events = 0, two_pion_Excl_events = 0, two_pion_mPip_events = 0, two_pion_mProt_events = 0;
         int prot = 0, pip = 0, pim = 0, elec = 0, failed_prot = 0, pid_zero_elec = 0;
         int no_prot_pip = 0, no_prot_pip_mc = 0;
         int Pip_pid_mc = -9999;
@@ -244,7 +244,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                 // // // std::cout << "  FC Charge is " << total_charge << std::endl;
                 // if (event->W() > 1.35 && event->W() <= 2.15 && event->Q2() <= 9.0 && event->Q2() > 1.95)
-                _hists->FillHists_electron_with_cuts(data, event);
+                // _hists->FillHists_electron_with_cuts(data, event);
 
                 // If we pass electron cuts the event is processed
                 elec++;
@@ -380,32 +380,70 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
                         events_passes_w_q2_cuts++;
                         // {
 
-                        //                                 //                                 // // }
-                        // if (event->TwoPion_exclusive())
-                        // {
-                        //         for (size_t i = 0; i < event->GetProtons().size(); ++i)
-                        //         {
-                        //                 for (size_t j = 0; j < event->GetPips().size(); ++j)
-                        //                 {
-                        //                         for (size_t k = 0; k < event->GetPims().size(); ++k)
-                        //                         {
-                        //                                 event->CalcMissMassExcl(*event->GetProtons()[i], *event->GetPips()[j], *event->GetPims()[k]);
+                        // //                                 //                                 // // }
+                        if (event->TwoPion_exclusive())
+                        {
+                                for (size_t i = 0; i < event->GetProtons().size(); ++i)
+                                {
+                                        for (size_t j = 0; j < event->GetPips().size(); ++j)
+                                        {
+                                                for (size_t k = 0; k < event->GetPims().size(); ++k)
+                                                {
+                                                        if (event->GetProtonIndices()[i] != event->GetPimIndices()[k] && event->GetProtonIndices()[i] != event->GetPipIndices()[j] && event->GetPipIndices()[j] != event->GetPimIndices()[k])
+                                                        {
+                                                                event->CalcMissMassExcl(*event->GetProtons()[i], *event->GetPips()[j], *event->GetPims()[k]);
+                                                                if (event->MM2_exclusive() < 0.0024 && event->MM2_exclusive() > -0.0053)
+                                                                        two_pion_Excl_events++;
+                                                                //                                 //         //                                 _hists->Fill_WvsQ2(event);
 
-                        //                                 //                                 //         //                                 two_pion_Excl_events++;
-                        //                                 //                                 //         //                                 _hists->Fill_WvsQ2(event);
-
-                        //                                 //                                 //         // // You should have a similar method for π⁻ if applicable
-                        //                                 //                                 //         dt->dt_calc(event->GetPimIndices()[k]);
-                        //                                 //                                 //         _hists->Fill_deltat_pim_after_cut(data, dt, event->GetPimIndices()[k], event);
-                        //                                 //                                 //         _hists->FillHists_pim_pid_with_cuts(data, event, event->GetPimIndices()[k]);
-                        //                                 //                                 // }
-                        //                                 //                                 // //                 }
-                        //                                 //                                 // //         }
+                                                                //                                 //         // // You should have a similar method for π⁻ if applicable
+                                                                //                                 //         dt->dt_calc(event->GetPimIndices()[k]);
+                                                                //                                 //         _hists->Fill_deltat_pim_after_cut(data, dt, event->GetPimIndices()[k], event);
+                                                                //                                 //         _hists->FillHists_pim_pid_with_cuts(data, event, event->GetPimIndices()[k]);
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                        if (event->TwoPion_missingPip())
+                        {
+                                for (size_t i = 0; i < event->GetProtons().size(); ++i)
+                                {
+                                        // for (size_t j = 0; j < event->GetPips().size(); ++j)
+                                        // {
+                                        for (size_t k = 0; k < event->GetPims().size(); ++k)
+                                        {
+                                                if (event->GetProtonIndices()[i] != event->GetPimIndices()[k])
+                                                {
+                                                        event->CalcMissMassPip(*event->GetProtons()[i], *event->GetPims()[k]);
+                                                        if (event->MM2_mpip() < 0.0877 && event->MM2_mpip() > -0.0445)
+                                                                two_pion_mPip_events++;
+                                                }
+                                        }
+                                }
+                        }
+                        //         // }
+                        if (event->TwoPion_missingProt())
+                        {
+                                // for (size_t i = 0; i < event->GetProtons().size(); ++i)
+                                // {
+                                for (size_t j = 0; j < event->GetPips().size(); ++j)
+                                {
+                                        for (size_t k = 0; k < event->GetPims().size(); ++k)
+                                        {
+                                                if (event->GetPimIndices()[k] != event->GetPipIndices()[j])
+                                                {
+                                                        event->CalcMissMassProt(*event->GetPips()[j], *event->GetPims()[k]);
+                                                        if (event->MM2_mprot() < 1.0435 && event->MM2_mprot() > 0.7232)
+                                                                two_pion_mProt_events++;
+                                                }
+                                        }
+                                }
+                        }
+                        //         // }
 
                         if (event->TwoPion_missingPim())
                         { // // Retrieve the number of protons and pions in the event
-
-                                two_pion_mPim_events++;
 
                                 int num_protons = event->GetProtons().size();
                                 int num_pips = event->GetPips().size();
@@ -432,6 +470,7 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                         for (size_t j = 0; j < num_pips; ++j)
                                         {
+
                                                 // std::cout << " pip dp inside loop   : " << pip_dps[j].second << std::endl;
 
                                                 // if (event->GetProtonIndices()[i] != event->GetPipIndices()[j])
@@ -725,8 +764,8 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                 before_cdfd_in_twopion++;
 
-                                                                if (drop_proton_idx.count(proton_part_idx) || drop_pip_idx.count(pip_part_idx))
-                                                                        continue; // ADD to remove cd tracks which also has fd tracks
+                                                                // if (drop_proton_idx.count(proton_part_idx) || drop_pip_idx.count(pip_part_idx))
+                                                                //         continue; // ADD to remove cd tracks which also has fd tracks
                                                                 // if ((best_proton_index != event->GetProtonIndices()[i]) || (best_pip_index != event->GetPipIndices()[j]))
                                                                 {
                                                                         cdfd_survive_in_twopion++;
@@ -783,8 +822,10 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
 
                                                                                 //////////////                if (dv2_Prot < 0.01)
                                                                                 {
+                                                                                        if (event->MM2_mPim() < 0.1011 && event->MM2_mPim() > -0.0531)
+                                                                                                two_pion_mPim_events++;
 
-                                                                                        // _hists->FillHists_electron_with_cuts(data, event);
+                                                                                        _hists->FillHists_electron_with_cuts(data, event);
 
                                                                                         event->EffCorrFactor(*event->GetProtons()[i], *event->GetPips()[j]);
                                                                                         event->weight();
@@ -956,6 +997,9 @@ size_t run(std::shared_ptr<TChain> _chain, const std::shared_ptr<Histogram> &_hi
         // std::cout << "Total = " << total_cdfd_prot << "\n";
         std::cout << "events passing W-Q2 cuts = " << events_passes_w_q2_cuts << " \n";
         std::cout << "events with mPim topo = " << two_pion_mPim_events << " \n";
+        std::cout << "events with Exclusive topo = " << two_pion_Excl_events << " \n";
+        std::cout << "events with mPip topo = " << two_pion_mPip_events << " \n";
+        std::cout << "events with mProt topo = " << two_pion_mProt_events << " \n";
         std::cout << " twopions before cdfd cuts = " << before_cdfd_in_twopion << " \n";
         std::cout << "twopions after cdfd cuts = " << cdfd_survive_in_twopion << " \n";
 

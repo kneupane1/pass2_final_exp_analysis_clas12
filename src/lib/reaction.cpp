@@ -788,6 +788,32 @@ void Reaction::CalcMissMassPim(const TLorentzVector &prot, const TLorentzVector 
         _MM_mPim = mm_mpim->M();
         _MM2_mPim = mm_mpim->M2();
 }
+
+/////////////////// new added ////////////////
+void Reaction::CalcMissMassPip(const TLorentzVector &prot, const TLorentzVector &pim)
+{
+        auto mm_mpip = std::make_unique<TLorentzVector>();
+
+        *mm_mpip += (*_gamma + *_target);
+        *mm_mpip -= prot;
+        *mm_mpip -= pim;
+
+        _MM_mpip = mm_mpip->M();
+        _MM2_mpip = mm_mpip->M2();
+}
+
+/////////////////// new added ////////////////
+void Reaction::CalcMissMassProt(const TLorentzVector &pip, const TLorentzVector &pim)
+{
+        auto mm_mprot = std::make_unique<TLorentzVector>();
+
+        *mm_mprot += (*_gamma + *_target);
+        *mm_mprot -= pip;
+        *mm_mprot -= pim;
+
+        _MM_mprot = mm_mprot->M();
+        _MM2_mprot = mm_mprot->M2();
+}
 /////////////////// new added ////////////////
 void Reaction::CalcMissMassPimSwapped()
 {
@@ -822,29 +848,29 @@ void Reaction::CalcMissMassExcl(const TLorentzVector &prot, const TLorentzVector
                 _excl_Energy = mm_excl->E();
                 // }
 
-                // //         if (TwoPion_missingPim())
-                // // {
-                *mm_mpim += (*_gamma + *_target);
-                *mm_mpim -= prot;
-                *mm_mpim -= pip;
+                // // //         if (TwoPion_missingPim())
+                // // // {
+                // *mm_mpim += (*_gamma + *_target);
+                // *mm_mpim -= prot;
+                // *mm_mpim -= pip;
 
-                _MM_mPim = mm_mpim->M();
-                _MM2_mPim = mm_mpim->M2();
+                // _MM_mPim = mm_mpim->M();
+                // _MM2_mPim = mm_mpim->M2();
+                // // // }
+                // // // if (TwoPion_missingPip())
+                // // // {
+                // *mm_mpip += (*_gamma + *_target);
+                // *mm_mpip -= prot;
+                // *mm_mpip -= pim;
+                // _MM2_mpip = mm_mpip->M2();
                 // // }
-                // // if (TwoPion_missingPip())
+                // // if (TwoPion_missingProt())
                 // // {
-                *mm_mpip += (*_gamma + *_target);
-                *mm_mpip -= prot;
-                *mm_mpip -= pim;
-                _MM2_mpip = mm_mpip->M2();
-                // }
-                // if (TwoPion_missingProt())
-                // {
-                *mm_mprot += (*_gamma + *_target);
-                *mm_mprot -= pip;
-                *mm_mprot -= pim;
-                _MM2_mprot = mm_mprot->M2();
-                // }
+                // *mm_mprot += (*_gamma + *_target);
+                // *mm_mprot -= pip;
+                // *mm_mprot -= pim;
+                // _MM2_mprot = mm_mprot->M2();
+                // // }
         }
 }
 

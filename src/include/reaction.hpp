@@ -321,6 +321,8 @@ public:
 
         // void CalcMissMass();
         void CalcMissMassPim(const TLorentzVector &prot, const TLorentzVector &pip);
+        void CalcMissMassPip(const TLorentzVector &prot, const TLorentzVector &pim);
+        void CalcMissMassProt(const TLorentzVector &pip, const TLorentzVector &pim);
         void CalcMissMassPimSwapped();
 
         void CalcMissMassExcl(const TLorentzVector &prot, const TLorentzVector &pip, const TLorentzVector &pim);
